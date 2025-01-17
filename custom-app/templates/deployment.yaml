@@ -36,15 +36,15 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          {{- if .Values.container.command }}
+          {{- if (.Values.container).command }}
           command:
             {{- toYaml .Values.container.command | nindent 12 }}
           {{- end }}
-          {{- if .Values.container.entrypoint }}
+          {{- if (.Values.container).entrypoint }}
           entrypoint:
             {{- toYaml .Values.container.entrypoint | nindent 12 }}
           {{- end }}
-          {{- if .Values.container.args }}
+          {{- if (.Values.container).args }}
           args:
             {{- toYaml .Values.container.args | nindent 12 }}
           {{- end }}
