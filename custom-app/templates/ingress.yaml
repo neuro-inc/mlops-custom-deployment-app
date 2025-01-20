@@ -4,7 +4,7 @@ kind: Ingress
 metadata:
   name: {{ include "custom-app.fullname" . }}
   labels:
-    {{- include "app.labels" $ | nindent 4 }}
+    {{- include "custom-app.labels" $ | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
