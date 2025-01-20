@@ -4,7 +4,6 @@ metadata:
   name: {{ include "custom-app.fullname" . }}
   labels:
     {{- include "custom-app.labels" . | nindent 4 }}
-    {{- include "custom-app.apoloPodLabels" . | nindent 8 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
@@ -23,6 +22,7 @@ spec:
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
+        {{- include "custom-app.apoloPodLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
