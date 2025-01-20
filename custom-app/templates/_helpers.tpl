@@ -34,6 +34,7 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "custom-app.labels" -}}
+application: custom-app
 helm.sh/chart: {{ include "custom-app.chart" . }}
 {{ include "custom-app.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
@@ -59,4 +60,12 @@ Create the name of the service account to use
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
+{{- end }}
+
+{{/*
+Pod-specific labels
+*/}}
+{{- define "custom-app.apoloPodLabels" -}}
+platform.apolo.us/preset: {{ .Values.preset_name }}
+platform.apolo.us/component: app
 {{- end }}
