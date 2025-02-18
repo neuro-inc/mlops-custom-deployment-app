@@ -127,3 +127,6 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Env variables for the container
+env: {}
