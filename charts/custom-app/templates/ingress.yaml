@@ -30,7 +30,6 @@ spec:
           {{- end }}
     {{- end }}
   {{- else }}
-  rules:
     - host: {{ .Release.Namespace }}.apps.{{ .Values.ingress.clusterName }}.org.neu.ro
       http:
         paths:
