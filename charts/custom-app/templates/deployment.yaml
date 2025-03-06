@@ -88,7 +88,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.dockerconfigsecret -}}
+      {{- if .Values.dockerconfigjson -}}
       imagePullSecrets:
         - name: {{ include "custom-app.dockerconfig-secret-name" . }}
       {{- end }}

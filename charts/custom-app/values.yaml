@@ -131,3 +131,6 @@ affinity: {}
 
 # Env variables for the container
 env: {}
+
+# Docker registry secret
+dockerconfigjson: null
