@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "custom-app.name" -}}
+{{- define "custom-deployment.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "custom-app.fullname" -}}
+{{- define "custom-deployment.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -23,24 +23,24 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 {{- end }}
 
-{{- define "custom-app.dockerconfig-secret-name" -}}
-{{- (include "custom-app.fullname" .) }}-dockerconfig
+{{- define "custom-deployment.dockerconfig-secret-name" -}}
+{{- (include "custom-deployment.fullname" .) }}-dockerconfig
 {{- end }}
 
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "custom-app.chart" -}}
+{{- define "custom-deployment.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "custom-app.labels" -}}
-application: custom-app
-helm.sh/chart: {{ include "custom-app.chart" . }}
-{{ include "custom-app.selectorLabels" . }}
+{{- define "custom-deployment.labels" -}}
+application: custom-deployment
+helm.sh/chart: {{ include "custom-deployment.chart" . }}
+{{ include "custom-deployment.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -50,17 +50,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "custom-app.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "custom-app.name" . }}
+{{- define "custom-deployment.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "custom-deployment.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "custom-app.serviceAccountName" -}}
+{{- define "custom-deployment.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "custom-app.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "custom-deployment.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
@@ -69,7 +69,7 @@ Create the name of the service account to use
 {{/*
 Pod-specific labels
 */}}
-{{- define "custom-app.apoloPodLabels" -}}
+{{- define "custom-deployment.apoloPodLabels" -}}
 platform.apolo.us/preset: {{ .Values.preset_name }}
 platform.apolo.us/component: app
 {{- end }}

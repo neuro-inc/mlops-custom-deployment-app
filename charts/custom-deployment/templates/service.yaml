@@ -2,9 +2,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "custom-app.fullname" . }}
+  name: {{ include "custom-deployment.fullname" . }}
   labels:
-    {{- include "custom-app.labels" . | nindent 4 }}
+    {{- include "custom-deployment.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -13,5 +13,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    {{- include "custom-app.selectorLabels" . | nindent 4 }}
+    {{- include "custom-deployment.selectorLabels" . | nindent 4 }}
 {{- end }}
