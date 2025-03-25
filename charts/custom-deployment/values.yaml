@@ -134,3 +134,14 @@ env: {}
 
 # Docker registry secret
 dockerconfigjson: null
+
+# Apolo Storage integration
+storageMounts: []
+# Example usage:
+# storageMounts:
+#   - storage_path:
+#       path: "storage://my-cluster/my-org/project/data"
+#     mount_path:
+#       path: "/app/data"
+#     mode:
+#       mode: "rw"
