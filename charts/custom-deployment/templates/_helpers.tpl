@@ -73,3 +73,9 @@ Pod-specific labels
 platform.apolo.us/preset: {{ .Values.preset_name }}
 platform.apolo.us/component: app
 {{- end }}
+
+{{- define "custom-deployment.storageAnnotations" -}}
+{{- if .Values.storageMounts }}
+platform.apolo.us/inject-storage: {{ .Values.storageMounts | toJson }}
+{{- end }}
+{{- end }}

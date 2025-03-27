@@ -13,16 +13,16 @@ spec:
       {{- include "custom-deployment.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- include "custom-deployment.storageAnnotations" . | nindent 8 }}
+        {{- toYaml .Values.podAnnotations | nindent 8 }}
       labels:
         {{- include "custom-deployment.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
         {{- include "custom-deployment.apoloPodLabels" . | nindent 8 }}
+        {{- include "custom-deployment.storageLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
