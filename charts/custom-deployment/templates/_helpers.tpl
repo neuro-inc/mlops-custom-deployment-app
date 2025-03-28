@@ -79,3 +79,10 @@ platform.apolo.us/component: app
 platform.apolo.us/inject-storage: {{ .Values.storageMounts | toJson }}
 {{- end }}
 {{- end }}
+
+
+{{- define "custom-deployment.storageLabels" -}}
+{{- if .Values.storageMounts }}
+platform.apolo.us/inject-storage: "true"
+{{- end }}
+{{- end }}
