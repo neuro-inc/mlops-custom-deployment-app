@@ -38,7 +38,7 @@ Create chart name and version as used by the chart label.
 Common labels
 */}}
 {{- define "custom-deployment.labels" -}}
-application: custom-deployment
+application: {{ .Values.labels.application }}
 helm.sh/chart: {{ include "custom-deployment.chart" . }}
 {{ include "custom-deployment.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
