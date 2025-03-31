@@ -145,3 +145,6 @@ storageMounts: []
 #       path: "/app/data"
 #     mode:
 #       mode: "rw"
+
+labels:
+  application: custom-deployment
