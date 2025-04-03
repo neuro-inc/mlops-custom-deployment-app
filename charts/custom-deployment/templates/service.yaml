@@ -8,10 +8,12 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    {{- range .Values.service.ports }}
+    - port: {{ .containerPort }}
+      targetPort: {{ .name }}
       protocol: TCP
-      name: http
+      name: {{ .name }}
+    {{- end }}
   selector:
     {{- include "custom-deployment.selectorLabels" . | nindent 4 }}
 {{- end }}
