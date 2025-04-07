@@ -79,3 +79,13 @@ platform.apolo.us/component: app
 platform.apolo.us/inject-storage: {{ .Values.storageMounts | toJson }}
 {{- end }}
 {{- end }}
+
+{{/*
+Generate a unique name for each PVC by combining the release's "full name" with the user-supplied pvc.name.
+*/}}
+{{- define "custom-deployment.pvcName" -}}
+{{- $root := .root -}}
+{{- $pvc := .pvc -}}
+{{- $baseName := include "custom-deployment.fullname" $root -}}
+{{- printf "%s-%s" $baseName $pvc.name | trunc 63 | trimSuffix "-" }}
+{{- end }}

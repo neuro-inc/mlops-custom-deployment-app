@@ -1,0 +1,34 @@
+{{- /*
+Create PersistentVolumeClaims only if the user provides them via .Values.persistentVolumeClaims
+Each item in the list is expected to have:
+  name: <string>
+  size: <string> (e.g. 5Gi)
+  storageClassName: <string> (optional)
+  accessModes: <list of strings> (optional)
+*/ -}}
+
+{{- if .Values.persistentVolumeClaims }}
+{{- range .Values.persistentVolumeClaims }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # We rely on Helm to handle the namespace (i.e. .Release.Namespace)
+  name: {{ include "custom-deployment.pvcName" (dict "pvc" . "root" $) }}
+  labels:
+    {{- include "custom-deployment.labels" $ | nindent 4 }}
+spec:
+  accessModes:
+    {{- if .accessModes }}
+    {{- toYaml .accessModes | nindent 4 }}
+    {{- else }}
+    - ReadWriteOnce
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .size | quote }}
+  {{- if .storageClassName }}
+  storageClassName: {{ .storageClassName }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}
