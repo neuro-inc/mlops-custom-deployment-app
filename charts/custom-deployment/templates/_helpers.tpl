@@ -72,6 +72,8 @@ Pod-specific labels
 {{- define "custom-deployment.apoloPodLabels" -}}
 platform.apolo.us/preset: {{ .Values.preset_name }}
 platform.apolo.us/component: app
+platform.apolo.us/org: {{ .Values.org }}
+platform.apolo.us/projectorg: {{ .Values.project }}
 {{- end }}
 
 {{- define "custom-deployment.storageAnnotations" -}}
