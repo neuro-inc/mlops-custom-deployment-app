@@ -1,0 +1,33 @@
+{{- /*
+Create PersistentVolumeClaims only if the user provides them via .Values.persistentVolumeClaims.
+Each item in the list must have:
+  name: string       (the final resource name; no prefix is applied)
+  size: string       (e.g. "5Gi")
+  storageClassName: string | nil
+  accessModes: list  (optional, default ReadWriteOnce)
+*/ -}}
+
+{{- if .Values.persistentVolumeClaims }}
+{{- range .Values.persistentVolumeClaims }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .name | quote }}    # Use EXACT name from user. No chart prefix.
+  labels:
+    {{- include "custom-deployment.labels" $ | nindent 4 }}
+spec:
+  accessModes:
+    {{- if .accessModes }}
+    {{- toYaml .accessModes | nindent 4 }}
+    {{- else }}
+    - ReadWriteOnce
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ .size | quote }}
+  {{- if .storageClassName }}
+  storageClassName: {{ .storageClassName }}
+  {{- end }}
+---
+{{- end }}
+{{- end }}

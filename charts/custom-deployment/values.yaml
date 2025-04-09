@@ -140,5 +140,14 @@ storageMounts: []
 #     mode:
 #       mode: "rw"
 
+persistentVolumeClaims: []
+# Example usage:
+# persistentVolumeClaims:
+#   - name: data-pvc
+#     size: 5Gi
+#     storageClassName: standard
+#     accessModes:
+#       - ReadWriteOnce
+
 labels:
   application: custom-deployment
