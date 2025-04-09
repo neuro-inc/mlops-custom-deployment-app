@@ -26,19 +26,8 @@ spec:
               service:
                 name: {{ include "custom-deployment.fullname" $ }}
                 port:
-                  name: http
+                  name: {{ .portName }}
           {{- end }}
     {{- end }}
-  {{- else }}
-    - host: {{ .Release.Namespace }}.apps.{{ .Values.ingress.clusterName }}.org.neu.ro
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ include "custom-deployment.fullname" $ }}
-                port:
-                  name: http
   {{- end }}
 {{- end }}

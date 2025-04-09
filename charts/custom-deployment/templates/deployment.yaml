@@ -58,13 +58,19 @@ spec:
             {{- toYaml .Values.container.args | nindent 12 }}
           {{- end }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
+            {{- range .Values.service.ports }}
+            - containerPort: {{ .containerPort }}
               protocol: TCP
+              name: {{ .name }}
+            {{- end }}
           livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
+            httpGet:
+              path: /
+              port: {{ (index .Values.service.ports 0).containerPort }}
           readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
+            httpGet:
+              path: /
+              port: {{ (index .Values.service.ports 0).containerPort }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
