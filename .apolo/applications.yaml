@@ -6,7 +6,6 @@
   input: ServiceDeploymentInputs
   output: ServiceDeploymentOutputs
   inputs_processor: ServiceDeploymentChartValueProcessor
-  outputs_processor: ServiceDeploymentOutputProcessor
   post_install_hook:
     enabled: true
     image:
@@ -36,7 +35,6 @@
   input: MLFlowAppInputs
   output: MLFlowAppOutputs
   inputs_processor: MLFlowChartValueProcessor
-  outputs_processor: MLFlowOutputProcessor
   post_install_hook:
     enabled: true
     image:
