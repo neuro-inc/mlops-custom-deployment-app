@@ -1,0 +1,54 @@
+- app_id: service-deployment
+  name: service-deployment
+  title: Service Deployment
+  type: mlops
+  helm_path: charts/custom-deployment
+  input: ServiceDeploymentInputs
+  output: ServiceDeploymentOutputs
+  inputs_processor: ServiceDeploymentChartValueProcessor
+  outputs_processor: ServiceDeploymentOutputProcessor
+  short_description: Deploy scalable service applications
+  description: |
+    Deploy and scale your services on the Apolo platform.
+  pub_date: "2025-01-01T00:00:00+00:00"
+  logo:
+    # static files that are 'file' are "proxied" by our API
+    # e.g. https://{base_api_url}/apis/apps/v1/cluster/{cluster_name}/org/{org_name}/project/{project_name}/templates/{app_id}/{version}/logo
+    file: ./.apolo/assets/apolo.png
+  changelog:
+    # e.g. https://{base_api_url}/apis/apps/v1/cluster/{cluster_name}/org/{org_name}/project/{project_name}/templates/{app_id}/{version}/changelog
+    file: ./CHANGELOG.md
+  tags: ["apolo", "service", "deployment"]
+  external_urls:
+    - name: Apolo Service Deployment documentation
+      type: doc_url
+      url: https://docs.apolo.us/index/apolo-console/apps/available-apps
+
+- app_id: mlflow-core
+  name: mlflow-core
+  title: MLFlow Core
+  type: mlops
+  helm_path: charts/custom-deployment
+  input: MLFlowAppInputs
+  output: MLFlowAppOutputs
+  inputs_processor: MLFlowChartValueProcessor
+  outputs_processor: MLFlowOutputProcessor
+  short_description: Deploy your managed MLFlow server
+  description: |
+    Deploy your managed MLFlow server, integrated with Apolo Files to store your artifacts.
+    You could chose between SQLite or Postgres for metadata storage.
+  pub_date: "2025-01-01T00:00:00+00:00"
+  logo:
+    # 'url' files are returned as is
+    url: https://mlflow.org/docs/latest/images/logo-light.svg
+  changelog:
+    # e.g. https://{base_api_url}/apis/apps/v1/cluster/{cluster_name}/org/{org_name}/project/{project_name}/templates/{app_id}/{version}/changelog
+    file: ./CHANGELOG.md
+  tags: ["mlflow", "experiment tracking", "model registry"]
+  external_urls:
+    - name: MLFlow GitHub repository
+      type: doc_url
+      url: https://github.com/mlflow/mlflow
+    - name: MLFlow Official Docs
+      type: doc_url
+      url: https://mlflow.org/docs/latest
