@@ -78,6 +78,13 @@ ingress:
         - path: /
           pathType: ImplementationSpecific
           portName: http
+  forwardAuth:
+    enabled: true
+    trustForwardHeader: true
+    authRequestHeaders:
+      - "Cookie"
+      - "Authorization"
+
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
