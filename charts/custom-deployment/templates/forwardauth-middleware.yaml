@@ -3,7 +3,7 @@ apiVersion: traefik.io/v1alpha1 # Use traefik.containo.us/v1alpha1 if using olde
 kind: Middleware
 metadata:
   # Use the helper for the Middleware resource name
-  name: {{ include "custom-deployment.forwardAuthMiddlewareName" . }}
+  name: {{ .Values.ingress.forwardAuth.name | quote }}
   # Middleware MUST be in the same namespace as the Ingress that uses it
   namespace: {{ .Release.Namespace }}
   labels:

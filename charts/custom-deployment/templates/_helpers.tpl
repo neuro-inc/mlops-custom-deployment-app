@@ -79,19 +79,3 @@ platform.apolo.us/component: app
 platform.apolo.us/inject-storage: {{ .Values.storageMounts | toJson }}
 {{- end }}
 {{- end }}
-
-{{/*
-Define the Middleware resource name.
-Includes namespace to ensure uniqueness if needed and matches the example annotation format.
-*/}}
-{{- define "custom-deployment.forwardAuthMiddlewareName" -}}
-{{- printf "%s-%s-forwardauth" .Release.Namespace (include "custom-deployment.fullname" .) | trunc 63 | trimSuffix "-" }}
-{{- end -}}
-
-{{/*
-Define the name used in the Ingress annotation.
-Format: <middleware-name>@kubernetescrd
-*/}}
-{{- define "custom-deployment.forwardAuthMiddlewareAnnotationValue" -}}
-{{- printf "%s@kubernetescrd" (include "custom-deployment.forwardAuthMiddlewareName" .) }}
-{{- end -}}
