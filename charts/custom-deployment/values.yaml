@@ -79,11 +79,12 @@ ingress:
           pathType: ImplementationSpecific
           portName: http
   forwardAuth:
-    enabled: true
-    trustForwardHeader: true
-    authRequestHeaders:
-      - "Cookie"
-      - "Authorization"
+    enabled: false
+    # address: http://forwardauth:8080
+    # trustForwardHeader: true
+    # authRequestHeaders:
+    #   - "Cookie"
+    #   - "Authorization"
 
   tls: []
   #  - secretName: chart-example-tls
