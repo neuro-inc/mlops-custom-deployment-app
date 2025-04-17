@@ -8,6 +8,9 @@ metadata:
   {{- with .Values.ingress.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
+    {{- if .Values.ingress.forwardAuth.enabled }}
+    traefik.ingress.kubernetes.io/router.middlewares: {{ include "custom-deployment.forwardAuthMiddlewareAnnotationValue" . }}
+    {{- end }}
   {{- end }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
