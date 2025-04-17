@@ -79,11 +79,3 @@ platform.apolo.us/component: app
 platform.apolo.us/inject-storage: {{ .Values.storageMounts | toJson }}
 {{- end }}
 {{- end }}
-
-{{/*
-Define the Middleware resource name.
-Includes namespace to ensure uniqueness if needed and matches the example annotation format.
-*/}}
-{{- define "custom-deployment.forwardAuthMiddlewareName" -}}
-{{- printf "%s-forwardauth" .Release.Namespace | trimSuffix "-" }}
-{{- end -}}
