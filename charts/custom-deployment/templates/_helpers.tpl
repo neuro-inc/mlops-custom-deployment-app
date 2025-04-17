@@ -85,5 +85,5 @@ Define the Middleware resource name.
 Includes namespace to ensure uniqueness if needed and matches the example annotation format.
 */}}
 {{- define "custom-deployment.forwardAuthMiddlewareName" -}}
-{{- printf "%s-forwardauth" .Release.Namespace | trunc 63 | trimSuffix "-" }}
+{{- printf "%s-forwardauth" .Release.Namespace | trimSuffix "-" }}
 {{- end -}}
