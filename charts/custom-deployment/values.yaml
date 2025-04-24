@@ -134,7 +134,7 @@ affinity: {}
 
 container:
 # Env variables for the container
-  env: {}
+  env: []
   command: ""
   entrypoint: null
   args: []
