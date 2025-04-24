@@ -3,13 +3,14 @@
   title: Service Deployment
   type: mlops
   helm_path: charts/custom-deployment
-  input: ServiceDeploymentInputs
-  output: ServiceDeploymentOutputs
-  inputs_processor: ServiceDeploymentChartValueProcessor
-  post_install_hook:
-    enabled: true
-    image:
-      repo: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  inputs:
+    type: ServiceDeploymentInputs
+    processor: ServiceDeploymentChartValueProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    type: ServiceDeploymentOutputs
+    processor: ServiceDeploymentChartValueProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Deploy scalable service applications
   description: |
     Deploy and scale your services on the Apolo platform.
@@ -32,13 +33,14 @@
   title: MLFlow Core
   type: mlops
   helm_path: charts/custom-deployment
-  input: MLFlowAppInputs
-  output: MLFlowAppOutputs
-  inputs_processor: MLFlowChartValueProcessor
-  post_install_hook:
-    enabled: true
-    image:
-      repo: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  inputs:
+    type: MLFlowAppInputs
+    processor: MLFlowChartValueProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    type: MLFlowAppOutputs
+    processor: MLFlowChartValueProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Deploy your managed MLFlow server
   description: |
     Deploy your managed MLFlow server, integrated with Apolo Files to store your artifacts.
