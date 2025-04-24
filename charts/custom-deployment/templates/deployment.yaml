@@ -36,13 +36,13 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}"
           env:
-            {{- range $k, $v := .Values.env }}
-            - name: {{ $k }}
-              {{- if kindIs "string" $v }}
-              value: {{ $v | quote }}
-              {{- else }}
-              {{ $v | toYaml | nindent 14 }}
-              {{- end }}
+            {{- range .Values.container.env }}
+              - name: {{ .name }}
+                {{- if kindIs "string" .value }}
+                value: {{ .value | quote }}
+                {{- else }}
+                {{ toYaml .value | nindent 14 }}
+                {{- end }}
             {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if (.Values.container).command }}
