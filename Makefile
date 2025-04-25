@@ -1,10 +1,11 @@
-IMAGE_NAME ?= post-deployment-app-service-deployment-hook
+IMAGE_NAME ?= custom-deployment-app-hook
+IMAGE_TAG ?= latest
 APP_TYPES_REVISION ?= v25.4.3
 
 SHELL := /bin/sh -e
 
-.PHONY: install
-install: poetry.lock
+.PHONY: install setup
+install setup: poetry.lock
 	poetry config virtualenvs.in-project true
 	poetry install --with dev
 	poetry run pre-commit install;
@@ -28,16 +29,21 @@ lint: format
 
 .PHONY: test-unit
 test-unit:
-	poetry run pytest -vvs --cov=platform_apps --cov-report xml:.coverage.unit.xml .apolo/tests/unit
+	poetry run pytest -vvs --cov=.apolo --cov-report xml:.coverage.unit.xml .apolo/tests/unit
 
 .PHONY: test-integration
 test-integration:
-	poetry run pytest -vv --cov=platform_apps --cov-report xml:.coverage.integration.xml .apolo/tests/integration
+	poetry run pytest -vv --cov=.apolo --cov-report xml:.coverage.integration.xml .apolo/tests/integration
 
 
 .PHONY: build-hook-image
 build-hook-image:
 	docker build \
 		-t $(IMAGE_NAME):latest \
-		-f post-installation.Dockerfile \
+		-f hooks.Dockerfile \
 		.;
+
+.PHONY: push-hook-image
+push-hook-image:
+	docker tag $(IMAGE_NAME):latest ghcr.io/neuro-inc/$(IMAGE_NAME):$(IMAGE_TAG)
+	docker push ghcr.io/neuro-inc/$(IMAGE_NAME):$(IMAGE_TAG)

@@ -47,8 +47,7 @@
     You could chose between SQLite or Postgres for metadata storage.
   pub_date: "2025-01-01T00:00:00+00:00"
   logo:
-    # 'url' files are returned as is
-    url: https://mlflow.org/docs/latest/images/logo-light.svg
+    file: ./.apolo/assets/mlflow.svg
   changelog:
     # e.g. https://{base_api_url}/apis/apps/v1/cluster/{cluster_name}/org/{org_name}/project/{project_name}/templates/{app_id}/{version}/changelog
     file: ./CHANGELOG.md
