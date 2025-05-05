@@ -1,6 +1,17 @@
-FROM post-deployment-app-hook:latest
+FROM python:3.12-slim
 
-COPY poetry.lock pyproject.toml .
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    POETRY_NO_INTERACTION=1 \
+    POETRY_VIRTUALENVS_CREATE=0
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY README.md poetry.lock pyproject.toml .
 RUN pip --no-cache-dir install poetry && poetry install --no-root --no-cache
 
 COPY .apolo .apolo

@@ -23,6 +23,7 @@ pydantic = "^2.9.2"
 pyyaml = "^6.0.2"
 types-PyYAML = "^6.0.12.20241230"
 yarl = "^1.18.3"
+apolo-app-types = "^25.5.1"
 
 [tool.poetry.group.dev]
 optional = true
@@ -33,7 +34,6 @@ pytest = "^8.3.4"
 pytest-asyncio = "^0.25.3"
 pytest-cov = "^6.0.0"
 mypy = "^1.15.0"
-apolo-app-types = "^25.4.17"
 
 [tool.ruff]
 target-version = "py311"
