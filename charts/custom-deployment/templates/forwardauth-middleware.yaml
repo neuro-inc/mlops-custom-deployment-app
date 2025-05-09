@@ -14,9 +14,15 @@ spec:
     address: {{ .Values.ingress.forwardAuth.address | quote }}
     trustForwardHeader: {{ .Values.ingress.forwardAuth.trustForwardHeader | default true }}
 
-    # Conditionally add authRequestHeaders if provided in values
+    # Optional headers to send to the authentication service
     {{- if .Values.ingress.forwardAuth.authRequestHeaders }}
     authRequestHeaders:
       {{- toYaml .Values.ingress.forwardAuth.authRequestHeaders | nindent 6 }}
+    {{- end }}
+
+    # Optional headers to copy from the authentication service's response
+    {{- if .Values.ingress.forwardAuth.authResponseHeaders }}
+    authResponseHeaders:
+      {{- toYaml .Values.ingress.forwardAuth.authResponseHeaders | nindent 6 }}
     {{- end }}
 {{- end }}
