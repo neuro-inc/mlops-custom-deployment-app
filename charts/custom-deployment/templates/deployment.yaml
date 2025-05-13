@@ -67,10 +67,20 @@ spec:
             httpGet:
               path: /
               port: {{ (index .Values.service.ports 0).containerPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 20
+            successThreshold: 1
           readinessProbe:
             httpGet:
               path: /
               port: {{ (index .Values.service.ports 0).containerPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 20
+            successThreshold: 1
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
