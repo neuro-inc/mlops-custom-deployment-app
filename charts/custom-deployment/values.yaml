@@ -87,10 +87,10 @@ ingress:
     #   - "Cookie"
     #   - "Authorization"
   stripHeaders:
-    enabled: false
+    enabled: true
     headers:
       - "Authorization"
-      - "Cookie"
+      # - "Cookie"
 
   tls: []
   #  - secretName: chart-example-tls
