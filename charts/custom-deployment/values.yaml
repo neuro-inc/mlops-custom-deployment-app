@@ -86,6 +86,11 @@ ingress:
     # authRequestHeaders:
     #   - "Cookie"
     #   - "Authorization"
+  stripHeaders:
+    enabled: true
+    headers:
+      - "Authorization"
+      # - "Cookie"
 
   tls: []
   #  - secretName: chart-example-tls
