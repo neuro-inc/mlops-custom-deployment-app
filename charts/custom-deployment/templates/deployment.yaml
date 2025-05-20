@@ -63,24 +63,23 @@ spec:
               protocol: TCP
               name: {{ .name }}
             {{- end }}
+          {{- if .Values.health_checks }}
+          {{- if .Values.health_checks.livenessProbe }}
           livenessProbe:
-            httpGet:
-              path: /
-              port: {{ (index .Values.service.ports 0).containerPort }}
-            initialDelaySeconds: 30
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 20
+            {{- .Values.health_checks.livenessProbe | toYaml | nindent 12 }}
             successThreshold: 1
+          {{- end }}
+          {{- if .Values.health_checks.startupProbe }}
+          startupProbe:
+            {{- .Values.health_checks.startupProbe | toYaml | nindent 12 }}
+            successThreshold: 1
+          {{- end }}
+          {{- if .Values.health_checks.readinessProbe }}
           readinessProbe:
-            httpGet:
-              path: /
-              port: {{ (index .Values.service.ports 0).containerPort }}
-            initialDelaySeconds: 30
-            periodSeconds: 5
-            timeoutSeconds: 3
-            failureThreshold: 20
+            {{- .Values.health_checks.readinessProbe | toYaml | nindent 12 }}
             successThreshold: 1
+          {{- end }}
+          {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           {{- with .Values.volumeMounts }}
