@@ -87,7 +87,7 @@ ingress:
     #   - "Cookie"
     #   - "Authorization"
   stripHeaders:
-    enabled: true
+    enabled: false
     headers:
       - "Authorization"
       # - "Cookie"
