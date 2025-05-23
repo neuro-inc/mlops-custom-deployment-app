@@ -45,8 +45,8 @@ spec:
                 {{- end }}
             {{- end }}
             {{- if .Values.NEURO_PASSED_CONFIG}}
-            - name: NEURO_PASSED_CONFIG
-              value: {{ .Values.NEURO_PASSED_CONFIG | quote }}
+              - name: NEURO_PASSED_CONFIG
+                value: {{ .Values.NEURO_PASSED_CONFIG | quote }}
             {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if (.Values.container).command }}
