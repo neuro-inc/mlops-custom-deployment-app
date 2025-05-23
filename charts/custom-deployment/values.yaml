@@ -169,3 +169,5 @@ persistentVolumeClaims: []
 
 labels:
   application: custom-deployment
+
+NEURO_PASSED_CONFIG: null
