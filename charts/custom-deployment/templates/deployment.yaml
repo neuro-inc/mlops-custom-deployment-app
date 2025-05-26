@@ -44,6 +44,10 @@ spec:
                 {{ toYaml .value | nindent 14 }}
                 {{- end }}
             {{- end }}
+            {{- if .Values.APOLO_PASSED_CONFIG}}
+              - name: NEURO_PASSED_CONFIG
+                value: {{ .Values.APOLO_PASSED_CONFIG | quote }}
+            {{- end }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           {{- if (.Values.container).command }}
           command:

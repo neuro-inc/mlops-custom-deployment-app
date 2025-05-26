@@ -87,7 +87,7 @@ ingress:
     #   - "Cookie"
     #   - "Authorization"
   stripHeaders:
-    enabled: true
+    enabled: false
     headers:
       - "Authorization"
       # - "Cookie"
@@ -169,3 +169,5 @@ persistentVolumeClaims: []
 
 labels:
   application: custom-deployment
+
+APOLO_PASSED_CONFIG: null
