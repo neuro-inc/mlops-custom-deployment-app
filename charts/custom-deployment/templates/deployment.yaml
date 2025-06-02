@@ -41,7 +41,7 @@ spec:
                 {{- if kindIs "string" .value }}
                 value: {{ .value | quote }}
                 {{- else }}
-                {{ toYaml .value | nindent 14 }}
+                {{ toYaml .value | nindent 16 }}
                 {{- end }}
             {{- end }}
             {{- if .Values.APOLO_PASSED_CONFIG}}
