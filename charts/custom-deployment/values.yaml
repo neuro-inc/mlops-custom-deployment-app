@@ -174,42 +174,32 @@ APOLO_PASSED_CONFIG: null
 
 extraDeployment:
   enabled: false
-  deployment:
-    # This is the name of the deployment
-    name: "extra-deployment"
-    # Replica count for the extra deployment
-    replicaCount: 1
-    # Autoscaling configuration
-    autoscaling:
-      enabled: false
-    # Selector labels for the deployment
-    selectorLabels: {}
-    # Pod annotations
-    podAnnotations: {}
-    # Pod labels
-    podLabels: {}
-    # Additional deployment labels
-    labels: {}
-    # Image pull secrets
-    imagePullSecrets: []
-    # Pod security context
-    podSecurityContext: {}
-    # Include main deployment info as environment variables
-    includeMainDeploymentInfo: true
-    # This is the container command for the deployment
-    container:
-      entrypoint: null
-      command: []
-      args: []
-      name: extra-deployment-container
-      securityContext: {}
-      image:
-        repository: "nginx"
-        tag: "latest"
-        pullPolicy: IfNotPresent
-      env:
-        - name: APOLO_PASSED_CONFIG
-          value: ""
+  name: "extra-deployment"
+  image:
+    repository: "nginx"
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  # Image pull secrets
+  imagePullSecrets: []
+  container:
+    entrypoint: null
+    command: []
+    args: []
+    env:
+      - name: APOLO_PASSED_CONFIG
+        value: ""
+  securityContext: {}
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+  podAnnotations: {}
+  podLabels: {}
+  labels: {}
+  # Pod security context
+  podSecurityContext: {}
+  # Include main deployment info as environment variables
+  includeMainDeploymentInfo: true
+  # This is the container command for the deployment
   # Service configuration for extra deployment
   service:
     enabled: true

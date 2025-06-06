@@ -8,43 +8,43 @@ metadata:
   labels:
     {{- include "custom-deployment.labels" . | nindent 4 }}
     extra-deployment: "true"
-    {{- with .deployment.labels }}
+    {{- with .labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  {{- if not .deployment.autoscaling.enabled }}
-  replicas: {{ .deployment.replicaCount }}
+  {{- if not .autoscaling.enabled }}
+  replicas: {{ .replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- .deployment.selectorLabels | nindent 6 }}
+      {{- include "custom-deployment.selectorLabels" . | nindent 6 }}
       extra-deployment-name: {{ $name }}
   template:
     metadata:
       annotations:
-        {{- toYaml .deployment.podAnnotations | nindent 8 }}
+        {{- toYaml .podAnnotations | nindent 8 }}
       labels:
         extra-deployment-name: {{ $name }}
         {{- include "custom-deployment.labels" . | nindent 8 }}
-        {{- with .deployment.podLabels }}
+        {{- with .podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
         {{- include "custom-deployment.apoloPodLabels" . | nindent 8 }}
     spec:
-      {{- with .deployment.imagePullSecrets }}
+      {{- with .imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "custom-deployment.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .deployment.podSecurityContext | nindent 8 }}
+        {{- toYaml .podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .deployment.container.name }}
+        - name: {{ .name }}
           securityContext:
-            {{- toYaml .deployment.container.securityContext | nindent 12 }}
-          image: "{{ .deployment.container.image.repository }}:{{ .deployment.container.image.tag | default "latest" }}"
+            {{- toYaml .securityContext | nindent 12 }}
+          image: "{{ .image.repository }}:{{ .image.tag | default "latest" }}"
           env:
-            {{- range .deployment.container.env }}
+            {{- range .container.env }}
               - name: {{ .name }}
                 {{- if kindIs "string" .value }}
                 value: {{ .value | quote }}
@@ -56,7 +56,7 @@ spec:
               - name: NEURO_PASSED_CONFIG
                 value: {{ .APOLO_PASSED_CONFIG | quote }}
             {{- end }}
-            {{- if .deployment.includeMainDeploymentInfo }}
+            {{- if .includeMainDeploymentInfo }}
               - name: MAIN_APP_DEPLOYMENT_NAME
                 value: {{ include "custom-deployment.fullname" . }}
               - name: MAIN_APP_DEPLOYMENT_NAMESPACE
@@ -64,18 +64,18 @@ spec:
               - name: MAIN_APP_RELEASE_NAME
                 value: {{ .Release.Name }}
             {{- end }}
-          imagePullPolicy: {{ .deployment.image.pullPolicy }}
-          {{- if .deployment.container.command }}
+          imagePullPolicy: {{ .image.pullPolicy }}
+          {{- if .container.command }}
           command:
-            {{- toYaml .deployment.container.command | nindent 12 }}
+            {{- toYaml .container.command | nindent 12 }}
           {{- end }}
-          {{- if .deployment.container.entrypoint }}
+          {{- if .container.entrypoint }}
           entrypoint:
-            {{- toYaml .deployment.container.entrypoint | nindent 12 }}
+            {{- toYaml .container.entrypoint | nindent 12 }}
           {{- end }}
-          {{- if .deployment.container.args }}
+          {{- if .container.args }}
           args:
-            {{- toYaml .deployment.container.args | nindent 12 }}
+            {{- toYaml .container.args | nindent 12 }}
           {{- end }}
           ports:
             {{- range .service.ports }}
@@ -163,7 +163,7 @@ metadata:
    labels:
     {{- include "custom-deployment.labels" . | nindent 4 }}
     extra-deployment: "true"
-    {{- with .deployment.labels }}
+    {{- with .labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 data:
