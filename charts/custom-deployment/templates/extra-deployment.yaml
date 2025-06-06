@@ -1,0 +1,175 @@
+{{- if .Values.extraDeployment.enabled }}
+{{ with .Values.extraDeployment }}
+{{- $name := .name |  trunc 63 | trimSuffix "-" }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "custom-deployment.labels" . | nindent 4 }}
+    extra-deployment: "true"
+    {{- with .deployment.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if not .deployment.autoscaling.enabled }}
+  replicas: {{ .deployment.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- .deployment.selectorLabels | nindent 6 }}
+      extra-deployment-name: {{ $name }}
+  template:
+    metadata:
+      annotations:
+        {{- toYaml .deployment.podAnnotations | nindent 8 }}
+      labels:
+        extra-deployment-name: {{ $name }}
+        {{- include "custom-deployment.labels" . | nindent 8 }}
+        {{- with .deployment.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- include "custom-deployment.apoloPodLabels" . | nindent 8 }}
+    spec:
+      {{- with .deployment.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "custom-deployment.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .deployment.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .deployment.container.name }}
+          securityContext:
+            {{- toYaml .deployment.container.securityContext | nindent 12 }}
+          image: "{{ .deployment.container.image.repository }}:{{ .deployment.container.image.tag | default "latest" }}"
+          env:
+            {{- range .deployment.container.env }}
+              - name: {{ .name }}
+                {{- if kindIs "string" .value }}
+                value: {{ .value | quote }}
+                {{- else }}
+                {{ toYaml .value | nindent 16 }}
+                {{- end }}
+            {{- end }}
+            {{- if .APOLO_PASSED_CONFIG}}
+              - name: NEURO_PASSED_CONFIG
+                value: {{ .APOLO_PASSED_CONFIG | quote }}
+            {{- end }}
+            {{- if .deployment.includeMainDeploymentInfo }}
+              - name: MAIN_APP_DEPLOYMENT_NAME
+                value: {{ include "custom-deployment.fullname" . }}
+              - name: MAIN_APP_DEPLOYMENT_NAMESPACE
+                value: {{ .Release.Namespace }}
+              - name: MAIN_APP_RELEASE_NAME
+                value: {{ .Release.Name }}
+            {{- end }}
+          imagePullPolicy: {{ .deployment.image.pullPolicy }}
+          {{- if .deployment.container.command }}
+          command:
+            {{- toYaml .deployment.container.command | nindent 12 }}
+          {{- end }}
+          {{- if .deployment.container.entrypoint }}
+          entrypoint:
+            {{- toYaml .deployment.container.entrypoint | nindent 12 }}
+          {{- end }}
+          {{- if .deployment.container.args }}
+          args:
+            {{- toYaml .deployment.container.args | nindent 12 }}
+          {{- end }}
+          ports:
+            {{- range .service.ports }}
+            - containerPort: {{ .containerPort }}
+              protocol: TCP
+              name: {{ .name }}
+            {{- end }}
+          {{- if .health_checks }}
+          {{- if .health_checks.livenessProbe }}
+          livenessProbe:
+            {{- .health_checks.livenessProbe | toYaml | nindent 12 }}
+            successThreshold: 1
+          {{- end }}
+          {{- if .health_checks.startupProbe }}
+          startupProbe:
+            {{- .health_checks.startupProbe | toYaml | nindent 12 }}
+            successThreshold: 1
+          {{- end }}
+          {{- if .health_checks.readinessProbe }}
+          readinessProbe:
+            {{- .health_checks.readinessProbe | toYaml | nindent 12 }}
+            successThreshold: 1
+          {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .resources | nindent 12 }}
+          {{- with .volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .volumes }}
+      {{- if .initContainers }}
+      initContainers:
+        {{- toYaml .initContainers | nindent 8 }}
+      {{- end }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .dockerconfigjson }}
+      imagePullSecrets:
+        - name: {{ include "custom-deployment.dockerconfig-secret-name" . }}
+      {{- end }}
+{{- if .service.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "custom-deployment.labels" . | nindent 4 }}
+    extra-deployment: "true"
+    {{- with .service.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  type: {{ .service.type }}
+  ports:
+    {{- range .service.ports }}
+    - port: {{ .containerPort }}
+      targetPort: {{ .name }}
+      protocol: TCP
+      name: {{ .name }}
+    {{- end }}
+  selector:
+    {{- include "custom-deployment.selectorLabels" . | nindent 4 }}
+{{- end }}
+{{- if .configMap.enabled -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .confiMap.name | default $name }}
+   labels:
+    {{- include "custom-deployment.labels" . | nindent 4 }}
+    extra-deployment: "true"
+    {{- with .deployment.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+data:
+{{- range $key, $value := .configMap.data }}
+  {{ $key }}: {{ $value | quote }}
+{{- end }}
+{{- end -}}
+{{- end }}
+{{- end }}

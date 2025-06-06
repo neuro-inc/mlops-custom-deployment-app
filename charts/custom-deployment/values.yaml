@@ -171,3 +171,113 @@ labels:
   application: custom-deployment
 
 APOLO_PASSED_CONFIG: null
+
+extraDeployment:
+  enabled: false
+  deployment:
+    # This is the name of the deployment
+    name: "extra-deployment"
+    # Replica count for the extra deployment
+    replicaCount: 1
+    # Autoscaling configuration
+    autoscaling:
+      enabled: false
+    # Selector labels for the deployment
+    selectorLabels: {}
+    # Pod annotations
+    podAnnotations: {}
+    # Pod labels
+    podLabels: {}
+    # Additional deployment labels
+    labels: {}
+    # Image pull secrets
+    imagePullSecrets: []
+    # Pod security context
+    podSecurityContext: {}
+    # Include main deployment info as environment variables
+    includeMainDeploymentInfo: true
+    # This is the container command for the deployment
+    container:
+      entrypoint: null
+      command: []
+      args: []
+      name: extra-deployment-container
+      securityContext: {}
+      image:
+        repository: "nginx"
+        tag: "latest"
+        pullPolicy: IfNotPresent
+      env:
+        - name: APOLO_PASSED_CONFIG
+          value: ""
+  # Service configuration for extra deployment
+  service:
+    enabled: true
+    type: ClusterIP
+    ports:
+      - name: http
+        containerPort: 80
+    labels: {}
+  # Health checks configuration
+  health_checks:
+    livenessProbe: null
+    # Example:
+    # livenessProbe:
+    #   httpGet:
+    #     path: /health
+    #     port: 80
+    #   initialDelaySeconds: 30
+    #   periodSeconds: 10
+    startupProbe: null
+    # Example:
+    # startupProbe:
+    #   httpGet:
+    #     path: /health
+    #     port: 80
+    #   initialDelaySeconds: 10
+    #   periodSeconds: 5
+    readinessProbe: null
+    # Example:
+    # readinessProbe:
+    #   httpGet:
+    #     path: /ready
+    #     port: 80
+    #   initialDelaySeconds: 5
+    #   periodSeconds: 5
+  # Resource limits and requests
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  # Volume mounts
+  volumeMounts: []
+  # - name: config-volume
+  #   mountPath: /etc/config
+  #   readOnly: true
+  # Volumes
+  volumes: []
+  # - name: config-volume
+  #   configMap:
+  #     name: my-config
+  # Init containers
+  initContainers: []
+  # - name: init-container
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo init']
+  # Node selector
+  nodeSelector: {}
+  # Affinity rules
+  affinity: {}
+  # Tolerations
+  tolerations: []
+  # Docker config for private registries
+  dockerconfigjson: null
+configMap:
+  enabled: false
+  name: "extra-deployment-configmap"
+  data: {}
+    # key1: value1
+    # key2: value2
