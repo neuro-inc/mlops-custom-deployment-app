@@ -100,7 +100,7 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.extraDeployment.resources | nindent 12 }}
-          {{- with .volumeMounts }}
+          {{- with .Values.extraDeployment.volumeMounts }}
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
