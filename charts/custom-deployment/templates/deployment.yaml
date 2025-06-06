@@ -91,10 +91,6 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
       {{- with .Values.volumes }}
-      {{- if .Values.initContainers }}
-      initContainers:
-        {{- toYaml .Values.initContainers | nindent 8 }}
-      {{- end }}
       volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
