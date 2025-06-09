@@ -15,9 +15,6 @@ spec:
       name: {{ .name }}
     {{- end }}
   selector:
-    matchLabels:
-      {{- include "custom-deployment.selectorLabels" . | nindent 6 }}
-    matchExpressions:
-      - key: extra-deployment-name
-        operator: DoesNotExist
+    {{- include "custom-deployment.selectorLabels" . | nindent 6 }}
+    module: main-app
 {{- end }}

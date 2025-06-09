@@ -11,9 +11,7 @@ spec:
   selector:
     matchLabels:
       {{- include "custom-deployment.selectorLabels" . | nindent 6 }}
-    matchExpressions:
-      - key: extra-deployment-name
-        operator: DoesNotExist
+      module: main-app
   template:
     metadata:
       annotations:
@@ -21,6 +19,7 @@ spec:
         {{- toYaml .Values.podAnnotations | nindent 8 }}
       labels:
         {{- include "custom-deployment.labels" . | nindent 8 }}
+        module: main-app
         {{- with .Values.podLabels }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
