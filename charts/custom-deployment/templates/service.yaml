@@ -15,5 +15,9 @@ spec:
       name: {{ .name }}
     {{- end }}
   selector:
-    {{- include "custom-deployment.selectorLabels" . | nindent 4 }}
+    matchLabels:
+      {{- include "custom-deployment.selectorLabels" . | nindent 6 }}
+    matchExpressions:
+      - key: extra-deployment-name
+        operator: DoesNotExist
 {{- end }}

@@ -11,6 +11,9 @@ spec:
   selector:
     matchLabels:
       {{- include "custom-deployment.selectorLabels" . | nindent 6 }}
+    matchExpressions:
+      - key: extra-deployment-name
+        operator: DoesNotExist
   template:
     metadata:
       annotations:
