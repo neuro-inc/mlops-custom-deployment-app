@@ -265,6 +265,12 @@ extraDeployment:
   tolerations: []
   # Docker config for private registries
   dockerconfigjson: null
+  configMap:
+    enabled: false
+    name: "extra-deployment-configmap"
+    data: {}
+      # key1: value1
+      # key2: value2
 configMap:
   enabled: false
   name: "extra-deployment-configmap"
