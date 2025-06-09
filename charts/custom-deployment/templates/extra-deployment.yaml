@@ -147,6 +147,7 @@ spec:
     {{- end }}
   selector:
     {{- include "custom-deployment.selectorLabels" . | nindent 4 }}
+    extra-deployment-name: {{ $name }}
 {{- end }}
 {{- if .Values.extraDeployment.configMap.enabled }}
 ---
