@@ -5,6 +5,7 @@ metadata:
   name: {{ include "custom-deployment.fullname" . }}
   labels:
     {{- include "custom-deployment.labels" . | nindent 4 }}
+    {{ .Values.service.labels | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:

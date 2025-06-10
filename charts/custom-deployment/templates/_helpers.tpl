@@ -41,7 +41,7 @@ Common labels
 application: {{ .Values.labels.application }}
 helm.sh/chart: {{ include "custom-deployment.chart" . }}
 {{- if .Values.apolo_app_id }}
-apolo-app-id: {{ .Values.apolo_app_id | quote }}
+platform.apolo.us/app-id: {{ .Values.apolo_app_id | quote }}
 {{- end }}
 {{ include "custom-deployment.selectorLabels" . }}
 {{- if .Chart.AppVersion }}

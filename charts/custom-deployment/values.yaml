@@ -64,6 +64,7 @@ service:
   ports:
     - name: http
       containerPort: 80
+  labels: {}
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -169,6 +170,8 @@ persistentVolumeClaims: []
 
 labels:
   application: custom-deployment
+
+# apolo_app_id: <app-uid>
 
 APOLO_PASSED_CONFIG: null
 
