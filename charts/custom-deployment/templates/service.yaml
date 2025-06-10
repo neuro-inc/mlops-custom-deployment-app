@@ -5,6 +5,9 @@ metadata:
   name: {{ include "custom-deployment.fullname" . }}
   labels:
     {{- include "custom-deployment.labels" . | nindent 4 }}
+    {{- if .Values.service.labels }}
+    {{ toYaml .Values.service.labels | nindent 4 }}
+    {{- end }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -16,4 +19,5 @@ spec:
     {{- end }}
   selector:
     {{- include "custom-deployment.selectorLabels" . | nindent 4 }}
+    module: main-app
 {{- end }}

@@ -1,8 +1,8 @@
-{{- if .Values.configMap -}}
+{{- if .Values.configMap.enabled -}}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: {{ include "custom-deployment.fullname" . }}
+    name: {{ .Values.configMap.name | default (include "custom-deployment.fullname" .) }}
     labels:
         {{- include "custom-deployment.labels" . | nindent 4 }}
 data:

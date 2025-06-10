@@ -40,6 +40,9 @@ Common labels
 {{- define "custom-deployment.labels" -}}
 application: {{ .Values.labels.application }}
 helm.sh/chart: {{ include "custom-deployment.chart" . }}
+{{- if .Values.apolo_app_id }}
+platform.apolo.us/app-id: {{ .Values.apolo_app_id | quote }}
+{{- end }}
 {{ include "custom-deployment.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

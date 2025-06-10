@@ -64,6 +64,7 @@ service:
   ports:
     - name: http
       containerPort: 80
+  labels: {}
 
 # This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ingress:
@@ -170,4 +171,112 @@ persistentVolumeClaims: []
 labels:
   application: custom-deployment
 
+# apolo_app_id: <app-uid>
+
 APOLO_PASSED_CONFIG: null
+
+extraDeployment:
+  enabled: false
+  name: "extra-deployment"
+  image:
+    repository: "nginx"
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  # Image pull secrets
+  imagePullSecrets: []
+  container:
+    entrypoint: null
+    command: []
+    args: []
+    env:
+      - name: APOLO_PASSED_CONFIG
+        value: ""
+  securityContext: {}
+  replicaCount: 1
+  autoscaling:
+    enabled: false
+  podAnnotations: {}
+  podLabels: {}
+  labels: {}
+  # Pod security context
+  podSecurityContext: {}
+  # Include main deployment info as environment variables
+  includeMainDeploymentInfo: true
+  # This is the container command for the deployment
+  # Service configuration for extra deployment
+  service:
+    enabled: true
+    type: ClusterIP
+    ports:
+      - name: http
+        containerPort: 80
+    labels: {}
+  # Health checks configuration
+  health_checks:
+    livenessProbe: null
+    # Example:
+    # livenessProbe:
+    #   httpGet:
+    #     path: /health
+    #     port: 80
+    #   initialDelaySeconds: 30
+    #   periodSeconds: 10
+    startupProbe: null
+    # Example:
+    # startupProbe:
+    #   httpGet:
+    #     path: /health
+    #     port: 80
+    #   initialDelaySeconds: 10
+    #   periodSeconds: 5
+    readinessProbe: null
+    # Example:
+    # readinessProbe:
+    #   httpGet:
+    #     path: /ready
+    #     port: 80
+    #   initialDelaySeconds: 5
+    #   periodSeconds: 5
+  # Resource limits and requests
+  resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  # Volume mounts
+  volumeMounts: []
+  # - name: config-volume
+  #   mountPath: /etc/config
+  #   readOnly: true
+  # Volumes
+  volumes: []
+  # - name: config-volume
+  #   configMap:
+  #     name: my-config
+  # Init containers
+  initContainers: []
+  # - name: init-container
+  #   image: busybox
+  #   command: ['sh', '-c', 'echo init']
+  # Node selector
+  nodeSelector: {}
+  # Affinity rules
+  affinity: {}
+  # Tolerations
+  tolerations: []
+  # Docker config for private registries
+  dockerconfigjson: null
+  configMap:
+    enabled: false
+    name: "extra-deployment-configmap"
+    data: {}
+      # key1: value1
+      # key2: value2
+configMap:
+  enabled: false
+  name: "extra-deployment-configmap"
+  data: {}
+    # key1: value1
+    # key2: value2
