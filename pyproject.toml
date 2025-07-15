@@ -18,12 +18,12 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-apolo-sdk = "^24.12.3"
+apolo-sdk = "^25.7.2"
 pydantic = "^2.9.2"
 pyyaml = "^6.0.2"
 types-PyYAML = "^6.0.12.20241230"
 yarl = "^1.18.3"
-apolo-app-types = "^25.5.1"
+apolo-app-types = "^25.7.9"
 pre-commit = "^4.2.0"
 
 [tool.poetry.group.dev]
