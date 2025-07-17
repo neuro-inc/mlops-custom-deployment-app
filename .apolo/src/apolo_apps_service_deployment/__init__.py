@@ -1,5 +1,5 @@
 from apolo_apps_service_deployment.inputs_processor import (
-    ServiceDeploymentChartValueProcessor,
+    ServiceDeploymentInputsProcessor,
 )
 from apolo_apps_service_deployment.outputs_processor import (
     ServiceDeploymentOutputProcessor,
@@ -16,7 +16,7 @@ APOLO_APP_ID = "service-deployment"
 __all__ = [
     "APOLO_APP_ID",
     "ServiceDeploymentOutputProcessor",
-    "ServiceDeploymentChartValueProcessor",
+    "ServiceDeploymentInputsProcessor",
     "ServiceDeploymentInputs",
     "ServiceDeploymentOutputs",
 ]

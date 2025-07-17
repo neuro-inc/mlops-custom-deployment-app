@@ -3,5 +3,5 @@ from apolo_app_types.helm.apps.custom_deployment import (
 )
 
 
-class ServiceDeploymentChartValueProcessor(CustomDeploymentChartValueProcessor):
+class ServiceDeploymentInputsProcessor(CustomDeploymentChartValueProcessor):
     pass
