@@ -16,3 +16,5 @@ RUN pip --no-cache-dir install poetry && poetry install --no-root --no-cache
 
 COPY .apolo .apolo
 RUN poetry install --only-root --no-cache
+
+ENTRYPOINT ["app-types"]
