@@ -6,7 +6,7 @@ from apolo_app_types.outputs.custom_deployment import get_custom_deployment_outp
 from .types import ServiceDeploymentOutputs
 
 
-class ServiceDeploymentOutputProcessor(
+class ServiceDeploymentOutputsProcessor(
     BaseAppOutputsProcessor[ServiceDeploymentOutputs]
 ):
     async def _generate_outputs(

@@ -2,7 +2,7 @@ from apolo_apps_service_deployment.inputs_processor import (
     ServiceDeploymentInputsProcessor,
 )
 from apolo_apps_service_deployment.outputs_processor import (
-    ServiceDeploymentOutputProcessor,
+    ServiceDeploymentOutputsProcessor,
 )
 from apolo_apps_service_deployment.types import (
     ServiceDeploymentInputs,
@@ -15,7 +15,7 @@ APOLO_APP_ID = "service-deployment"
 
 __all__ = [
     "APOLO_APP_ID",
-    "ServiceDeploymentOutputProcessor",
+    "ServiceDeploymentOutputsProcessor",
     "ServiceDeploymentInputsProcessor",
     "ServiceDeploymentInputs",
     "ServiceDeploymentOutputs",
