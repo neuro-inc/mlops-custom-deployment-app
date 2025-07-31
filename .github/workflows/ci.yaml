@@ -74,6 +74,7 @@ jobs:
       - name: Build Docker image
         run: make build-hook-image
       - name: Push release for testing
+        if: github.actor != 'dependabot[bot]'
         run: |
           FULL_IMAGE_NAME=${{ steps.meta.outputs.tags }}
           export IMAGE_TAG=${FULL_IMAGE_NAME##*:}
