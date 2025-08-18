@@ -58,16 +58,6 @@ app.kubernetes.io/name: {{ include "custom-deployment.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
-{{- define "custom-deployment.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "custom-deployment.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
-{{- end }}
 
 {{/*
 Pod-specific labels
