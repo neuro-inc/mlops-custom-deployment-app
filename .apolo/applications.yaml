@@ -1,8 +1,9 @@
-- app_id: service-deployment
+- app_type: service-deployment
   name: service-deployment
   title: Service Deployment
-  type: mlops
+  install_type: workflow
   helm_path: charts/custom-deployment
+  package_path: .apolo/src/apolo_apps_service_deployment
   inputs:
     type: ServiceDeploymentInputs
     processor: ServiceDeploymentChartValueProcessor
@@ -11,28 +12,26 @@
     type: ServiceDeploymentOutputs
     processor: ServiceDeploymentChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
-  short_description: Deploy scalable service applications
+  short_description: Deploy scalable applications
   description: |
-    Deploy and scale your services on the Apolo platform.
+    Service Deployment lets you deploy any containerized application as a scalable,
+    production-ready web service. Bring your own Docker image and
+    configure resources, scaling, and networking with ease—no complex DevOps required.
   pub_date: "2025-01-01T00:00:00+00:00"
-  logo:
-    # static files that are 'file' are "proxied" by our API
-    # e.g. https://{base_api_url}/apis/apps/v1/cluster/{cluster_name}/org/{org_name}/project/{project_name}/templates/{app_id}/{version}/logo
-    file: ./.apolo/assets/apolo.png
   changelog:
-    # e.g. https://{base_api_url}/apis/apps/v1/cluster/{cluster_name}/org/{org_name}/project/{project_name}/templates/{app_id}/{version}/changelog
     file: ./CHANGELOG.md
-  tags: ["apolo", "service", "deployment"]
+  tags: ["Apolo"]
   external_urls:
     - name: Apolo Service Deployment documentation
-      type: doc_url
+      type: documentation
       url: https://docs.apolo.us/index/apolo-console/apps/available-apps
 
-- app_id: mlflow-core
+- app_type: mlflow
   name: mlflow-core
   title: MLFlow Core
-  type: mlops
+  install_type: workflow
   helm_path: charts/custom-deployment
+  package_path: .apolo/src/apolo_apps_mlflow_core
   inputs:
     type: MLFlowAppInputs
     processor: MLFlowChartValueProcessor
@@ -41,21 +40,24 @@
     type: MLFlowAppOutputs
     processor: MLFlowChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
-  short_description: Deploy your managed MLFlow server
+  short_description: Use MLFlow platform for managing the ML projects lifecycle.
   description: |
-    Deploy your managed MLFlow server, integrated with Apolo Files to store your artifacts.
-    You could chose between SQLite or Postgres for metadata storage.
-  pub_date: "2025-01-01T00:00:00+00:00"
-  logo:
-    file: ./.apolo/assets/mlflow.svg
+    MLflow Tracking is a component of MLflow that logs and queries experiments.
+    It provides a simple API and UI for logging parameters, code versions, metrics,
+    and artifacts when running your machine learning code, and for later visualizing
+    the results.
+  pub_date: "2025-04-15T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/mlflow-core.svg
   changelog:
-    # e.g. https://{base_api_url}/apis/apps/v1/cluster/{cluster_name}/org/{org_name}/project/{project_name}/templates/{app_id}/{version}/changelog
     file: ./CHANGELOG.md
   tags: ["mlflow", "experiment tracking", "model registry"]
   external_urls:
     - name: MLFlow GitHub repository
-      type: doc_url
+      type: documentation
       url: https://github.com/mlflow/mlflow
     - name: MLFlow Official Docs
-      type: doc_url
+      type: documentation
       url: https://mlflow.org/docs/latest
+  assets:
+    - type: image
+      url: https://storage.googleapis.com/development-421920-assets/app-logos/mlflow-banner.svg
