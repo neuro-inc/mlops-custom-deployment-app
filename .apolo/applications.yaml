@@ -1,7 +1,7 @@
 - app_type: service-deployment
   name: service-deployment
   title: Service Deployment
-  install_type: mlops
+  install_type: workflow
   helm_path: charts/custom-deployment
   package_path: .apolo/src/apolo_apps_service_deployment
   inputs:
@@ -29,7 +29,7 @@
 - app_type: mlflow
   name: mlflow-core
   title: MLFlow Core
-  install_type: mlops
+  install_type: workflow
   helm_path: charts/custom-deployment
   package_path: .apolo/src/apolo_apps_mlflow_core
   inputs:
