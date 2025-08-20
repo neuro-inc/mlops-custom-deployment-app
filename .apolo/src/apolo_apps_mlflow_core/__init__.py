@@ -3,7 +3,7 @@ from apolo_apps_mlflow_core.outputs_processor import MLFlowOutputProcessor
 from apolo_apps_mlflow_core.types import MLFlowAppInputs, MLFlowAppOutputs
 
 
-APOLO_APP_TYPE = "mlflow-core"
+APOLO_APP_TYPE = "mlflow"
 
 
 __all__ = [
