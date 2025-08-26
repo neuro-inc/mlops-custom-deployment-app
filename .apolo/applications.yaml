@@ -3,13 +3,12 @@
   title: Service Deployment
   install_type: workflow
   helm_path: charts/custom-deployment
-  package_path: .apolo/src/apolo_apps_service_deployment
   inputs:
-    type: ServiceDeploymentInputs
+    schema_path: .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
     processor: ServiceDeploymentChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   outputs:
-    type: ServiceDeploymentOutputs
+    schema_path: .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentOutputs.json
     processor: ServiceDeploymentChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Deploy scalable applications
@@ -31,13 +30,12 @@
   title: MLFlow Core
   install_type: workflow
   helm_path: charts/custom-deployment
-  package_path: .apolo/src/apolo_apps_mlflow_core
   inputs:
-    type: MLFlowAppInputs
+    schema_path: .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
     processor: MLFlowChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   outputs:
-    type: MLFlowAppOutputs
+    schema_path: .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
     processor: MLFlowChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Use MLFlow platform for managing the ML projects lifecycle.
