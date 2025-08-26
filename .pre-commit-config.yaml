@@ -21,3 +21,10 @@ repos:
     rev: v2.4.0
     hooks:
       - id: setup-cfg-fmt
+  - repo: local
+    hooks:
+      - id: generate-types-schemas
+        name: Generate types schemas
+        entry: make gen-types-schemas
+        language: system
+        pass_filenames: false
