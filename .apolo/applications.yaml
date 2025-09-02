@@ -22,7 +22,7 @@
   changelog:
     file: ./CHANGELOG.md
   tags: ["Apolo"]
-  external_urls:
+  urls:
     - name: Apolo Service Deployment documentation
       type: documentation
       url: https://docs.apolo.us/index/apolo-console/apps/available-apps
@@ -53,7 +53,7 @@
   changelog:
     file: ./CHANGELOG.md
   tags: ["mlflow", "experiment tracking", "model registry"]
-  external_urls:
+  urls:
     - name: MLFlow GitHub repository
       type: documentation
       url: https://github.com/mlflow/mlflow
