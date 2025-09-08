@@ -3,13 +3,14 @@
   title: Service Deployment
   install_type: workflow
   helm_path: charts/custom-deployment
-  package_path: .apolo/src/apolo_apps_service_deployment
   inputs:
-    type: ServiceDeploymentInputs
+    schema_path: .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
+    types_name: ServiceDeploymentInputs
     processor: ServiceDeploymentChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   outputs:
-    type: ServiceDeploymentOutputs
+    schema_path: .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentOutputs.json
+    types_name: ServiceDeploymentOutputs
     processor: ServiceDeploymentChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Deploy scalable applications
@@ -21,7 +22,7 @@
   changelog:
     file: ./CHANGELOG.md
   tags: ["Apolo"]
-  external_urls:
+  urls:
     - name: Apolo Service Deployment documentation
       type: documentation
       url: https://docs.apolo.us/index/apolo-console/apps/available-apps
@@ -31,13 +32,14 @@
   title: MLFlow Core
   install_type: workflow
   helm_path: charts/custom-deployment
-  package_path: .apolo/src/apolo_apps_mlflow_core
   inputs:
-    type: MLFlowAppInputs
+    schema_path: .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
+    types_name: MLFlowAppInputs
     processor: MLFlowChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   outputs:
-    type: MLFlowAppOutputs
+    schema_path: .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
+    types_name: MLFlowAppOutputs
     processor: MLFlowChartValueProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Use MLFlow platform for managing the ML projects lifecycle.
@@ -51,7 +53,7 @@
   changelog:
     file: ./CHANGELOG.md
   tags: ["mlflow", "experiment tracking", "model registry"]
-  external_urls:
+  urls:
     - name: MLFlow GitHub repository
       type: documentation
       url: https://github.com/mlflow/mlflow

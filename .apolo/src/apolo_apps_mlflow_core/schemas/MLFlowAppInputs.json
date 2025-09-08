@@ -1,0 +1,173 @@
+{
+  "$defs": {
+    "ApoloFilesPath": {
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string",
+          "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Storage Path"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "ApoloFilesPath",
+      "type": "object",
+      "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Apolo Files Path"
+    },
+    "IngressHttp": {
+      "properties": {
+        "auth": {
+          "default": true,
+          "title": "Auth",
+          "type": "boolean",
+          "x-description": "Require authenticated user credentials with appropriate permissions for all incoming HTTPS requests to the application.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Enable Authentication and Authorization"
+        }
+      },
+      "title": "IngressHttp",
+      "type": "object",
+      "x-description": "Enable access to your application over the internet using HTTPS.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Enable HTTP Ingress"
+    },
+    "MLFlowMetadataPostgres": {
+      "properties": {
+        "storage_type": {
+          "const": "postgres",
+          "default": "postgres",
+          "title": "Storage Type",
+          "type": "string",
+          "x-description": "Storage type for MLFlow metadata.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Storage Type"
+        },
+        "postgres_uri": {
+          "$ref": "#/$defs/PostgresURI",
+          "x-description": "Connection URI to the PostgreSQL metadata database."
+        }
+      },
+      "required": [
+        "postgres_uri"
+      ],
+      "title": "MLFlowMetadataPostgres",
+      "type": "object",
+      "x-description": "Use PostgreSQL server as metadata storage for MLFlow.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Postgres"
+    },
+    "MLFlowMetadataSQLite": {
+      "properties": {
+        "storage_type": {
+          "const": "sqlite",
+          "default": "sqlite",
+          "title": "Storage Type",
+          "type": "string",
+          "x-description": "Storage type for MLFlow metadata.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Storage Type"
+        }
+      },
+      "title": "MLFlowMetadataSQLite",
+      "type": "object",
+      "x-description": "Use SQLite on a dedicated block device as metadata store for MLFlow.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "SQLite"
+    },
+    "PostgresURI": {
+      "description": "Configuration for the Postgres connection URI.",
+      "properties": {
+        "uri": {
+          "title": "Uri",
+          "type": "string",
+          "x-description": "Specify full Postgres connection URI. E.g. 'postgresql://user:pass@host:5432/db'",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "URI"
+        }
+      },
+      "required": [
+        "uri"
+      ],
+      "title": "PostgresURI",
+      "type": "object",
+      "x-description": "Full Postgres connection URI configuration.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Postgres URI"
+    },
+    "Preset": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "x-description": "The name of the preset.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Resource Preset"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Preset",
+      "type": "object",
+      "x-description": "Select the resource preset used per service replica.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "integration",
+      "x-title": "Resource Preset"
+    }
+  },
+  "description": "The overall MLFlow app config, referencing:\n  - 'preset' for CPU/GPU resources\n  - 'ingress' for external URL\n  - 'metadata_storage' for MLFlow settings\n  - 'artifact_store' for artifacts location",
+  "properties": {
+    "preset": {
+      "$ref": "#/$defs/Preset"
+    },
+    "ingress_http": {
+      "$ref": "#/$defs/IngressHttp"
+    },
+    "metadata_storage": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/MLFlowMetadataSQLite"
+        },
+        {
+          "$ref": "#/$defs/MLFlowMetadataPostgres"
+        }
+      ],
+      "title": "Metadata Storage"
+    },
+    "artifact_store": {
+      "$ref": "#/$defs/ApoloFilesPath",
+      "default": {
+        "path": "storage:mlflow-artifacts"
+      },
+      "x-description": "Use Apolo Files to store your MLFlow artifacts (model binaries, dependency files, etc). Example absolute path: 'storage://cluster/myorg/proj/mlflow-artifacts' or relative path: 'storage:mlflow-artifacts'.",
+      "x-title": "Artifact Store"
+    }
+  },
+  "required": [
+    "preset",
+    "ingress_http",
+    "metadata_storage"
+  ],
+  "title": "MLFlowAppInputs",
+  "type": "object",
+  "x-description": "Configuration for the MLFlow application.",
+  "x-is-advanced-field": false,
+  "x-meta-type": "inline",
+  "x-title": "MLFlow Inputs"
+}
