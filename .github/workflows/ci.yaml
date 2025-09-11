@@ -92,5 +92,5 @@ jobs:
       - name: Push release for testing
         if: github.actor != 'dependabot[bot]'
         run: |
-          export IMAGE_TAG=${{ github.ref_name }}
+          export IMAGE_TAG=${{ github.head_ref }}
           make push-hook-image
