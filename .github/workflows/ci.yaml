@@ -92,5 +92,7 @@ jobs:
       - name: Push release for testing
         if: github.actor != 'dependabot[bot]'
         run: |
-          export IMAGE_TAG=${{ github.ref_name }}
+          BRANCH_NAME=${{ github.head_ref }}
+          # Convert to lowercase, replace anything not a-z0-9_.- with '-'
+          export IMAGE_TAG=$(echo "${BRANCH_NAME}" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9_.-]/-/g')
           make push-hook-image
