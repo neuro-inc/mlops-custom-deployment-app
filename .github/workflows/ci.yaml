@@ -87,18 +87,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ github.token }}
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/neuro-inc/post-deployment-app-hook
-          tags: |
-            type=ref,event=pr
       - name: Build Docker image
         run: make build-hook-image
       - name: Push release for testing
         if: github.actor != 'dependabot[bot]'
         run: |
-          FULL_IMAGE_NAME=${{ steps.meta.outputs.tags }}
-          export IMAGE_TAG=${FULL_IMAGE_NAME##*:}
+          export IMAGE_TAG=${{ github.ref_name }}
           make push-hook-image
