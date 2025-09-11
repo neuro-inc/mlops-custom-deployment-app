@@ -1,4 +1,4 @@
-IMAGE_NAME ?= custom-deployment-app-hook
+IMAGE_NAME ?= mlops-custom-deployment-app
 IMAGE_TAG ?= latest
 APP_TYPES_REVISION ?= v25.4.3
 
