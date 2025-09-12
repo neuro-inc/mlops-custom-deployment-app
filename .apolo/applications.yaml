@@ -6,12 +6,12 @@
   inputs:
     schema_path: .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
     types_name: ServiceDeploymentInputs
-    processor: ServiceDeploymentChartValueProcessor
+    processor: ServiceDeploymentInputsProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   outputs:
     schema_path: .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentOutputs.json
     types_name: ServiceDeploymentOutputs
-    processor: ServiceDeploymentChartValueProcessor
+    processor: ServiceDeploymentOutputsProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Deploy scalable applications
   description: |
@@ -40,7 +40,7 @@
   outputs:
     schema_path: .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
     types_name: MLFlowAppOutputs
-    processor: MLFlowChartValueProcessor
+    processor: MLFlowOutputProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   short_description: Use MLFlow platform for managing the ML projects lifecycle.
   description: |
