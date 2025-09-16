@@ -1,9 +1,8 @@
 {{- if .Values.extraDeployment.enabled }}
-{{- $name := .Values.extraDeployment.name |  trunc 63 | trimSuffix "-" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ $name }}
+  name: {{ include "extra-deployment.fullname" . }}
   labels:
     {{- include "custom-deployment.labels" . | nindent 4 }}
     module: extra-deployment
@@ -36,7 +35,7 @@ spec:
       securityContext:
         {{- toYaml .Values.extraDeployment.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ $name }}
+        - name: {{ include "extra-deployment.fullname" . }}
           securityContext:
             {{- toYaml .Values.extraDeployment.securityContext | nindent 12 }}
           image: "{{ .Values.extraDeployment.image.repository }}:{{ .Values.extraDeployment.image.tag | default "latest" }}"
@@ -128,7 +127,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ $name }}
+  name: {{ include "extra-deployment.fullname" . }}
   labels:
     {{- include "custom-deployment.labels" . | nindent 4 }}
     module: extra-deployment
@@ -153,7 +152,7 @@ spec:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.extraDeployment.configMap.name | default $name }}
+  name: {{ .Values.extraDeployment.configMap.name | default (include "extra-deployment.fullname" .) }}
   labels:
     {{- include "custom-deployment.labels" . | nindent 4 }}
     module: extra-deployment

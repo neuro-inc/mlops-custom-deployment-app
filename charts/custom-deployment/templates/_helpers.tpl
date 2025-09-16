@@ -24,7 +24,7 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{- define "custom-deployment.dockerconfig-secret-name" -}}
-{{- (include "custom-deployment.fullname" .) }}-dockerconfig
+{{- (include "custom-deployment.fullname" .) }}-dockerconfig | trunc 63 | trimSuffix "-"
 {{- end }}
 
 {{/*
@@ -70,5 +70,14 @@ platform.apolo.us/component: app
 {{- define "custom-deployment.storageAnnotations" -}}
 {{- if .Values.storageMounts }}
 platform.apolo.us/inject-storage: {{ .Values.storageMounts | toJson }}
+{{- end }}
+{{- end }}
+
+
+{{- define "extra-deployment.fullname" -}}
+{{- if .Values.extraDeployment.nameOverride }}
+{{- .Values.extraDeployment.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-extra-deploy-%s" .Release.Name .Chart.Name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 {{- end }}

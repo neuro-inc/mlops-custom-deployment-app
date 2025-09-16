@@ -150,9 +150,14 @@ labels:
 
 APOLO_PASSED_CONFIG: null
 
+configMap:
+  enabled: false
+  data: {}
+    # key1: value1
+    # key2: value2
+
 extraDeployment:
   enabled: false
-  name: "extra-deployment"
   image:
     repository: "nginx"
     tag: "latest"
@@ -245,13 +250,6 @@ extraDeployment:
   dockerconfigjson: null
   configMap:
     enabled: false
-    name: "extra-deployment-configmap"
     data: {}
       # key1: value1
       # key2: value2
-configMap:
-  enabled: false
-  name: "extra-deployment-configmap"
-  data: {}
-    # key1: value1
-    # key2: value2
