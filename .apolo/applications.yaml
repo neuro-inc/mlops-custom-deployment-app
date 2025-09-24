@@ -3,6 +3,7 @@
   title: Service Deployment
   install_type: workflow
   helm_path: charts/custom-deployment
+  app_package_name: apolo_apps_service_deployment
   inputs:
     schema_path: .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
     types_name: ServiceDeploymentInputs
@@ -32,6 +33,7 @@
   title: MLFlow Core
   install_type: workflow
   helm_path: charts/custom-deployment
+  app_package_name: apolo_apps_mlflow_core
   inputs:
     schema_path: .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
     types_name: MLFlowAppInputs
