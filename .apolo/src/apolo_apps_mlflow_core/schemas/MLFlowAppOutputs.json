@@ -1,668 +1,682 @@
 {
-  "$defs": {
-    "HttpApi": {
-      "properties": {
-        "host": {
-          "title": "Host",
-          "type": "string",
-          "x-description": "The hostname of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Hostname"
-        },
-        "port": {
-          "default": 80,
-          "exclusiveMinimum": 0,
-          "title": "Port",
-          "type": "integer",
-          "x-description": "The port of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Port"
-        },
-        "protocol": {
-          "default": "http",
-          "title": "Protocol",
-          "type": "string",
-          "x-description": "The protocol to use, e.g., http or https.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Protocol"
-        },
-        "timeout": {
-          "anyOf": [
-            {
-              "type": "number"
+    "$defs": {
+        "MLFlowTrackingServerURL": {
+            "properties": {
+                "internal_url": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/RestAPI"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "x-description": "Internal URL to access the service. This route is not protected by platform authorization and only workloads from the same project can access it.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Internal URL"
+                },
+                "external_url": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/RestAPI"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "x-description": "External URL for accessing the service from outside the cluster. This route might be secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "External URL"
+                }
             },
-            {
-              "type": "null"
-            }
-          ],
-          "default": 30.0,
-          "title": "Timeout",
-          "x-description": "Connection timeout in seconds.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Connection Timeout"
+            "title": "MLFlowTrackingServerURL",
+            "type": "object",
+            "x-description": "The URL to access the MLFlow server.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "integration",
+            "x-title": "MLFlow Server URL",
+            "x-type": "MLFlowTrackingServerURL"
         },
-        "base_path": {
-          "default": "/",
-          "title": "Base Path",
-          "type": "string"
-        }
-      },
-      "required": [
-        "host"
-      ],
-      "title": "HttpApi",
-      "type": "object",
-      "x-description": "HTTP API Configuration.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "HTTP API"
-    },
-    "MLFlowTrackingServerURL": {
-      "properties": {
-        "internal_url": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/RestAPI"
+        "ModelVersion": {
+            "description": "Model version information",
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "x-description": "Unique name of the model.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Name"
+                },
+                "version": {
+                    "title": "Version",
+                    "type": "string",
+                    "x-description": "Model's version number.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Version"
+                },
+                "creation_timestamp": {
+                    "title": "Creation Timestamp",
+                    "type": "integer",
+                    "x-description": "Timestamp recorded when this model_version was created.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Creation Timestamp"
+                },
+                "last_updated_timestamp": {
+                    "title": "Last Updated Timestamp",
+                    "type": "integer",
+                    "x-description": "Timestamp recorded when this model_version metadata was last updated.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Last Updated Timestamp"
+                },
+                "user_id": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "User that created this model_version.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "User ID"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "User Id"
+                },
+                "current_stage": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "Current stage for this model_version (e.g., Staging, Production).",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Current Stage"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Current Stage"
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "Description of this model_version.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Description"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Description"
+                },
+                "source": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "URI indicating the location of the source model artifacts used when creating model_version.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Source"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Source"
+                },
+                "run_id": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "MLflow run ID used when creating model_version if source was generated by a run stored in an MLflow tracking server.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Run ID"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Run Id"
+                },
+                "status": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/ModelVersionStatus",
+                            "x-description": "Current status of model_version.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Status"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null
+                },
+                "status_message": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "Details on current status, if it is pending or failed.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Status Message"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Status Message"
+                },
+                "tags": {
+                    "items": {
+                        "$ref": "#/$defs/ModelVersionTag"
+                    },
+                    "title": "Tags",
+                    "type": "array",
+                    "x-description": "Additional metadata key-value pairs for this model_version.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Tags"
+                },
+                "run_link": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "Direct link to the run that generated this version. Set only when the source run is from a tracking server different from the registry server.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Run Link"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Run Link"
+                },
+                "aliases": {
+                    "items": {
+                        "type": "string"
+                    },
+                    "title": "Aliases",
+                    "type": "array",
+                    "x-description": "Aliases pointing to this model_version.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Aliases"
+                }
             },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "x-description": "Internal URL to access the service. This route is not protected by platform authorization and only workloads from the same project can access it.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Internal URL"
+            "required": [
+                "name",
+                "version",
+                "creation_timestamp",
+                "last_updated_timestamp"
+            ],
+            "title": "ModelVersion",
+            "type": "object",
+            "x-description": "Information about a specific version of a registered model.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Model Version"
         },
-        "external_url": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/RestAPI"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "x-description": "External URL for accessing the service from outside the cluster. This route might be secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "External URL"
-        }
-      },
-      "title": "MLFlowTrackingServerURL",
-      "type": "object",
-      "x-description": "The URL to access the MLFlow server.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "MLFlow Server URL"
-    },
-    "ModelVersion": {
-      "description": "Model version information",
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string",
-          "x-description": "Unique name of the model.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Name"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string",
-          "x-description": "Model's version number.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Version"
-        },
-        "creation_timestamp": {
-          "title": "Creation Timestamp",
-          "type": "integer",
-          "x-description": "Timestamp recorded when this model_version was created.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Creation Timestamp"
-        },
-        "last_updated_timestamp": {
-          "title": "Last Updated Timestamp",
-          "type": "integer",
-          "x-description": "Timestamp recorded when this model_version metadata was last updated.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Last Updated Timestamp"
-        },
-        "user_id": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "User that created this model_version.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "User ID"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "User Id"
-        },
-        "current_stage": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "Current stage for this model_version (e.g., Staging, Production).",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Current Stage"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Current Stage"
-        },
-        "description": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "Description of this model_version.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Description"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Description"
-        },
-        "source": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "URI indicating the location of the source model artifacts used when creating model_version.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Source"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Source"
-        },
-        "run_id": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "MLflow run ID used when creating model_version if source was generated by a run stored in an MLflow tracking server.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Run ID"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Run Id"
-        },
-        "status": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ModelVersionStatus",
-              "x-description": "Current status of model_version.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Status"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null
-        },
-        "status_message": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "Details on current status, if it is pending or failed.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Status Message"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Status Message"
-        },
-        "tags": {
-          "items": {
-            "$ref": "#/$defs/ModelVersionTag"
-          },
-          "title": "Tags",
-          "type": "array",
-          "x-description": "Additional metadata key-value pairs for this model_version.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Tags"
-        },
-        "run_link": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "Direct link to the run that generated this version. Set only when the source run is from a tracking server different from the registry server.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Run Link"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Run Link"
-        },
-        "aliases": {
-          "items": {
+        "ModelVersionStatus": {
+            "enum": [
+                "PENDING_REGISTRATION",
+                "FAILED_REGISTRATION",
+                "READY"
+            ],
+            "title": "ModelVersionStatus",
             "type": "string"
-          },
-          "title": "Aliases",
-          "type": "array",
-          "x-description": "Aliases pointing to this model_version.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Aliases"
-        }
-      },
-      "required": [
-        "name",
-        "version",
-        "creation_timestamp",
-        "last_updated_timestamp"
-      ],
-      "title": "ModelVersion",
-      "type": "object",
-      "x-description": "Information about a specific version of a registered model.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "Model Version"
-    },
-    "ModelVersionStatus": {
-      "enum": [
-        "PENDING_REGISTRATION",
-        "FAILED_REGISTRATION",
-        "READY"
-      ],
-      "title": "ModelVersionStatus",
-      "type": "string"
-    },
-    "ModelVersionTag": {
-      "description": "Tag metadata for model versions",
-      "properties": {
-        "key": {
-          "title": "Key",
-          "type": "string",
-          "x-description": "Name of the tag.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Tag Key"
         },
-        "value": {
-          "title": "Value",
-          "type": "string",
-          "x-description": "Value of the tag.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Tag Value"
-        }
-      },
-      "required": [
-        "key",
-        "value"
-      ],
-      "title": "ModelVersionTag",
-      "type": "object",
-      "x-description": "Key-value metadata tag associated with a model version.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "Model Version Tag"
-    },
-    "RegisteredModel": {
-      "properties": {
-        "name": {
-          "title": "Name",
-          "type": "string",
-          "x-description": "Unique name for the model.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Name"
-        },
-        "creation_timestamp": {
-          "title": "Creation Timestamp",
-          "type": "integer",
-          "x-description": "Timestamp recorded when this registered_model was created.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Creation Timestamp"
-        },
-        "last_updated_timestamp": {
-          "title": "Last Updated Timestamp",
-          "type": "integer",
-          "x-description": "Timestamp recorded when this registered_model metadata was last updated.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Last Updated Timestamp"
-        },
-        "user_id": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "User that created this registered_model. NOTE: this field is not currently returned.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "User ID"
+        "ModelVersionTag": {
+            "description": "Tag metadata for model versions",
+            "properties": {
+                "key": {
+                    "title": "Key",
+                    "type": "string",
+                    "x-description": "Name of the tag.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Tag Key"
+                },
+                "value": {
+                    "title": "Value",
+                    "type": "string",
+                    "x-description": "Value of the tag.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Tag Value"
+                }
             },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "User Id"
+            "required": [
+                "key",
+                "value"
+            ],
+            "title": "ModelVersionTag",
+            "type": "object",
+            "x-description": "Key-value metadata tag associated with a model version.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Model Version Tag"
         },
-        "description": {
-          "anyOf": [
-            {
-              "type": "string",
-              "x-description": "Description of this registered_model.",
-              "x-is-advanced-field": false,
-              "x-meta-type": "inline",
-              "x-title": "Description"
+        "RegisteredModel": {
+            "properties": {
+                "name": {
+                    "title": "Name",
+                    "type": "string",
+                    "x-description": "Unique name for the model.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Name"
+                },
+                "creation_timestamp": {
+                    "title": "Creation Timestamp",
+                    "type": "integer",
+                    "x-description": "Timestamp recorded when this registered_model was created.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Creation Timestamp"
+                },
+                "last_updated_timestamp": {
+                    "title": "Last Updated Timestamp",
+                    "type": "integer",
+                    "x-description": "Timestamp recorded when this registered_model metadata was last updated.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Last Updated Timestamp"
+                },
+                "user_id": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "User that created this registered_model. NOTE: this field is not currently returned.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "User ID"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "User Id"
+                },
+                "description": {
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "x-description": "Description of this registered_model.",
+                            "x-is-advanced-field": false,
+                            "x-meta-type": "inline",
+                            "x-title": "Description"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "title": "Description"
+                },
+                "latest_versions": {
+                    "items": {
+                        "$ref": "#/$defs/ModelVersion"
+                    },
+                    "title": "Latest Versions",
+                    "type": "array",
+                    "x-description": "Collection of latest model versions for each stage. Only contains models with current READY status.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Latest Versions"
+                },
+                "tags": {
+                    "items": {
+                        "$ref": "#/$defs/RegisteredModelTag"
+                    },
+                    "title": "Tags",
+                    "type": "array",
+                    "x-description": "Additional metadata key-value pairs for this registered_model.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Tags"
+                },
+                "aliases": {
+                    "items": {
+                        "$ref": "#/$defs/RegisteredModelAlias"
+                    },
+                    "title": "Aliases",
+                    "type": "array",
+                    "x-description": "Aliases pointing to model versions associated with this registered_model.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Aliases"
+                }
             },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "title": "Description"
+            "required": [
+                "name",
+                "creation_timestamp",
+                "last_updated_timestamp"
+            ],
+            "title": "RegisteredModel",
+            "type": "object",
+            "x-description": "Registered models in MLFlow.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "dynamic",
+            "x-title": "Registered Model",
+            "x-type": "RegisteredModel"
         },
-        "latest_versions": {
-          "items": {
-            "$ref": "#/$defs/ModelVersion"
-          },
-          "title": "Latest Versions",
-          "type": "array",
-          "x-description": "Collection of latest model versions for each stage. Only contains models with current READY status.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Latest Versions"
-        },
-        "tags": {
-          "items": {
-            "$ref": "#/$defs/RegisteredModelTag"
-          },
-          "title": "Tags",
-          "type": "array",
-          "x-description": "Additional metadata key-value pairs for this registered_model.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Tags"
-        },
-        "aliases": {
-          "items": {
-            "$ref": "#/$defs/RegisteredModelAlias"
-          },
-          "title": "Aliases",
-          "type": "array",
-          "x-description": "Aliases pointing to model versions associated with this registered_model.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Aliases"
-        }
-      },
-      "required": [
-        "name",
-        "creation_timestamp",
-        "last_updated_timestamp"
-      ],
-      "title": "RegisteredModel",
-      "type": "object",
-      "x-description": "Registered models in MLFlow.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "dynamic",
-      "x-title": "Registered Model"
-    },
-    "RegisteredModelAlias": {
-      "description": "Alias pointing to model versions",
-      "properties": {
-        "alias": {
-          "title": "Alias",
-          "type": "string",
-          "x-description": "Human-friendly alias (e.g., 'Production').",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Alias"
-        },
-        "version": {
-          "title": "Version",
-          "type": "string",
-          "x-description": "Model version that this alias points to.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Version"
-        }
-      },
-      "required": [
-        "alias",
-        "version"
-      ],
-      "title": "RegisteredModelAlias",
-      "type": "object",
-      "x-description": "Alias that points to a specific model version.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "Registered Model Alias"
-    },
-    "RegisteredModelTag": {
-      "description": "Tag metadata for registered models",
-      "properties": {
-        "key": {
-          "title": "Key",
-          "type": "string",
-          "x-description": "Name of the tag.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Tag Key"
-        },
-        "value": {
-          "title": "Value",
-          "type": "string",
-          "x-description": "Value of the tag.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Tag Value"
-        }
-      },
-      "required": [
-        "key",
-        "value"
-      ],
-      "title": "RegisteredModelTag",
-      "type": "object",
-      "x-description": "Key-value metadata tag associated with a registered model.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "Registered Model Tag"
-    },
-    "RestAPI": {
-      "properties": {
-        "host": {
-          "title": "Host",
-          "type": "string",
-          "x-description": "The hostname of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Hostname"
-        },
-        "port": {
-          "default": 80,
-          "exclusiveMinimum": 0,
-          "title": "Port",
-          "type": "integer",
-          "x-description": "The port of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Port"
-        },
-        "protocol": {
-          "default": "http",
-          "title": "Protocol",
-          "type": "string",
-          "x-description": "The protocol to use, e.g., http or https.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Protocol"
-        },
-        "timeout": {
-          "anyOf": [
-            {
-              "type": "number"
+        "RegisteredModelAlias": {
+            "description": "Alias pointing to model versions",
+            "properties": {
+                "alias": {
+                    "title": "Alias",
+                    "type": "string",
+                    "x-description": "Human-friendly alias (e.g., 'Production').",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Alias"
+                },
+                "version": {
+                    "title": "Version",
+                    "type": "string",
+                    "x-description": "Model version that this alias points to.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Version"
+                }
             },
-            {
-              "type": "null"
-            }
-          ],
-          "default": 30.0,
-          "title": "Timeout",
-          "x-description": "Connection timeout in seconds.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Connection Timeout"
+            "required": [
+                "alias",
+                "version"
+            ],
+            "title": "RegisteredModelAlias",
+            "type": "object",
+            "x-description": "Alias that points to a specific model version.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Registered Model Alias"
         },
-        "base_path": {
-          "default": "/",
-          "title": "Base Path",
-          "type": "string"
-        },
-        "api_type": {
-          "const": "rest",
-          "default": "rest",
-          "title": "Api Type",
-          "type": "string"
-        }
-      },
-      "required": [
-        "host"
-      ],
-      "title": "RestAPI",
-      "type": "object",
-      "x-description": "HTTP API Configuration.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "HTTP API"
-    },
-    "ServiceAPI_HttpApi_": {
-      "properties": {
-        "internal_url": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/HttpApi"
+        "RegisteredModelTag": {
+            "description": "Tag metadata for registered models",
+            "properties": {
+                "key": {
+                    "title": "Key",
+                    "type": "string",
+                    "x-description": "Name of the tag.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Tag Key"
+                },
+                "value": {
+                    "title": "Value",
+                    "type": "string",
+                    "x-description": "Value of the tag.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Tag Value"
+                }
             },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "x-description": "Internal URL to access the service. This route is not protected by platform authorization and only workloads from the same project can access it.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Internal URL"
+            "required": [
+                "key",
+                "value"
+            ],
+            "title": "RegisteredModelTag",
+            "type": "object",
+            "x-description": "Key-value metadata tag associated with a registered model.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Registered Model Tag"
         },
-        "external_url": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/HttpApi"
+        "RestAPI": {
+            "properties": {
+                "host": {
+                    "title": "Host",
+                    "type": "string",
+                    "x-description": "The hostname of the HTTP endpoint.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Hostname"
+                },
+                "port": {
+                    "default": 80,
+                    "exclusiveMinimum": 0,
+                    "title": "Port",
+                    "type": "integer",
+                    "x-description": "The port of the HTTP endpoint.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Port"
+                },
+                "protocol": {
+                    "default": "http",
+                    "title": "Protocol",
+                    "type": "string",
+                    "x-description": "The protocol to use, e.g., http or https.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Protocol"
+                },
+                "timeout": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": 30.0,
+                    "title": "Timeout",
+                    "x-description": "Connection timeout in seconds.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Connection Timeout"
+                },
+                "base_path": {
+                    "default": "/",
+                    "title": "Base Path",
+                    "type": "string"
+                },
+                "api_type": {
+                    "const": "rest",
+                    "default": "rest",
+                    "title": "Api Type",
+                    "type": "string"
+                }
             },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "x-description": "External URL for accessing the service from outside the cluster. This route might be secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "External URL"
-        }
-      },
-      "title": "ServiceAPI[HttpApi]",
-      "type": "object",
-      "x-description": "Service APIs URLs.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "Service APIs"
-    }
-  },
-  "properties": {
-    "web_app_url": {
-      "$ref": "#/$defs/ServiceAPI_HttpApi_",
-      "default": {
-        "internal_url": null,
-        "external_url": null
-      },
-      "x-description": "URL to access the MLFlow web application.",
-      "x-meta-type": "inline",
-      "x-title": "MLFlow Web App URL"
-    },
-    "server_url": {
-      "anyOf": [
-        {
-          "$ref": "#/$defs/MLFlowTrackingServerURL"
+            "required": [
+                "host"
+            ],
+            "title": "RestAPI",
+            "type": "object",
+            "x-description": "HTTP API Configuration.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "HTTP API",
+            "x-type": "OpenAICompatibleEmbeddingsRestAPI"
         },
-        {
-          "type": "null"
-        }
-      ],
-      "default": null,
-      "x-description": "URL to access the MLFlow tracking server.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "MLFlow Tracking Server URL"
-    },
-    "registered_models": {
-      "anyOf": [
-        {
-          "items": {
-            "$ref": "#/$defs/RegisteredModel"
-          },
-          "type": "array"
+        "ServiceAPI_WebApp_": {
+            "properties": {
+                "internal_url": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/WebApp"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "x-description": "Internal URL to access the service. This route is not protected by platform authorization and only workloads from the same project can access it.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Internal URL"
+                },
+                "external_url": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/WebApp"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": null,
+                    "x-description": "External URL for accessing the service from outside the cluster. This route might be secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "External URL"
+                }
+            },
+            "title": "ServiceAPI[WebApp]",
+            "type": "object",
+            "x-description": "Service APIs URLs.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "Service APIs",
+            "x-type": "ServiceAPI[GrpcAPI]"
         },
-        {
-          "type": "null"
+        "WebApp": {
+            "properties": {
+                "host": {
+                    "title": "Host",
+                    "type": "string",
+                    "x-description": "The hostname of the HTTP endpoint.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Hostname"
+                },
+                "port": {
+                    "default": 80,
+                    "exclusiveMinimum": 0,
+                    "title": "Port",
+                    "type": "integer",
+                    "x-description": "The port of the HTTP endpoint.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Port"
+                },
+                "protocol": {
+                    "default": "http",
+                    "title": "Protocol",
+                    "type": "string",
+                    "x-description": "The protocol to use, e.g., http or https.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Protocol"
+                },
+                "timeout": {
+                    "anyOf": [
+                        {
+                            "type": "number"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "default": 30.0,
+                    "title": "Timeout",
+                    "x-description": "Connection timeout in seconds.",
+                    "x-is-advanced-field": false,
+                    "x-meta-type": "inline",
+                    "x-title": "Connection Timeout"
+                },
+                "base_path": {
+                    "default": "/",
+                    "title": "Base Path",
+                    "type": "string"
+                },
+                "api_type": {
+                    "const": "webapp",
+                    "default": "webapp",
+                    "title": "Api Type",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "host"
+            ],
+            "title": "WebApp",
+            "type": "object",
+            "x-description": "HTTP API Configuration.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "HTTP API",
+            "x-type": "OpenAICompatibleEmbeddingsRestAPI"
         }
-      ],
-      "default": null,
-      "title": "Registered Models",
-      "x-description": "List of registered models in MLFlow.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "dynamic",
-      "x-title": "Registered Models"
-    }
-  },
-  "title": "MLFlowAppOutputs",
-  "type": "object",
-  "x-description": "Outputs produced by the MLFlow application.",
-  "x-is-advanced-field": false,
-  "x-meta-type": "inline",
-  "x-title": "MLFlow Outputs"
+    },
+    "properties": {
+        "app_url": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/ServiceAPI_WebApp_"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "description": "The main application URL for accessing the service. This is the primary endpoint users should use to access the application.",
+            "title": "Application URL"
+        },
+        "server_url": {
+            "anyOf": [
+                {
+                    "$ref": "#/$defs/MLFlowTrackingServerURL"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "x-description": "URL to access the MLFlow tracking server.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "inline",
+            "x-title": "MLFlow Tracking Server URL"
+        },
+        "registered_models": {
+            "anyOf": [
+                {
+                    "items": {
+                        "$ref": "#/$defs/RegisteredModel"
+                    },
+                    "type": "array"
+                },
+                {
+                    "type": "null"
+                }
+            ],
+            "default": null,
+            "title": "Registered Models",
+            "x-description": "List of registered models in MLFlow.",
+            "x-is-advanced-field": false,
+            "x-meta-type": "dynamic",
+            "x-title": "Registered Models"
+        }
+    },
+    "title": "MLFlowAppOutputs",
+    "type": "object",
+    "x-description": "Outputs produced by the MLFlow application.",
+    "x-is-advanced-field": false,
+    "x-meta-type": "inline",
+    "x-title": "MLFlow Outputs"
 }
