@@ -19,7 +19,8 @@
       "x-description": "Specify the path within the Apolo Files application to read from or write to.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Apolo Files Path"
+      "x-title": "Apolo Files Path",
+      "x-type": "ApoloFilesFile"
     },
     "IngressHttp": {
       "properties": {
@@ -38,7 +39,8 @@
       "x-description": "Enable access to your application over the internet using HTTPS.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Enable HTTP Ingress"
+      "x-title": "Enable HTTP Ingress",
+      "x-type": "IngressHttp"
     },
     "MLFlowMetadataPostgres": {
       "properties": {
@@ -65,7 +67,8 @@
       "x-description": "Use PostgreSQL server as metadata storage for MLFlow.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Postgres"
+      "x-title": "Postgres",
+      "x-type": "MLFlowMetadataPostgres"
     },
     "MLFlowMetadataSQLite": {
       "properties": {
@@ -85,7 +88,8 @@
       "x-description": "Use SQLite on a dedicated block device as metadata store for MLFlow.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "SQLite"
+      "x-title": "SQLite",
+      "x-type": "MLFlowMetadataSQLite"
     },
     "PostgresURI": {
       "description": "Configuration for the Postgres connection URI.",
@@ -107,7 +111,8 @@
       "x-description": "Full Postgres connection URI configuration.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Postgres URI"
+      "x-title": "Postgres URI",
+      "x-type": "PostgresURI"
     },
     "Preset": {
       "properties": {
@@ -127,8 +132,9 @@
       "type": "object",
       "x-description": "Select the resource preset used per service replica.",
       "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "Resource Preset"
+      "x-meta-type": "inline",
+      "x-title": "Resource Preset",
+      "x-type": "Preset"
     }
   },
   "description": "The overall MLFlow app config, referencing:\n  - 'preset' for CPU/GPU resources\n  - 'ingress' for external URL\n  - 'metadata_storage' for MLFlow settings\n  - 'artifact_store' for artifacts location",
@@ -153,7 +159,8 @@
     "artifact_store": {
       "$ref": "#/$defs/ApoloFilesPath",
       "default": {
-        "path": "storage:mlflow-artifacts"
+        "path": "storage:mlflow-artifacts",
+        "__type__": "ApoloFilesPath"
       },
       "x-description": "Use Apolo Files to store your MLFlow artifacts (model binaries, dependency files, etc). Example absolute path: 'storage://cluster/myorg/proj/mlflow-artifacts' or relative path: 'storage:mlflow-artifacts'.",
       "x-title": "Artifact Store"

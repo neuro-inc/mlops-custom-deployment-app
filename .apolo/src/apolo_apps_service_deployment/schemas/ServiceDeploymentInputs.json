@@ -11,7 +11,8 @@
         "mode": {
           "$ref": "#/$defs/ApoloMountMode",
           "default": {
-            "mode": "rw"
+            "mode": "rw",
+            "__type__": "ApoloMountMode"
           }
         }
       },
@@ -23,8 +24,9 @@
       "type": "object",
       "x-description": "Configure Apolo Files mount within the application workloads.",
       "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "Apolo Files Mount"
+      "x-meta-type": "inline",
+      "x-title": "Apolo Files Mount",
+      "x-type": "ApoloFilesMount"
     },
     "ApoloFilesPath": {
       "properties": {
@@ -45,7 +47,8 @@
       "x-description": "Specify the path within the Apolo Files application to read from or write to.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Apolo Files Path"
+      "x-title": "Apolo Files Path",
+      "x-type": "ApoloFilesFile"
     },
     "ApoloMountMode": {
       "properties": {
@@ -62,8 +65,9 @@
       "type": "object",
       "x-description": "Configure how Apolo Files should be mounted into the application\u2019s workload environment.",
       "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "Apolo Files Mount"
+      "x-meta-type": "inline",
+      "x-title": "Apolo Files Mount",
+      "x-type": "ApoloMountMode"
     },
     "ApoloMountModes": {
       "enum": [
@@ -87,8 +91,9 @@
       "type": "object",
       "x-description": "Apolo Secret Configuration.",
       "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "Secret"
+      "x-meta-type": "inline",
+      "x-title": "Secret",
+      "x-type": "ApoloSecret"
     },
     "AutoscalingHPA": {
       "properties": {
@@ -147,7 +152,8 @@
       "x-description": "Autoscaling configuration for Horizontal Pod Autoscaler.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Autoscaling HPA"
+      "x-title": "Autoscaling HPA",
+      "x-type": "AutoscalingHPA"
     },
     "ConfigMap": {
       "properties": {
@@ -172,7 +178,8 @@
       "x-description": "Store non-sensitive configuration data in key-value format that can be mounted into the application as files.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Mount Configuration Data"
+      "x-title": "Mount Configuration Data",
+      "x-type": "ConfigMap"
     },
     "ConfigMapKeyValue": {
       "properties": {
@@ -261,7 +268,8 @@
       "x-description": "Define command, arguments, and environment variables for the Kubernetes container.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Container Configuration"
+      "x-title": "Container Configuration",
+      "x-type": "Container"
     },
     "ContainerImage": {
       "properties": {
@@ -321,7 +329,8 @@
       "x-description": "Container image to be used in application",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Container Image"
+      "x-title": "Container Image",
+      "x-type": "ContainerImage"
     },
     "ContainerImagePullPolicy": {
       "enum": [
@@ -351,7 +360,8 @@
       "x-description": "Docker configuration content.",
       "x-is-advanced-field": false,
       "x-meta-type": "integration",
-      "x-title": "Docker Config"
+      "x-title": "Docker Config",
+      "x-type": "DockerConfigModel"
     },
     "Env": {
       "properties": {
@@ -392,7 +402,8 @@
       "x-description": "K8S container env var.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Env"
+      "x-title": "Env",
+      "x-type": "Env"
     },
     "ExecHealthCheckConfig": {
       "description": "Exec-specific health check configuration.",
@@ -423,7 +434,8 @@
       "x-description": "Configuration for exec health checks.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Exec Health Check"
+      "x-title": "Exec Health Check",
+      "x-type": "ExecHealthCheckConfig"
     },
     "GRPCHealthCheckConfig": {
       "description": "gRPC-specific health check configuration.",
@@ -461,7 +473,8 @@
       "x-description": "Configuration for gRPC health checks.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "gRPC Health Check"
+      "x-title": "gRPC Health Check",
+      "x-type": "GRPCHealthCheckConfig"
     },
     "HTTPHealthCheckConfig": {
       "description": "HTTP-specific health check configuration.",
@@ -518,7 +531,8 @@
       "x-description": "Configuration for HTTP health checks.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "HTTP Health Check"
+      "x-title": "HTTP Health Check",
+      "x-type": "HTTPHealthCheckConfig"
     },
     "HealthCheck": {
       "properties": {
@@ -590,7 +604,8 @@
       "x-description": "Configuration for health checks on the application.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Health Check"
+      "x-title": "Health Check",
+      "x-type": "HealthCheck"
     },
     "HealthCheckProbesConfig": {
       "description": "Configuration for health check probes.",
@@ -646,7 +661,8 @@
       "x-description": "Configuration for health check probes.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Health Check Probes"
+      "x-title": "Health Check Probes",
+      "x-type": "HealthCheckProbesConfig"
     },
     "IngressHttp": {
       "properties": {
@@ -665,7 +681,8 @@
       "x-description": "Enable access to your application over the internet using HTTPS.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Enable HTTP Ingress"
+      "x-title": "Enable HTTP Ingress",
+      "x-type": "IngressHttp"
     },
     "IngressPathTypeEnum": {
       "enum": [
@@ -695,7 +712,8 @@
       "x-description": "Specify the absolute path.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Mount Path"
+      "x-title": "Mount Path",
+      "x-type": "MountPath"
     },
     "NetworkingConfig": {
       "properties": {
@@ -785,7 +803,8 @@
       "x-description": "",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": ""
+      "x-title": "",
+      "x-type": "Image"
     },
     "Preset": {
       "properties": {
@@ -805,8 +824,9 @@
       "type": "object",
       "x-description": "Select the resource preset used per service replica.",
       "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "Resource Preset"
+      "x-meta-type": "inline",
+      "x-title": "Resource Preset",
+      "x-type": "Preset"
     },
     "StorageMounts": {
       "properties": {
@@ -824,7 +844,8 @@
       "x-description": "Mount external storage paths",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Storage Mounts"
+      "x-title": "Storage Mounts",
+      "x-type": "StorageMounts"
     },
     "TCPHealthCheckConfig": {
       "description": "TCP-specific health check configuration.",
@@ -851,7 +872,8 @@
       "x-description": "Configuration for TCP health checks.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "TCP Health Check"
+      "x-title": "TCP Health Check",
+      "x-type": "TCPHealthCheckConfig"
     }
   },
   "properties": {

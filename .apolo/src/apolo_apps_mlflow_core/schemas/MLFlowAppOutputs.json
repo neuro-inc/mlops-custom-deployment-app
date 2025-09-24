@@ -1,66 +1,5 @@
 {
   "$defs": {
-    "HttpApi": {
-      "properties": {
-        "host": {
-          "title": "Host",
-          "type": "string",
-          "x-description": "The hostname of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Hostname"
-        },
-        "port": {
-          "default": 80,
-          "exclusiveMinimum": 0,
-          "title": "Port",
-          "type": "integer",
-          "x-description": "The port of the HTTP endpoint.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Port"
-        },
-        "protocol": {
-          "default": "http",
-          "title": "Protocol",
-          "type": "string",
-          "x-description": "The protocol to use, e.g., http or https.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Protocol"
-        },
-        "timeout": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": 30.0,
-          "title": "Timeout",
-          "x-description": "Connection timeout in seconds.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "Connection Timeout"
-        },
-        "base_path": {
-          "default": "/",
-          "title": "Base Path",
-          "type": "string"
-        }
-      },
-      "required": [
-        "host"
-      ],
-      "title": "HttpApi",
-      "type": "object",
-      "x-description": "HTTP API Configuration.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "HTTP API"
-    },
     "MLFlowTrackingServerURL": {
       "properties": {
         "internal_url": {
@@ -98,8 +37,9 @@
       "type": "object",
       "x-description": "The URL to access the MLFlow server.",
       "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "MLFlow Server URL"
+      "x-meta-type": "integration",
+      "x-title": "MLFlow Server URL",
+      "x-type": "MLFlowTrackingServerURL"
     },
     "ModelVersion": {
       "description": "Model version information",
@@ -441,7 +381,8 @@
       "x-description": "Registered models in MLFlow.",
       "x-is-advanced-field": false,
       "x-meta-type": "dynamic",
-      "x-title": "Registered Model"
+      "x-title": "Registered Model",
+      "x-type": "RegisteredModel"
     },
     "RegisteredModelAlias": {
       "description": "Alias pointing to model versions",
@@ -569,15 +510,16 @@
       "type": "object",
       "x-description": "HTTP API Configuration.",
       "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "HTTP API"
+      "x-meta-type": "inline",
+      "x-title": "HTTP API",
+      "x-type": "OpenAICompatibleEmbeddingsRestAPI"
     },
-    "ServiceAPI_HttpApi_": {
+    "ServiceAPI_WebApp_": {
       "properties": {
         "internal_url": {
           "anyOf": [
             {
-              "$ref": "#/$defs/HttpApi"
+              "$ref": "#/$defs/WebApp"
             },
             {
               "type": "null"
@@ -592,7 +534,7 @@
         "external_url": {
           "anyOf": [
             {
-              "$ref": "#/$defs/HttpApi"
+              "$ref": "#/$defs/WebApp"
             },
             {
               "type": "null"
@@ -605,24 +547,96 @@
           "x-title": "External URL"
         }
       },
-      "title": "ServiceAPI[HttpApi]",
+      "title": "ServiceAPI[WebApp]",
       "type": "object",
       "x-description": "Service APIs URLs.",
       "x-is-advanced-field": false,
-      "x-meta-type": "integration",
-      "x-title": "Service APIs"
+      "x-meta-type": "inline",
+      "x-title": "Service APIs",
+      "x-type": "ServiceAPI[GrpcAPI]"
+    },
+    "WebApp": {
+      "properties": {
+        "host": {
+          "title": "Host",
+          "type": "string",
+          "x-description": "The hostname of the HTTP endpoint.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Hostname"
+        },
+        "port": {
+          "default": 80,
+          "exclusiveMinimum": 0,
+          "title": "Port",
+          "type": "integer",
+          "x-description": "The port of the HTTP endpoint.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Port"
+        },
+        "protocol": {
+          "default": "http",
+          "title": "Protocol",
+          "type": "string",
+          "x-description": "The protocol to use, e.g., http or https.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Protocol"
+        },
+        "timeout": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 30.0,
+          "title": "Timeout",
+          "x-description": "Connection timeout in seconds.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Connection Timeout"
+        },
+        "base_path": {
+          "default": "/",
+          "title": "Base Path",
+          "type": "string"
+        },
+        "api_type": {
+          "const": "webapp",
+          "default": "webapp",
+          "title": "Api Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "host"
+      ],
+      "title": "WebApp",
+      "type": "object",
+      "x-description": "HTTP API Configuration.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "HTTP API",
+      "x-type": "OpenAICompatibleEmbeddingsRestAPI"
     }
   },
   "properties": {
-    "web_app_url": {
-      "$ref": "#/$defs/ServiceAPI_HttpApi_",
-      "default": {
-        "internal_url": null,
-        "external_url": null
-      },
-      "x-description": "URL to access the MLFlow web application.",
-      "x-meta-type": "inline",
-      "x-title": "MLFlow Web App URL"
+    "app_url": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ServiceAPI_WebApp_"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "The main application URL for accessing the service. This is the primary endpoint users should use to access the application.",
+      "title": "Application URL"
     },
     "server_url": {
       "anyOf": [
