@@ -55,3 +55,6 @@ gen-types-schemas:
 
 	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core mlflow MLFlowAppInputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
 	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core mlflow MLFlowAppOutputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
+
+	app-types dump-types-schema .apolo/src/apolo_apps_vscode vscode VSCodeAppInputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_vscode vscode VSCodeAppOutputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppOutputs.json
