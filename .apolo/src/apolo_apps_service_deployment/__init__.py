@@ -10,7 +10,11 @@ from apolo_apps_service_deployment.types import (
 )
 
 
+APOLO_APP_TYPE = "service-deployment"
+
+
 __all__ = [
+    "APOLO_APP_TYPE",
     "ServiceDeploymentOutputsProcessor",
     "ServiceDeploymentInputsProcessor",
     "ServiceDeploymentInputs",
