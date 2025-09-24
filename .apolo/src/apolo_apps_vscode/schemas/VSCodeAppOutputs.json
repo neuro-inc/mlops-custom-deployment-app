@@ -125,6 +125,6 @@
       "title": "Application URL"
     }
   },
-  "title": "ServiceDeploymentOutputs",
+  "title": "VSCodeAppOutputs",
   "type": "object"
 }
