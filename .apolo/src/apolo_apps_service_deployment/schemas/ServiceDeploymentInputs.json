@@ -507,7 +507,17 @@
           "anyOf": [
             {
               "additionalProperties": {
-                "type": "string"
+                "type": "string",
+                "x-description": "Value of the HTTP header",
+                "x-is-advanced-field": false,
+                "x-meta-type": "inline",
+                "x-title": "Header Value"
+              },
+              "propertyNames": {
+                "x-description": "Name of the HTTP header",
+                "x-is-advanced-field": false,
+                "x-meta-type": "inline",
+                "x-title": "Header Name"
               },
               "type": "object"
             },

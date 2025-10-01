@@ -50,8 +50,8 @@ push-hook-image:
 
 .PHONY: gen-types-schemas
 gen-types-schemas:
-	app-types dump-types-schema .apolo/src/apolo_apps_service_deployment service-deployment ServiceDeploymentInputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_service_deployment service-deployment ServiceDeploymentOutputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentOutputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_service_deployment ServiceDeploymentInputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_service_deployment ServiceDeploymentOutputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentOutputs.json
 
-	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core mlflow MLFlowAppInputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core mlflow MLFlowAppOutputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppInputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppOutputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
