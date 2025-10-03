@@ -14,7 +14,15 @@ jobs:
         with:
           python-version-file: .python-version
           cache: pip
-          cache-dependency-path: requirements-dev.txt
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Setup Python dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pypoetry
+          key: poetry-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            poetry-
       - name: Install dependencies
         run: make install
       - name: Run pre-commit autoupdate
