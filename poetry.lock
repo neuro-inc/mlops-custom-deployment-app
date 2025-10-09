@@ -252,22 +252,22 @@ trio = ["trio (>=0.26.1)"]
 
 [[package]]
 name = "apolo-app-types"
-version = "25.10.0"
+version = "25.10.13"
 description = "Apolo Platform App Types."
 optional = false
 python-versions = "<4.0,>=3.9.0"
 groups = ["main"]
 files = [
-    {file = "apolo_app_types-25.10.0-py3-none-any.whl", hash = "sha256:c4b28734e4a7c18a04af9a37849e21e8ad19ee4d47335d3521a03ca7efa657b8"},
-    {file = "apolo_app_types-25.10.0.tar.gz", hash = "sha256:72f80a982e521723c24dc0254faf958a7193f3326c5d0f753ea448263f94ee5e"},
+    {file = "apolo_app_types-25.10.13-py3-none-any.whl", hash = "sha256:7dcdb207fb666f7c54f94d7298b2adfb66fd37b2367f5821ec49bf24d4e3c521"},
+    {file = "apolo_app_types-25.10.13.tar.gz", hash = "sha256:43ebc01b5c32096a0f408ca20041bb167a3b3636d98536d9150030f964f20247"},
 ]
 
 [package.dependencies]
-apolo-sdk = ">=25.9.0,<26.0.0"
+apolo-sdk = ">=25.9.1,<26.0.0"
 click = ">=8.0.3,<9.0.0"
 httpx = ">=0.28.0,<0.29.0"
 jsonref = ">=1.1.0,<2.0.0"
-kubernetes = ">=33.1.0,<34.0.0"
+kubernetes = ">=34.1.0,<35.0.0"
 pydantic = ">=2.11.9,<3.0.0"
 pyyaml = ">=6.0.3,<7.0.0"
 types-PyYAML = ">=6.0.12.20250915,<7.0.0.0"
@@ -275,14 +275,14 @@ yarl = ">=1.20.1,<2.0.0"
 
 [[package]]
 name = "apolo-sdk"
-version = "25.9.0"
+version = "25.9.1"
 description = "Apolo SDK"
 optional = false
 python-versions = ">=3.9.0"
 groups = ["main"]
 files = [
-    {file = "apolo_sdk-25.9.0-py3-none-any.whl", hash = "sha256:295fe1c9ac89b238d1ddab3329ea58b3b5bfb0e44bc4c6835627aa29e3c8e017"},
-    {file = "apolo_sdk-25.9.0.tar.gz", hash = "sha256:f614e87d33146f10b3d4b0103a1d7ef3e84eb64126c89dcaf906c7882845fc00"},
+    {file = "apolo_sdk-25.9.1-py3-none-any.whl", hash = "sha256:a4049c707b7eed06b33f0714823b8b7588ed0c9708e8a2aa864b9abfe142ceff"},
+    {file = "apolo_sdk-25.9.1.tar.gz", hash = "sha256:5069eb3202927b357cc2bfe3f97538da11463c5e151c6f0ddc758a03534dbb3f"},
 ]
 
 [package.dependencies]
@@ -292,8 +292,8 @@ aiohttp = ">=3.11.3"
 azure-storage-blob = ">=12.8.1,<12.9.0 || >12.9.0"
 certifi = "*"
 google-auth = ">=2.0.2"
-neuro-admin-client = ">=24.12.2"
-neuro-config-client = "25.8.7"
+neuro-admin-client = "25.9.2"
+neuro-config-client = "25.9.4"
 packaging = ">=20.4"
 python-dateutil = ">=2.7.0"
 python-jose = ">=3.3.0"
@@ -1088,27 +1088,26 @@ files = [
 
 [[package]]
 name = "kubernetes"
-version = "33.1.0"
+version = "34.1.0"
 description = "Kubernetes python client"
 optional = false
 python-versions = ">=3.6"
 groups = ["main"]
 files = [
-    {file = "kubernetes-33.1.0-py2.py3-none-any.whl", hash = "sha256:544de42b24b64287f7e0aa9513c93cb503f7f40eea39b20f66810011a86eabc5"},
-    {file = "kubernetes-33.1.0.tar.gz", hash = "sha256:f64d829843a54c251061a8e7a14523b521f2dc5c896cf6d65ccf348648a88993"},
+    {file = "kubernetes-34.1.0-py2.py3-none-any.whl", hash = "sha256:bffba2272534e224e6a7a74d582deb0b545b7c9879d2cd9e4aae9481d1f2cc2a"},
+    {file = "kubernetes-34.1.0.tar.gz", hash = "sha256:8fe8edb0b5d290a2f3ac06596b23f87c658977d46b5f8df9d0f4ea83d0003912"},
 ]
 
 [package.dependencies]
 certifi = ">=14.05.14"
 durationpy = ">=0.7"
 google-auth = ">=1.0.1"
-oauthlib = ">=3.2.2"
 python-dateutil = ">=2.5.3"
 pyyaml = ">=5.4.1"
 requests = "*"
 requests-oauthlib = "*"
 six = ">=1.9.0"
-urllib3 = ">=1.24.2"
+urllib3 = ">=1.24.2,<2.4.0"
 websocket-client = ">=0.32.0,<0.40.0 || >0.40.0,<0.41.dev0 || >=0.43.dev0"
 
 [package.extras]
@@ -1327,14 +1326,14 @@ yarl = ">=1.10"
 
 [[package]]
 name = "neuro-config-client"
-version = "25.8.7"
+version = "25.9.4"
 description = "Internal client for Neu.ro config service"
 optional = false
 python-versions = ">=3.9"
 groups = ["main"]
 files = [
-    {file = "neuro_config_client-25.8.7-py3-none-any.whl", hash = "sha256:784336b6e97305bbb3773eb50c8d2c839979152b9b35eadb2991a16a7d115e9e"},
-    {file = "neuro_config_client-25.8.7.tar.gz", hash = "sha256:28362491f161b9f111d53ce03cee8402b7db63c2821667a11b12cb385ef3a0dd"},
+    {file = "neuro_config_client-25.9.4-py3-none-any.whl", hash = "sha256:b2a3ab0bafc494111f38f6f09f6760c96f72487ff61b4e8b1f9ac65685af5ece"},
+    {file = "neuro_config_client-25.9.4.tar.gz", hash = "sha256:ee6b76de0be163ea0cfbbe34edd99a26007f14b797aa2dd19af5412778022418"},
 ]
 
 [package.dependencies]
@@ -2319,4 +2318,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11.0,<4.0"
-content-hash = "87884124cfa86f66e02856ebfa2f933bbdd2968d747ec0a6d8a454271aa20037"
+content-hash = "97976799ad4c877300b55151524354a31c14cbca2438d14d40feb4054870ad7a"
