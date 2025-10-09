@@ -13,5 +13,5 @@ class MLFlowOutputProcessor(BaseAppOutputsProcessor[MLFlowAppOutputs]):
         app_instance_id: str,
     ) -> MLFlowAppOutputs:
         return MLFlowAppOutputs.model_validate(
-            **(await get_custom_deployment_outputs(helm_values, app_instance_id))
+            await get_custom_deployment_outputs(helm_values, app_instance_id)
         )
