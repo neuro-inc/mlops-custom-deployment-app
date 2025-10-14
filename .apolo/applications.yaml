@@ -65,6 +65,43 @@
   assets:
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/mlflow-banner.svg
+
+- app_type: vscode
+  name: "vscode"
+  title: "Visual Studio Code"
+  install_type: workflow
+  helm_path: "charts/custom-deployment"
+  inputs:
+    schema_path: .apolo/src/apolo_apps_vscode/schemas/VSCodeAppInputs.json
+    types_name: VSCodeAppInputs
+    processor: VSCodeChartValueProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    schema_path: .apolo/src/apolo_apps_vscode/schemas/VSCodeAppOutputs.json
+    types_name: VSCodeAppOutputs
+    processor: VSCodeOutputProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  short_description: "Run your in-browser VS Code"
+  description: |
+      VS Code delivers a full-featured, in-browser version of Visual Studio Code,
+      preinstalled with Python extensions and seamless MLflow integration.
+      Write, debug, and track machine learning projects—all from a familiar and powerful
+      development environment, right in your browser.
+  pub_date: "2025-04-15T00:00:00+00:00"
+  logo: "https://storage.googleapis.com/development-421920-assets/app-logos/vscode.svg"
+  changelog:
+    file: ./CHANGELOG.md
+  tags: ["VSCode", "Development", "IDE"]
+  urls:
+    - name: "Code Server Repository"
+      type: documentation
+      url: "https://github.com/coder/code-server"
+    - name: "VS Code Documentation"
+      type: documentation
+      url: "https://code.visualstudio.com/"
+  assets:
+    - type: image
+      url: "https://storage.googleapis.com/development-421920-assets/app-logos/vscode.svg"
 - app_type: shell
   name: shell
   title: Shell
