@@ -55,3 +55,6 @@ gen-types-schemas:
 
 	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppInputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
 	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppOutputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
+
+	app-types dump-types-schema .apolo/src/apolo_apps_shell ShellAppInputs .apolo/src/apolo_apps_mlflow_core/schemas/ShellAppInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_shell ShellAppOutputs .apolo/src/apolo_apps_mlflow_core/schemas/ShellAppOutputs.json

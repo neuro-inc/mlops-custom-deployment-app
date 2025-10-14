@@ -65,3 +65,48 @@
   assets:
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/mlflow-banner.svg
+- app_type: shell
+  name: shell
+  title: Shell
+  install_type: mlops
+  helm_path: charts/custom-deployment
+  git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
+  app_package_name: apolo_apps_shell
+  requires_token: true
+
+  inputs:
+    schema_path: .apolo/src/apolo_apps_shell/schemas/ShellAppInputs.json
+    types_name: ShellAppInputs
+    processor: ShellAppChartValueProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+
+  outputs:
+    schema_path: .apolo/src/apolo_apps_shell/schemas/ShellAppOutputs.json
+    types_name: ShellAppOutputs
+    processor: ShellAppOutputProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+
+  short_description: >
+    A web-based remote shell instrumented with Apolo CLI, providing immediate
+    access to dedicated compute resources.
+  description: |
+    Shell offers a powerful in-browser command-line interface with direct access to the Apolo platform.
+    Preloaded with essential CLI tools, it enables you to manage resources, run scripts,
+    and debug applications — all from a web-based terminal.
+
+  pub_date: "2025-05-05T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/bash.svg
+
+  tags: ["Apolo", "Shell", "CLI"]
+
+  urls:
+    - name: Apolo documentation
+      type: documentation
+      url: https://docs.apolo.us/index
+    - name: Apolo CLI reference
+      type: documentation
+      url: https://docs.apolo.us/index/apolo-cli
+
+  assets:
+    - type: image
+      url: https://storage.googleapis.com/development-421920-assets/app-logos/bash.svg
