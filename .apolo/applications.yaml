@@ -71,6 +71,7 @@
   title: "Visual Studio Code"
   install_type: workflow
   helm_path: "charts/custom-deployment"
+  app_package_name: apolo_apps_vscode
   inputs:
     schema_path: .apolo/src/apolo_apps_vscode/schemas/VSCodeAppInputs.json
     types_name: VSCodeAppInputs
@@ -110,7 +111,6 @@
   git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
   app_package_name: apolo_apps_shell
   requires_token: true
-
   inputs:
     schema_path: .apolo/src/apolo_apps_shell/schemas/ShellAppInputs.json
     types_name: ShellAppInputs
