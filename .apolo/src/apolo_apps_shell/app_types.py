@@ -1,3 +1,5 @@
+from pydantic import Field
+
 from apolo_app_types.protocols.common import (
     AppInputs,
     AppOutputs,
@@ -5,7 +7,6 @@ from apolo_app_types.protocols.common import (
     Preset,
     SchemaExtraMetadata,
 )
-from pydantic import Field
 
 
 class ShellAppInputs(AppInputs):

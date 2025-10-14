@@ -1,27 +1,25 @@
 import json
 
 import pytest
-
-from apolo_app_types import ShellAppInputs
-from apolo_app_types.app_types import AppType
-from apolo_app_types.protocols.common import Preset
-from apolo_apps_shell.inputs_processor import ShellAppChartValueProcessor
-from apolo_app_types_fixtures.constants import (APP_ID,
+from apolo_app_types_fixtures.constants import (
+    APP_ID,
     APP_SECRETS_NAME,
     DEFAULT_CLUSTER_NAME,
     DEFAULT_NAMESPACE,
     DEFAULT_ORG_NAME,
     DEFAULT_PROJECT_NAME,
 )
+from apolo_apps_shell.inputs_processor import ShellAppChartValueProcessor
+
+from apolo_app_types import ShellAppInputs
+from apolo_app_types.app_types import AppType
+from apolo_app_types.protocols.common import Preset
 
 
 @pytest.mark.asyncio
 async def test_shell_values_generation(setup_clients):
-    hf_token = "test3"
     apolo_client = setup_clients
-    input_processor = ShellAppChartValueProcessor(
-        client=apolo_client
-    )
+    input_processor = ShellAppChartValueProcessor(client=apolo_client)
     helm_params = await input_processor.gen_extra_values(
         input_=ShellAppInputs(
             preset=Preset(name="cpu-small"),
