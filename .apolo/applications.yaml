@@ -68,7 +68,7 @@
 - app_type: shell
   name: shell
   title: Shell
-  install_type: mlops
+  install_type: workflow
   helm_path: charts/custom-deployment
   git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
   app_package_name: apolo_apps_shell
