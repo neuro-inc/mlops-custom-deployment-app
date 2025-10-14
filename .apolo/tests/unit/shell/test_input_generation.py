@@ -1,6 +1,5 @@
 import json
 
-import pytest
 from apolo_app_types_fixtures.constants import (
     APP_ID,
     APP_SECRETS_NAME,
@@ -16,7 +15,6 @@ from apolo_app_types.app_types import AppType
 from apolo_app_types.protocols.common import Preset
 
 
-@pytest.mark.asyncio
 async def test_shell_values_generation(setup_clients):
     apolo_client = setup_clients
     input_processor = ShellAppChartValueProcessor(client=apolo_client)
