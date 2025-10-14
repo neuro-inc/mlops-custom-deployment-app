@@ -1,5 +1,23 @@
 {
   "$defs": {
+    "ApoloAuth": {
+      "properties": {
+        "type": {
+          "const": "apolo_auth",
+          "default": "apolo_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "ApoloAuth",
+      "type": "object",
+      "x-description": "Use Apolo platform's built-in authentication and authorization. Requires authenticated user credentials with appropriate permissions.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Apolo Platform Authentication",
+      "x-type": "ApoloAuth"
+    },
     "ApoloFilesMount": {
       "properties": {
         "storage_uri": {
@@ -77,6 +95,101 @@
       "title": "ApoloMountModes",
       "type": "string"
     },
+    "AuthIngressMiddleware": {
+      "properties": {
+        "name": {
+          "pattern": "^platform",
+          "title": "Name",
+          "type": "string",
+          "x-description": "Name of the authentication middleware (with namespace) to apply to ingress traffic.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Middleware Name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "AuthIngressMiddleware",
+      "type": "object",
+      "x-description": "Configure authentication middleware for ingress traffic.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "integration",
+      "x-title": "Authentication Ingress Middleware",
+      "x-type": "AuthIngressMiddleware"
+    },
+    "BasicNetworkingConfig": {
+      "description": "Common networking configuration for applications.",
+      "properties": {
+        "ingress_http": {
+          "$ref": "#/$defs/IngressHttp",
+          "x-description": "Configure HTTP ingress and authentication settings.",
+          "x-title": "HTTP Ingress"
+        }
+      },
+      "title": "BasicNetworkingConfig",
+      "type": "object",
+      "x-description": "Configure network access and authentication settings.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Networking Settings",
+      "x-type": "BasicNetworkingConfig"
+    },
+    "CustomAuth": {
+      "properties": {
+        "type": {
+          "const": "custom_auth",
+          "default": "custom_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
+        },
+        "middleware": {
+          "$ref": "#/$defs/AuthIngressMiddleware",
+          "x-description": "Custom authentication middleware configuration.",
+          "x-title": "Authentication Middleware"
+        }
+      },
+      "required": [
+        "middleware"
+      ],
+      "title": "CustomAuth",
+      "type": "object",
+      "x-description": "Use a custom authentication middleware for this ingress. Allows integration with custom authentication providers.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Custom Authentication",
+      "x-type": "CustomAuth"
+    },
+    "IngressHttp": {
+      "properties": {
+        "auth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloAuth"
+            },
+            {
+              "$ref": "#/$defs/NoAuth"
+            },
+            {
+              "$ref": "#/$defs/CustomAuth"
+            }
+          ],
+          "title": "Auth",
+          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Authentication"
+        }
+      },
+      "title": "IngressHttp",
+      "type": "object",
+      "x-description": "Enable access to your application over the internet using HTTPS.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Enable HTTP Ingress",
+      "x-type": "IngressHttp"
+    },
     "MLFlowTrackingServerURL": {
       "properties": {
         "internal_url": {
@@ -140,25 +253,23 @@
       "x-title": "Mount Path",
       "x-type": "MountPath"
     },
-    "Networking": {
+    "NoAuth": {
       "properties": {
-        "http_auth": {
-          "default": true,
-          "title": "Http Auth",
-          "type": "boolean",
-          "x-description": "Whether to use HTTP authentication.",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "HTTP Authentication"
+        "type": {
+          "const": "no_auth",
+          "default": "no_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
         }
       },
-      "title": "Networking",
+      "title": "NoAuth",
       "type": "object",
-      "x-description": "Network settings",
+      "x-description": "Disable authentication for this ingress. The application will be publicly accessible without any authentication.",
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
-      "x-title": "Networking Settings",
-      "x-type": "Networking"
+      "x-title": "No Authentication",
+      "x-type": "NoAuth"
     },
     "Preset": {
       "properties": {
@@ -319,11 +430,7 @@
       "x-title": "Extra Storage Mounts"
     },
     "networking": {
-      "$ref": "#/$defs/Networking",
-      "default": {
-        "http_auth": true,
-        "__type__": "Networking"
-      },
+      "$ref": "#/$defs/BasicNetworkingConfig",
       "x-description": "Network settings for the application."
     },
     "mlflow_integration": {
