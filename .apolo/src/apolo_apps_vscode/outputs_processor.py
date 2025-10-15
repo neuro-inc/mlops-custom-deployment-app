@@ -13,5 +13,5 @@ class VSCodeOutputProcessor(BaseAppOutputsProcessor[VSCodeAppOutputs]):
         app_instance_id: str,
     ) -> VSCodeAppOutputs:
         return VSCodeAppOutputs.model_validate(
-            **(await get_vscode_outputs(helm_values, app_instance_id))
+            await get_vscode_outputs(helm_values, app_instance_id)
         )
