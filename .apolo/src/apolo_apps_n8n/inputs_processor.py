@@ -60,9 +60,9 @@ class N8nAppChartValueProcessor(BaseChartValueProcessor[ShellAppInputs]):
             app_name=app_name,
         )
         data_storage_path = base_app_storage_path
-        data_container_dir = URL("/var/storage")
+        data_container_dir = URL("/home/node/.n8n")
 
-        env_vars = {}
+        env_vars: dict[str, t.Any] = {}
 
         custom_deployment = CustomDeploymentInputs(
             preset=input_.preset,
@@ -80,17 +80,17 @@ class N8nAppChartValueProcessor(BaseChartValueProcessor[ShellAppInputs]):
                     Port(name="http", port=self._port),
                 ],
             ),
-            # storage_mounts=StorageMounts(
-            #     mounts=[
-            #         ApoloFilesMount(
-            #             storage_uri=ApoloFilesPath(
-            #                 path=str(data_storage_path),
-            #             ),
-            #             mount_path=MountPath(path=str(data_container_dir)),
-            #             mode=ApoloMountMode(mode="r"),
-            #         ),
-            #     ]
-            # ),
+            storage_mounts=StorageMounts(
+                mounts=[
+                    ApoloFilesMount(
+                        storage_uri=ApoloFilesPath(
+                            path=str(data_storage_path),
+                        ),
+                        mount_path=MountPath(path=str(data_container_dir)),
+                        mode=ApoloMountMode(mode="r"),
+                    ),
+                ]
+            ),
             health_checks=HealthCheckProbesConfig(
                 liveness=HealthCheck(
                     enabled=True,
