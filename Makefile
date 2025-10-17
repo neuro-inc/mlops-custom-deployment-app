@@ -58,3 +58,5 @@ gen-types-schemas:
 	app-types dump-types-schema .apolo/src/apolo_apps_shell ShellAppOutputs .apolo/src/apolo_apps_shell/schemas/ShellAppOutputs.json
 	app-types dump-types-schema .apolo/src/apolo_apps_vscode VSCodeAppInputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppInputs.json
 	app-types dump-types-schema .apolo/src/apolo_apps_vscode VSCodeAppOutputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppOutputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_n8n N8nAppInputs .apolo/src/apolo_apps_n8n/schemas/N8nAppInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_n8n N8nAppOutputs .apolo/src/apolo_apps_n8n/schemas/N8nAppOutputs.json
