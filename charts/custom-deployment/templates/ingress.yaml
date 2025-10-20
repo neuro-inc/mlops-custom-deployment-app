@@ -7,8 +7,16 @@ metadata:
     {{- include "custom-deployment.labels" $ | nindent 4 }}
   {{- with .Values.ingress.annotations }}
   annotations:
+    traefik.ingress.kubernetes.io/service.sticky: "true"
+    traefik.ingress.kubernetes.io/server-strategy: "roundrobin"
+    traefik.ingress.kubernetes.io/response-buffering: "false"
+    traefik.ingress.kubernetes.io/request-buffering: "false"
+    traefik.ingress.kubernetes.io/websocket: "true"
+    traefik.ingress.kubernetes.io/affinity: "true"
+    traefik.ingress.kubernetes.io/client-body-buffer-size: "0"
+    {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
 spec:
   {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
   ingressClassName: {{ .Values.ingress.className }}
