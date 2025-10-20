@@ -768,7 +768,7 @@
       "x-is-advanced-field": false,
       "x-meta-type": "inline",
       "x-title": "Enable HTTP Ingress",
-      "x-type": "ServiceDeploymentIngress"
+      "x-type": "IngressHttp"
     },
     "IngressPathTypeEnum": {
       "enum": [
@@ -1044,10 +1044,7 @@
       "x-title": "Storage Mounts"
     },
     "networking": {
-      "$ref": "#/$defs/NetworkingConfig",
-      "x-description": "Networking configuration using ServiceDeploymentIngress.",
-      "x-is-advanced-field": false,
-      "x-title": "Networking"
+      "$ref": "#/$defs/NetworkingConfig"
     },
     "health_checks": {
       "anyOf": [

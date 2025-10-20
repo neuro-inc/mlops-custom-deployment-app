@@ -5,7 +5,6 @@ from apolo_apps_service_deployment.outputs_processor import (
     ServiceDeploymentOutputsProcessor,
 )
 from apolo_apps_service_deployment.types import (
-    ServiceDeploymentIngress,
     ServiceDeploymentInputs,
     ServiceDeploymentOutputs,
 )
@@ -20,5 +19,4 @@ __all__ = [
     "ServiceDeploymentInputsProcessor",
     "ServiceDeploymentInputs",
     "ServiceDeploymentOutputs",
-    "ServiceDeploymentIngress",
 ]
