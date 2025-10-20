@@ -5,7 +5,6 @@ metadata:
   name: {{ include "custom-deployment.fullname" . }}
   labels:
     {{- include "custom-deployment.labels" $ | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
     traefik.ingress.kubernetes.io/service.sticky: "true"
     traefik.ingress.kubernetes.io/server-strategy: "roundrobin"
