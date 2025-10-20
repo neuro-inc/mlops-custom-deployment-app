@@ -13,17 +13,6 @@ metadata:
     traefik.ingress.kubernetes.io/websocket: "true"
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/client-body-buffer-size: "0"
-
-    # --- SSE stability additions ---
-    traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
-    traefik.ingress.kubernetes.io/router.protocol: http
-    traefik.ingress.kubernetes.io/service.serversscheme: http
-    traefik.ingress.kubernetes.io/proxy-protocol: "false"
-    traefik.ingress.kubernetes.io/loadbalancer.serverstransport: sse-transport
-    # optional: disable http/3 if causing issues
-    traefik.ingress.kubernetes.io/router.tls.options: default@file
-    # --------------------------------
-
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
