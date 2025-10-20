@@ -13,6 +13,7 @@ metadata:
     traefik.ingress.kubernetes.io/websocket: "true"
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/client-body-buffer-size: "0"
+    traefik.ingress.kubernetes.io/router.tls.options: default@file
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
