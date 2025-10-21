@@ -16,5 +16,3 @@ spec:
     middlewares:
     - name: sse-headers
     - name: platform-control-plane-headers
-  tls:
-    passthrough: false
