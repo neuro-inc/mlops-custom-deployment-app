@@ -1,0 +1,22 @@
+{{- if .Values.ingress.sse.enabled }}
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: platform-sse
+  namespace: {{ .Release.Namespace }}
+spec:
+  entryPoints:
+  - websecure
+  routes:
+  - match: PathPrefix(`/api/sse`)
+    kind: Rule
+    services:
+    - name: {{ include "custom-deployment.fullname" . }}
+      port: 8000
+{{/*      serversTransport: sse-transport*/}}
+    middlewares:
+    - name: sse-headers
+    - name: platform-control-plane-headers
+  tls:
+    passthrough: false
+{{- end }}
