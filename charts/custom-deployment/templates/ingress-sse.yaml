@@ -13,8 +13,7 @@ spec:
     kind: Rule
     services:
     - name: {{ include "custom-deployment.fullname" . }}
-      port: 8000
-{{/*      serversTransport: sse-transport*/}}
+      port: {{ (index .Values.extraDeployment.service.ports 0).containerPort }}
     middlewares:
     - name: sse-headers
     - name: platform-control-plane-headers
