@@ -3,6 +3,8 @@ kind: IngressRoute
 metadata:
   name: platform-sse
   namespace: {{ .Release.Namespace }}
+  annotations:
+    traefik.ingress.kubernetes.io/router.http3: "false"
 spec:
   entryPoints:
   - websecure
