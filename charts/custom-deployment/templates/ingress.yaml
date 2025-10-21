@@ -13,7 +13,7 @@ metadata:
     traefik.ingress.kubernetes.io/websocket: "true"
     traefik.ingress.kubernetes.io/affinity: "true"
     traefik.ingress.kubernetes.io/client-body-buffer-size: "0"
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.entrypoints: "web,websecure"
     traefik.ingress.kubernetes.io/router.http3: "false"
     {{- with .Values.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
