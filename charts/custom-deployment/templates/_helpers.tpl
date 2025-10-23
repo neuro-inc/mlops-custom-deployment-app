@@ -24,7 +24,7 @@ If release name contains chart name it will be used as a full name.
 {{- end }}
 
 {{- define "custom-deployment.dockerconfig-secret-name" -}}
-{{- (include "custom-deployment.fullname" .) }}-dockerconfig | trunc 63 | trimSuffix "-"
+{{- printf "%s-dockerconfig" (include "custom-deployment.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
