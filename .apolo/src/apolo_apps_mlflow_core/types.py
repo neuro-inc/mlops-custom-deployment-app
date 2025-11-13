@@ -47,7 +47,6 @@ class MLFlowMetadataSQLite(AbstractAppFieldType):
     )
 
     storage_type: Literal["sqlite"] = Field(
-        default="sqlite",
         json_schema_extra=SchemaExtraMetadata(
             title="Storage Type",
             description="Storage type for MLFlow metadata.",
