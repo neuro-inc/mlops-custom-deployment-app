@@ -279,7 +279,6 @@
       "properties": {
         "storage_type": {
           "const": "postgres",
-          "default": "postgres",
           "title": "Storage Type",
           "type": "string",
           "x-description": "Storage type for MLFlow metadata.",
@@ -292,6 +291,7 @@
         }
       },
       "required": [
+        "storage_type",
         "postgres_credentials"
       ],
       "title": "MLFlowMetadataPostgres",
