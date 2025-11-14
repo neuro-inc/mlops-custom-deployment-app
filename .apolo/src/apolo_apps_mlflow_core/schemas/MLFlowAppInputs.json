@@ -142,40 +142,7 @@
           "default": null,
           "title": "Dbname"
         },
-        "jdbc_uri": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ApoloSecret"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null
-        },
-        "pgbouncer_jdbc_uri": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ApoloSecret"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null
-        },
         "pgbouncer_uri": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ApoloSecret"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null
-        },
-        "uri": {
           "anyOf": [
             {
               "$ref": "#/$defs/ApoloSecret"
@@ -189,7 +156,7 @@
         "postgres_uri": {
           "anyOf": [
             {
-              "$ref": "#/$defs/PostgresURI"
+              "$ref": "#/$defs/ApoloSecret"
             },
             {
               "type": "null"
@@ -342,26 +309,6 @@
       "x-meta-type": "inline",
       "x-title": "No Authentication",
       "x-type": "NoAuth"
-    },
-    "PostgresURI": {
-      "description": "Configuration for the Postgres connection URI.",
-      "properties": {
-        "uri": {
-          "$ref": "#/$defs/ApoloSecret",
-          "x-description": "Specify full Postgres connection URI. E.g. 'postgresql://user:pass@host:5432/db'",
-          "x-title": "URI"
-        }
-      },
-      "required": [
-        "uri"
-      ],
-      "title": "PostgresURI",
-      "type": "object",
-      "x-description": "Full Postgres connection URI configuration.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "Postgres URI",
-      "x-type": "PostgresURI"
     },
     "Preset": {
       "properties": {
