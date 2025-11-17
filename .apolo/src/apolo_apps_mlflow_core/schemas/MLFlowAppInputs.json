@@ -40,6 +40,24 @@
       "x-title": "Apolo Files Path",
       "x-type": "ApoloFilesFile"
     },
+    "ApoloSecret": {
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key"
+      ],
+      "title": "ApoloSecret",
+      "type": "object",
+      "x-description": "Apolo Secret Configuration.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "inline",
+      "x-title": "Secret",
+      "x-type": "ApoloSecret"
+    },
     "AuthIngressMiddleware": {
       "properties": {
         "name": {
@@ -62,6 +80,112 @@
       "x-meta-type": "integration",
       "x-title": "Authentication Ingress Middleware",
       "x-type": "AuthIngressMiddleware"
+    },
+    "CrunchyPostgresUserCredentials": {
+      "properties": {
+        "user": {
+          "title": "User",
+          "type": "string",
+          "x-description": "Username for the Postgres user.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Postgres User"
+        },
+        "password": {
+          "$ref": "#/$defs/ApoloSecret",
+          "x-description": "Password for the Postgres user.",
+          "x-title": "Postgres Password"
+        },
+        "host": {
+          "title": "Host",
+          "type": "string",
+          "x-description": "Host of the Postgres instance.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Postgres Host"
+        },
+        "port": {
+          "exclusiveMinimum": 0,
+          "title": "Port",
+          "type": "integer",
+          "x-description": "Port of the Postgres instance.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "Postgres Port"
+        },
+        "pgbouncer_host": {
+          "title": "Pgbouncer Host",
+          "type": "string",
+          "x-description": "Host of the PGBouncer instance.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "PGBouncer Host"
+        },
+        "pgbouncer_port": {
+          "exclusiveMinimum": 0,
+          "title": "Pgbouncer Port",
+          "type": "integer",
+          "x-description": "Port of the PGBouncer instance.",
+          "x-is-advanced-field": false,
+          "x-meta-type": "inline",
+          "x-title": "PGBouncer Port"
+        },
+        "dbname": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Dbname"
+        },
+        "pgbouncer_uri": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloSecret"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "postgres_uri": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloSecret"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "user_type": {
+          "const": "user",
+          "default": "user",
+          "title": "User Type",
+          "type": "string"
+        }
+      },
+      "required": [
+        "user",
+        "password",
+        "host",
+        "port",
+        "pgbouncer_host",
+        "pgbouncer_port"
+      ],
+      "title": "CrunchyPostgresUserCredentials",
+      "type": "object",
+      "x-description": "Configuration for Crunchy Postgres user credentials.",
+      "x-is-advanced-field": false,
+      "x-meta-type": "integration",
+      "x-title": "Postgres User Credentials",
+      "x-type": "CrunchyPostgresUserCredentials"
     },
     "CustomAuth": {
       "properties": {
@@ -122,7 +246,6 @@
       "properties": {
         "storage_type": {
           "const": "postgres",
-          "default": "postgres",
           "title": "Storage Type",
           "type": "string",
           "x-description": "Storage type for MLFlow metadata.",
@@ -130,13 +253,13 @@
           "x-meta-type": "inline",
           "x-title": "Storage Type"
         },
-        "postgres_uri": {
-          "$ref": "#/$defs/PostgresURI",
-          "x-description": "Connection URI to the PostgreSQL metadata database."
+        "postgres_credentials": {
+          "$ref": "#/$defs/CrunchyPostgresUserCredentials"
         }
       },
       "required": [
-        "postgres_uri"
+        "storage_type",
+        "postgres_credentials"
       ],
       "title": "MLFlowMetadataPostgres",
       "type": "object",
@@ -150,7 +273,6 @@
       "properties": {
         "storage_type": {
           "const": "sqlite",
-          "default": "sqlite",
           "title": "Storage Type",
           "type": "string",
           "x-description": "Storage type for MLFlow metadata.",
@@ -159,6 +281,9 @@
           "x-title": "Storage Type"
         }
       },
+      "required": [
+        "storage_type"
+      ],
       "title": "MLFlowMetadataSQLite",
       "type": "object",
       "x-description": "Use SQLite on a dedicated block device as metadata store for MLFlow.",
@@ -184,29 +309,6 @@
       "x-meta-type": "inline",
       "x-title": "No Authentication",
       "x-type": "NoAuth"
-    },
-    "PostgresURI": {
-      "description": "Configuration for the Postgres connection URI.",
-      "properties": {
-        "uri": {
-          "title": "Uri",
-          "type": "string",
-          "x-description": "Specify full Postgres connection URI. E.g. 'postgresql://user:pass@host:5432/db'",
-          "x-is-advanced-field": false,
-          "x-meta-type": "inline",
-          "x-title": "URI"
-        }
-      },
-      "required": [
-        "uri"
-      ],
-      "title": "PostgresURI",
-      "type": "object",
-      "x-description": "Full Postgres connection URI configuration.",
-      "x-is-advanced-field": false,
-      "x-meta-type": "inline",
-      "x-title": "Postgres URI",
-      "x-type": "PostgresURI"
     },
     "Preset": {
       "properties": {
