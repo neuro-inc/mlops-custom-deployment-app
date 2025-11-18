@@ -147,3 +147,41 @@
   assets:
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/bash.svg
+
+- app_type: openwebui
+  name: openwebui
+  title: OpenWebUI
+  install_type: workflow
+  helm_path: charts/custom-deployment
+  app_package_name: apolo_apps_openwebui
+  inputs:
+    schema_path: .apolo/src/apolo_apps_openwebui/schemas/OpenWebUIAppInputs.json
+    types_name: OpenWebUIAppInputs
+    processor: OpenWebUIInputsProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    schema_path: .apolo/src/apolo_apps_openwebui/schemas/OpenWebUIAppOutputs.json
+    types_name: OpenWebUIAppOutputs
+    processor: OpenWebUIOutputProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  short_description: An extensible, self-hosted AI interface that adapts to your workflow.
+  description: |
+    Open WebUI is an extensible, feature-rich, and user-friendly self-hosted AI platform
+    designed to operate entirely offline. It supports various LLM runners like Ollama and
+    OpenAI-compatible APIs, with built-in inference engine for RAG, making it a powerful AI
+    deployment solution.
+  pub_date: "2025-07-07T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/openwebui-logo.png
+  changelog:
+    file: ./CHANGELOG.md
+  tags: ["Text", "Chat", "RAG"]
+  urls:
+    - name: OpenWebUI Repository
+      type: documentation
+      url: https://github.com/open-webui/open-webui
+    - name: OpenWebUI Documentation
+      type: documentation
+      url: https://docs.openwebui.com/
+  assets:
+    - type: image
+      url: https://storage.googleapis.com/development-421920-assets/app-logos/openwebui-banner.png
