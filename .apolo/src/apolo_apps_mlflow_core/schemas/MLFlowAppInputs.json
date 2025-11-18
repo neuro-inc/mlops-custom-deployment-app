@@ -246,6 +246,7 @@
       "properties": {
         "storage_type": {
           "const": "postgres",
+          "default": "postgres",
           "title": "Storage Type",
           "type": "string",
           "x-description": "Storage type for MLFlow metadata.",
@@ -258,7 +259,6 @@
         }
       },
       "required": [
-        "storage_type",
         "postgres_credentials"
       ],
       "title": "MLFlowMetadataPostgres",
@@ -273,6 +273,7 @@
       "properties": {
         "storage_type": {
           "const": "sqlite",
+          "default": "sqlite",
           "title": "Storage Type",
           "type": "string",
           "x-description": "Storage type for MLFlow metadata.",
@@ -281,9 +282,6 @@
           "x-title": "Storage Type"
         }
       },
-      "required": [
-        "storage_type"
-      ],
       "title": "MLFlowMetadataSQLite",
       "type": "object",
       "x-description": "Use SQLite on a dedicated block device as metadata store for MLFlow.",
