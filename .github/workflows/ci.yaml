@@ -23,7 +23,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: metadata
         id: metadata
         if: github.actor == 'dependabot[bot]'
@@ -46,7 +46,7 @@ jobs:
       )
     steps:
       - name: Checkout commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Purge old artifacts
         uses: kolpav/purge-artifacts-action@v1
         with:
