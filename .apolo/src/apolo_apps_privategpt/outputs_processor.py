@@ -8,7 +8,7 @@ from apolo_app_types.protocols.common.networking import (
     ServiceAPI,
     WebApp,
 )
-from apolo_app_types.protocols.private_gpt import PrivateGPTAppOutputs
+from apolo_apps_privategpt.types import PrivateGPTAppOutputs
 
 
 async def get_privategpt_outputs(

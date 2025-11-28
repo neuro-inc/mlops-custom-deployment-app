@@ -13,6 +13,7 @@ from apolo_app_types.protocols.common.openai_compat import (
     OpenAICompatChatAPI,
     OpenAICompatEmbeddingsAPI,
 )
+from apolo_app_types.protocols.private_gpt import PrivateGPTAppOutputs
 
 
 class PrivateGptSpecific(BaseModel):
@@ -76,3 +77,6 @@ class PrivateGPTAppInputs(AppInputs):
     private_gpt_specific: PrivateGptSpecific = Field(
         default_factory=lambda: PrivateGptSpecific(),
     )
+
+
+__all__ = ["PrivateGPTAppInputs", "PrivateGptSpecific", "PrivateGPTAppOutputs"]
