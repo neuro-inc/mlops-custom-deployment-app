@@ -186,7 +186,7 @@
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/openwebui-banner.png
 
-- app_type: privategpt
+- app_type: private-gpt
   name: private-gpt
   title: Private GPT
   install_type: workflow
