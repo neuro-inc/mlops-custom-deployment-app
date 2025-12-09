@@ -185,3 +185,41 @@
   assets:
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/openwebui-banner.png
+
+- app_type: private-gpt
+  name: private-gpt
+  title: Private GPT
+  install_type: workflow
+  helm_path: charts/custom-deployment
+  git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
+  app_package_name: apolo_apps_private_gpt
+  inputs:
+    schema_path: .apolo/src/apolo_apps_private_gpt/schemas/PrivateGPTAppInputs.json
+    types_name: PrivateGPTAppInputs
+    processor: PrivateGPTInputsProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    schema_path: .apolo/src/apolo_apps_private_gpt/schemas/PrivateGPTAppOutputs.json
+    types_name: PrivateGPTAppOutputs
+    processor: PrivateGPTOutputsProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  short_description: PrivateGPT provides an API containing all the building blocks required to build private, context-aware AI applications.
+  description: |
+    PrivateGPT is a production-ready AI project that allows you to ask questions about your documents
+    using the power of Large Language Models (LLMs), even in scenarios without an Internet connection.
+    100% private, no data leaves your execution environment at any point.
+  pub_date: "2025-04-21T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/private-gpt.svg
+  changelog:
+    file: ./CHANGELOG.md
+  tags: ["Text", "GPT", "Chat", "RAG"]
+  urls:
+    - name: PrivateGPT GitHub
+      type: documentation
+      url: https://github.com/zylon-ai/private-gpt
+    - name: PrivateGPT documentation
+      type: documentation
+      url: https://docs.privategpt.dev/
+  assets:
+    - type: image
+      url: https://storage.googleapis.com/development-421920-assets/app-logos/private-gpt.svg
