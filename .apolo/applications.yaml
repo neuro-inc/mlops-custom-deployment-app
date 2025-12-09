@@ -192,14 +192,14 @@
   install_type: workflow
   helm_path: charts/custom-deployment
   git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
-  app_package_name: apolo_apps_private_gpt
+  app_package_name: apolo_apps_privategpt
   inputs:
-    schema_path: .apolo/src/apolo_apps_private_gpt/schemas/PrivateGPTAppInputs.json
+    schema_path: .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppInputs.json
     types_name: PrivateGPTAppInputs
     processor: PrivateGPTInputsProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
   outputs:
-    schema_path: .apolo/src/apolo_apps_private_gpt/schemas/PrivateGPTAppOutputs.json
+    schema_path: .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppOutputs.json
     types_name: PrivateGPTAppOutputs
     processor: PrivateGPTOutputsProcessor
     image: ghcr.io/neuro-inc/mlops-custom-deployment-app
