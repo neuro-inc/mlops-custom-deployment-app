@@ -2,6 +2,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from apolo_app_types import (
     AppInputs,
+    AppOutputs,
     CrunchyPostgresUserCredentials,
 )
 from apolo_app_types.protocols.common import (
@@ -13,7 +14,6 @@ from apolo_app_types.protocols.common.openai_compat import (
     OpenAICompatChatAPI,
     OpenAICompatEmbeddingsAPI,
 )
-from apolo_app_types.protocols.private_gpt import PrivateGPTAppOutputs
 
 
 class PrivateGptSpecific(BaseModel):
@@ -77,6 +77,13 @@ class PrivateGPTAppInputs(AppInputs):
     private_gpt_specific: PrivateGptSpecific = Field(
         default_factory=lambda: PrivateGptSpecific(),
     )
+
+
+class PrivateGPTAppOutputs(AppOutputs):
+    """
+    PrivateGPT outputs:
+      - app_url (inherited from AppOutputs)
+    """
 
 
 __all__ = ["PrivateGPTAppInputs", "PrivateGptSpecific", "PrivateGPTAppOutputs"]
