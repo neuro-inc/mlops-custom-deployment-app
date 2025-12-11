@@ -3,7 +3,6 @@ from apolo_apps_fooocus.outputs_processor import FooocusOutputProcessor
 from apolo_apps_fooocus.types import (
     FooocusAppInputs,
     FooocusAppOutputs,
-    FooocusSpecificAppInputs,
 )
 
 
@@ -12,5 +11,4 @@ __all__ = [
     "FooocusOutputProcessor",
     "FooocusAppInputs",
     "FooocusAppOutputs",
-    "FooocusSpecificAppInputs",
 ]
