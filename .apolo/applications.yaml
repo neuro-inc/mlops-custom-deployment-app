@@ -223,3 +223,39 @@
   assets:
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/private-gpt.svg
+
+- app_type: fooocus
+  name: fooocus
+  title: Fooocus
+  install_type: workflow
+  helm_path: charts/custom-deployment
+  git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
+  app_package_name: apolo_apps_fooocus
+  inputs:
+    schema_path: .apolo/src/apolo_apps_fooocus/schemas/FooocusAppInputs.json
+    types_name: FooocusAppInputs
+    processor: FooocusInputsProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    schema_path: .apolo/src/apolo_apps_fooocus/schemas/FooocusAppOutputs.json
+    types_name: FooocusAppOutputs
+    processor: FooocusOutputsProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  short_description: Augment, edit, and create your images with Fooocus
+  description: |
+    Fooocus is a state-of-the-art AI image generation and processing tool built on top of models like Stable Diffusion. Generate high-quality images from text prompts, enhance or transform existing visuals, and explore a wide range of creative image processing capabilities — all through an intuitive interface.
+  pub_date: "2025-04-01T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/fooocus.svg
+  changelog:
+    file: ./CHANGELOG.md
+  tags: ["Diffusion", "AI", "Image generation"]
+  urls:
+    - name: GitHub Repository
+      type: documentation
+      url: https://github.com/lllyasviel/Fooocus
+    - name: Example usage on YouTube
+      type: documentation
+      url: https://www.youtube.com/watch?v=kUImI7C_wsg
+  assets:
+    - type: image
+      url: https://storage.googleapis.com/development-421920-assets/app-logos/fooocus.svg

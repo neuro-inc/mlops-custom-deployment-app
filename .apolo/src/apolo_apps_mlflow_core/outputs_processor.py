@@ -18,7 +18,7 @@ from apolo_app_types.protocols.common.networking import (
 async def get_mlflow_outputs(
     helm_values: dict[str, t.Any],
     app_instance_id: str,
-) -> dict[str, t.Any]:
+) -> MLFlowAppOutputs:
     labels = {"application": "mlflow", INSTANCE_LABEL: app_instance_id}
     internal_web_app_url, external_web_app_url = await get_internal_external_web_urls(
         labels
@@ -54,7 +54,7 @@ async def get_mlflow_outputs(
             external_url=external_server_url,
         ),
         registered_models=None,
-    ).model_dump()
+    )
 
 
 class MLFlowOutputProcessor(BaseAppOutputsProcessor[MLFlowAppOutputs]):
@@ -63,6 +63,4 @@ class MLFlowOutputProcessor(BaseAppOutputsProcessor[MLFlowAppOutputs]):
         helm_values: dict[str, t.Any],
         app_instance_id: str,
     ) -> MLFlowAppOutputs:
-        return MLFlowAppOutputs.model_validate(
-            await get_mlflow_outputs(helm_values, app_instance_id)
-        )
+        return await get_mlflow_outputs(helm_values, app_instance_id)

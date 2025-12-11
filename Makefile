@@ -62,3 +62,5 @@ gen-types-schemas:
 	app-types dump-types-schema .apolo/src/apolo_apps_openwebui OpenWebUIAppOutputs .apolo/src/apolo_apps_openwebui/schemas/OpenWebUIAppOutputs.json
 	app-types dump-types-schema .apolo/src/apolo_apps_privategpt PrivateGPTAppInputs .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppInputs.json
 	app-types dump-types-schema .apolo/src/apolo_apps_privategpt PrivateGPTAppOutputs .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppOutputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_fooocus FooocusAppInputs .apolo/src/apolo_apps_fooocus/schemas/FooocusAppInputs.json
+	app-types dump-types-schema .apolo/src/apolo_apps_fooocus FooocusAppOutputs .apolo/src/apolo_apps_fooocus/schemas/FooocusAppOutputs.json
