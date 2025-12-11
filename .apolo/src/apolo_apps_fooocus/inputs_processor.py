@@ -5,7 +5,6 @@ from yarl import URL
 from apolo_app_types import (
     ContainerImage,
     CustomDeploymentInputs,
-    FooocusAppInputs,
 )
 from apolo_app_types.app_types import AppType
 from apolo_app_types.helm.apps.base import BaseChartValueProcessor
@@ -30,6 +29,7 @@ from apolo_app_types.protocols.common.health_check import (
 from apolo_app_types.protocols.common.k8s import Port
 from apolo_app_types.protocols.common.storage import ApoloMountModes
 from apolo_app_types.protocols.custom_deployment import NetworkingConfig
+from apolo_apps_fooocus.types import FooocusAppInputs
 
 
 class FooocusInputsProcessor(BaseChartValueProcessor[FooocusAppInputs]):
