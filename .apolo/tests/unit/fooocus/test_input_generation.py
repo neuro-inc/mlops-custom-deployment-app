@@ -5,34 +5,39 @@ from apolo_app_types_fixtures.constants import (
     APP_ID,
     APP_SECRETS_NAME,
     DEFAULT_CLUSTER_NAME,
+    DEFAULT_NAMESPACE,
     DEFAULT_ORG_NAME,
     DEFAULT_PROJECT_NAME,
 )
+from apolo_apps_fooocus.inputs_processor import FooocusInputsProcessor
 from apolo_apps_fooocus.types import (
     FooocusAppInputs,
 )
 
-from apolo_app_types.app_types import AppType
-from apolo_app_types.inputs.args import app_type_to_vals
 from apolo_app_types.protocols.common import IngressHttp, Preset
 
 
 @pytest.mark.asyncio
 async def test_fooocus_values_generation(setup_clients):
-    helm_args, helm_params = await app_type_to_vals(
-        input_=FooocusAppInputs(
-            preset=Preset(name="cpu-small"),
-            ingress_http=IngressHttp(
-                clusterName="default",
-            ),
+    input_data = FooocusAppInputs(
+        preset=Preset(name="cpu-small"),
+        ingress_http=IngressHttp(
+            clusterName="default",
         ),
-        apolo_client=setup_clients,
-        app_type=AppType.Fooocus,
+    )
+
+    # Create the processor instance with the client
+    processor = FooocusInputsProcessor(client=setup_clients)
+
+    # Call gen_extra_values directly
+    helm_params = await processor.gen_extra_values(
+        input_=input_data,
         app_name="fooocus-app",
-        namespace="default-namespace",
+        namespace=DEFAULT_NAMESPACE,
         app_secrets_name=APP_SECRETS_NAME,
         app_id=APP_ID,
     )
+
     assert helm_params["image"] == {
         "repository": "ghcr.io/neuro-inc/fooocus",
         "tag": "latest",
