@@ -6,7 +6,7 @@ from apolo_app_types.outputs.common import (
     get_internal_external_web_urls,
 )
 from apolo_app_types.protocols.common.networking import ServiceAPI, WebApp
-from apolo_app_types.protocols.fooocus import FooocusAppOutputs
+from apolo_apps_fooocus.types import FooocusAppOutputs
 
 
 async def get_fooocus_outputs(
