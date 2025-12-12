@@ -259,3 +259,41 @@
   assets:
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/fooocus.svg
+- app_type: jupyter
+  name: jupyter
+  title: Jupyter
+  install_type: workflow
+  helm_path: charts/custom-deployment
+  git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
+  app_package_name: apolo_apps_jupyter
+  inputs:
+    schema_path: .apolo/src/apolo_apps_jupyter/schemas/JupyterAppInputs.json
+    types_name: JupyterAppInputs
+    processor: JupyterInputsProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    schema_path: .apolo/src/apolo_apps_jupyter/schemas/JupyterAppOutputs.json
+    types_name: JupyterAppOutputs
+    processor: JupyterOutputProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  short_description: Web-based interactive development environment for notebooks, code, and data
+  description: |
+    JupyterLab is the latest web-based interactive development environment for notebooks, code, and data.
+    Its flexible interface allows users to configure and arrange workflows in data science, scientific
+    computing, computational journalism, and machine learning. A modular design invites extensions to
+    expand and enrich functionality.
+  pub_date: "2025-04-23T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/jupyter.svg
+  changelog:
+    file: ./CHANGELOG.md
+  tags: ["Jupyter", "Notebooks", "EDA", "ETL", "ELT", "Data processing", "IDE"]
+  urls:
+    - name: Jupyter Official Docs
+      type: documentation
+      url: https://jupyter.org/
+    - name: Jupyter Lab Documentation
+      type: documentation
+      url: https://jupyterlab.readthedocs.io/en/latest/
+  assets:
+    - type: image
+      url: https://storage.googleapis.com/development-421920-assets/app-logos/jupyter-banner.png
