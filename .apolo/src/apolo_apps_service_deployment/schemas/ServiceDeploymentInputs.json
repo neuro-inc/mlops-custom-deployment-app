@@ -14,6 +14,7 @@
       "type": "object",
       "x-description": "Use Apolo platform's built-in authentication and authorization. Requires authenticated user credentials with appropriate permissions.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Platform Authentication",
       "x-type": "ApoloAuth"
@@ -42,6 +43,7 @@
       "type": "object",
       "x-description": "Configure Apolo Files mount within the application workloads.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Mount",
       "x-type": "ApoloFilesMount"
@@ -53,6 +55,7 @@
           "type": "string",
           "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Storage Path"
         }
@@ -64,6 +67,7 @@
       "type": "object",
       "x-description": "Specify the path within the Apolo Files application to read from or write to.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Path",
       "x-type": "ApoloFilesFile"
@@ -75,6 +79,7 @@
           "default": "rw",
           "x-description": "Select the access mode for the mount, such as read-only or read-write.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Mount Mode"
         }
@@ -83,6 +88,7 @@
       "type": "object",
       "x-description": "Configure how Apolo Files should be mounted into the application\u2019s workload environment.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Mount",
       "x-type": "ApoloMountMode"
@@ -109,6 +115,7 @@
       "type": "object",
       "x-description": "Apolo Secret Configuration.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Secret",
       "x-type": "ApoloSecret"
@@ -121,6 +128,7 @@
           "type": "string",
           "x-description": "Name of the authentication middleware (with namespace) to apply to ingress traffic.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Middleware Name"
         }
@@ -132,6 +140,7 @@
       "type": "object",
       "x-description": "Configure authentication middleware for ingress traffic.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Authentication Ingress Middleware",
       "x-type": "AuthIngressMiddleware"
@@ -145,6 +154,7 @@
           "type": "integer",
           "x-description": "Set the minimum number of replicas for your deployment.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Minimum Replicas"
         },
@@ -155,6 +165,7 @@
           "type": "integer",
           "x-description": "Limit the maximum number of replicas for your deployment.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Maximum Replicas"
         },
@@ -166,6 +177,7 @@
           "type": "integer",
           "x-description": "Choose target CPU utilization percentage for autoscaling.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Target CPU Utilization Percentage"
         },
@@ -184,6 +196,7 @@
           "title": "Target Memory Utilization Percentage",
           "x-description": "Choose target memory utilization percentage for autoscaling.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Target Memory Utilization Percentage"
         }
@@ -192,6 +205,7 @@
       "type": "object",
       "x-description": "Autoscaling configuration for Horizontal Pod Autoscaler.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Autoscaling HPA",
       "x-type": "AutoscalingHPA"
@@ -218,6 +232,7 @@
       "type": "object",
       "x-description": "Store non-sensitive configuration data in key-value format that can be mounted into the application as files.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Mount Configuration Data",
       "x-type": "ConfigMap"
@@ -229,6 +244,7 @@
           "type": "string",
           "x-description": "The key for the entry. It will be used as a file name in the mounted directory.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Key"
         },
@@ -237,6 +253,7 @@
           "type": "string",
           "x-description": "The value associated with the key.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Value"
         }
@@ -249,6 +266,7 @@
       "type": "object",
       "x-description": "Define a key-value pair. Each key will be a file in the mounted directory.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Key-Value Pair"
     },
@@ -270,6 +288,7 @@
           "title": "Command",
           "x-description": "Override the container's default entrypoint by specifying a custom command.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Container Command"
         },
@@ -289,6 +308,7 @@
           "title": "Args",
           "x-description": "Provide arguments to pass to the container's entrypoint or command.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Container Arguments"
         },
@@ -300,6 +320,7 @@
           "type": "array",
           "x-description": "Define environment variables to inject into the container.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Environment Variables"
         }
@@ -308,6 +329,7 @@
       "type": "object",
       "x-description": "Define command, arguments, and environment variables for the Kubernetes container.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Container Configuration",
       "x-type": "Container"
@@ -319,6 +341,7 @@
           "type": "string",
           "x-description": "Choose a repository for the container image.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Container Image Repository"
         },
@@ -335,6 +358,7 @@
           "title": "Tag",
           "x-description": "Choose a tag for the container image.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Container Image Tag"
         },
@@ -350,6 +374,7 @@
           "default": null,
           "x-description": "ImagePullSecrets for DockerHub",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "integration",
           "x-title": "ImagePullSecrets for DockerHub"
         },
@@ -358,6 +383,7 @@
           "default": "IfNotPresent",
           "x-description": "Specify the pull policy for the container image.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Container Image Pull Policy"
         }
@@ -369,6 +395,7 @@
       "type": "object",
       "x-description": "Container image to be used in application",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Container Image",
       "x-type": "ContainerImage"
@@ -404,6 +431,7 @@
       "type": "object",
       "x-description": "Use a custom authentication middleware for this ingress. Allows integration with custom authentication providers.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Custom Authentication",
       "x-type": "CustomAuth"
@@ -415,6 +443,7 @@
           "type": "string",
           "x-description": "The contents of the Docker config file.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Docker Config File Contents"
         }
@@ -426,6 +455,7 @@
       "type": "object",
       "x-description": "Docker configuration content.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Docker Config",
       "x-type": "DockerConfigModel"
@@ -437,6 +467,7 @@
           "type": "string",
           "x-description": "Specify the name of the environment variable to inject into the container.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Variable Name"
         },
@@ -446,6 +477,7 @@
               "type": "string",
               "x-description": "Specify the value of the environment variable.",
               "x-is-advanced-field": false,
+              "x-is-configurable": true,
               "x-meta-type": "inline",
               "x-title": "String variable Value"
             },
@@ -457,6 +489,7 @@
           "title": "Value",
           "x-description": "Specify the value of the environment variable.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Variable Value"
         }
@@ -468,6 +501,7 @@
       "type": "object",
       "x-description": "K8S container env var.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Env",
       "x-type": "Env"
@@ -489,6 +523,7 @@
           "type": "array",
           "x-description": "Command to execute for the health check",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Command"
         }
@@ -500,6 +535,7 @@
       "type": "object",
       "x-description": "Configuration for exec health checks.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Exec Health Check",
       "x-type": "ExecHealthCheckConfig"
@@ -514,6 +550,7 @@
           "type": "integer",
           "x-description": "Port to make a connection for the Custom Deployment instance",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Port"
         },
@@ -528,6 +565,7 @@
           "type": "string",
           "x-description": "The name of the gRPC service to probe",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Service"
         }
@@ -539,6 +577,7 @@
       "type": "object",
       "x-description": "Configuration for gRPC health checks.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "gRPC Health Check",
       "x-type": "GRPCHealthCheckConfig"
@@ -553,6 +592,7 @@
           "type": "integer",
           "x-description": "Port to make a connection for the Custom Deployment instance",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Port"
         },
@@ -567,6 +607,7 @@
           "type": "string",
           "x-description": "Path to access on the HTTP server",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Path"
         },
@@ -577,12 +618,14 @@
                 "type": "string",
                 "x-description": "Value of the HTTP header",
                 "x-is-advanced-field": false,
+                "x-is-configurable": true,
                 "x-meta-type": "inline",
                 "x-title": "Header Value"
               },
               "propertyNames": {
                 "x-description": "Name of the HTTP header",
                 "x-is-advanced-field": false,
+                "x-is-configurable": true,
                 "x-meta-type": "inline",
                 "x-title": "Header Name"
               },
@@ -596,6 +639,7 @@
           "title": "Http Headers",
           "x-description": "Custom headers to set in the request",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "HTTP Headers"
         }
@@ -607,6 +651,7 @@
       "type": "object",
       "x-description": "Configuration for HTTP health checks.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "HTTP Health Check",
       "x-type": "HTTPHealthCheckConfig"
@@ -621,6 +666,7 @@
           "type": "integer",
           "x-description": "Number of seconds after the container has started before performing the first probe",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Initial Delay"
         },
@@ -632,6 +678,7 @@
           "type": "integer",
           "x-description": "Number of seconds to wait between starting a probe attempt",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Period"
         },
@@ -641,6 +688,7 @@
           "type": "integer",
           "x-description": "Number of times to retry the probe before marking the container as Unready",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Failure Threshold"
         },
@@ -652,6 +700,7 @@
           "type": "integer",
           "x-description": "Number of seconds after which the probe times out",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Timeout"
         },
@@ -680,6 +729,7 @@
       "type": "object",
       "x-description": "Configuration for health checks on the application.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Health Check",
       "x-type": "HealthCheck"
@@ -699,6 +749,7 @@
           "default": null,
           "x-description": "Configuration for startup probe",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Startup Probe"
         },
@@ -714,6 +765,7 @@
           "default": null,
           "x-description": "Configuration for liveness probe",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Liveness Probe"
         },
@@ -729,6 +781,7 @@
           "default": null,
           "x-description": "Configuration for liveness probe",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Readiness Probe"
         }
@@ -737,6 +790,7 @@
       "type": "object",
       "x-description": "Configuration for health check probes.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Health Check Probes",
       "x-type": "HealthCheckProbesConfig"
@@ -758,6 +812,7 @@
           "title": "Auth",
           "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Authentication"
         }
@@ -766,6 +821,7 @@
       "type": "object",
       "x-description": "Enable access to your application over the internet using HTTPS.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Enable HTTP Ingress",
       "x-type": "IngressHttp"
@@ -786,6 +842,7 @@
           "type": "string",
           "x-description": "Specify the absolute path inside the container where the volume should be mounted.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Path"
         }
@@ -797,6 +854,7 @@
       "type": "object",
       "x-description": "Specify the absolute path.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Mount Path",
       "x-type": "MountPath"
@@ -809,6 +867,7 @@
           "type": "boolean",
           "x-description": "Enable or disable the internal network service for the deployment.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Service Enabled"
         },
@@ -823,6 +882,7 @@
           ],
           "x-description": "Define HTTP ingress configuration for exposing services over the web.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "HTTP Ingress"
         },
@@ -834,6 +894,7 @@
           "type": "array",
           "x-description": "Specify which ports should be exposed by the application.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Exposed Ports"
         }
@@ -842,6 +903,7 @@
       "type": "object",
       "x-description": "Configure custom networking options for your deployment, including ports and ingress settings.",
       "x-is-advanced-field": true,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Network Configuration"
     },
@@ -859,6 +921,7 @@
       "type": "object",
       "x-description": "Disable authentication for this ingress. The application will be publicly accessible without any authentication.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "No Authentication",
       "x-type": "NoAuth"
@@ -871,6 +934,7 @@
           "type": "string",
           "x-description": "Specify a name for the HTTP port (e.g., 'http', 'grpc') to identify it in the service.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "HTTP Port Name"
         },
@@ -881,6 +945,7 @@
           "type": "integer",
           "x-description": "Set the HTTP port number that will be exposed from the container. Please note: platform currently does not allow to expose multiple ports for a single app on a single domain name. Please reach us describing your use-case if you need it.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "HTTP Port"
         },
@@ -889,6 +954,7 @@
           "default": "Prefix",
           "x-description": "Define how the path should be matched (e.g., 'Prefix' or 'Exact').",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Path Type"
         },
@@ -898,6 +964,7 @@
           "type": "string",
           "x-description": "Set the URL path for routing traffic to this port.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Path"
         }
@@ -906,6 +973,7 @@
       "type": "object",
       "x-description": "",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "",
       "x-type": "Image"
@@ -917,6 +985,7 @@
           "type": "string",
           "x-description": "The name of the preset.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Resource Preset"
         }
@@ -928,6 +997,7 @@
       "type": "object",
       "x-description": "Select the resource preset used per service replica.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Resource Preset",
       "x-type": "Preset"
@@ -947,6 +1017,7 @@
       "type": "object",
       "x-description": "Mount external storage paths",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Storage Mounts",
       "x-type": "StorageMounts"
@@ -961,6 +1032,7 @@
           "type": "integer",
           "x-description": "Port to make a connection for the Custom Deployment instance",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Port"
         },
@@ -975,6 +1047,7 @@
       "type": "object",
       "x-description": "Configuration for TCP health checks.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "TCP Health Check",
       "x-type": "TCPHealthCheckConfig"
@@ -999,6 +1072,7 @@
       "default": null,
       "x-description": "Enable Autoscaling and configure it.",
       "x-is-advanced-field": true,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Autoscaling"
     },
@@ -1014,6 +1088,7 @@
       "default": null,
       "x-description": "Enable Container configuration.",
       "x-is-advanced-field": true,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Container"
     },
@@ -1040,6 +1115,7 @@
       "default": null,
       "x-description": "Enable Storage mounts configuration.",
       "x-is-advanced-field": true,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Storage Mounts"
     },
@@ -1066,6 +1142,7 @@
   "type": "object",
   "x-description": "Configuration for Custom Deployment.",
   "x-is-advanced-field": false,
+  "x-is-configurable": true,
   "x-meta-type": "inline",
   "x-title": "Custom Deployment"
 }
