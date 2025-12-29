@@ -14,6 +14,7 @@
       "type": "object",
       "x-description": "Use Apolo platform's built-in authentication and authorization. Requires authenticated user credentials with appropriate permissions.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Platform Authentication",
       "x-type": "ApoloAuth"
@@ -42,6 +43,7 @@
       "type": "object",
       "x-description": "Configure Apolo Files mount within the application workloads.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Mount",
       "x-type": "ApoloFilesMount"
@@ -53,6 +55,7 @@
           "type": "string",
           "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Storage Path"
         }
@@ -64,6 +67,7 @@
       "type": "object",
       "x-description": "Specify the path within the Apolo Files application to read from or write to.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Path",
       "x-type": "ApoloFilesFile"
@@ -75,6 +79,7 @@
           "default": "rw",
           "x-description": "Select the access mode for the mount, such as read-only or read-write.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Mount Mode"
         }
@@ -83,6 +88,7 @@
       "type": "object",
       "x-description": "Configure how Apolo Files should be mounted into the application\u2019s workload environment.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Mount",
       "x-type": "ApoloMountMode"
@@ -103,6 +109,7 @@
           "type": "string",
           "x-description": "Name of the authentication middleware (with namespace) to apply to ingress traffic.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Middleware Name"
         }
@@ -114,6 +121,7 @@
       "type": "object",
       "x-description": "Configure authentication middleware for ingress traffic.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Authentication Ingress Middleware",
       "x-type": "AuthIngressMiddleware"
@@ -131,6 +139,7 @@
       "type": "object",
       "x-description": "Configure network access and authentication settings.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Networking Settings",
       "x-type": "BasicNetworkingConfig"
@@ -157,6 +166,7 @@
       "type": "object",
       "x-description": "Use a custom authentication middleware for this ingress. Allows integration with custom authentication providers.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Custom Authentication",
       "x-type": "CustomAuth"
@@ -178,6 +188,7 @@
           "title": "Auth",
           "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Authentication"
         }
@@ -186,6 +197,7 @@
       "type": "object",
       "x-description": "Enable access to your application over the internet using HTTPS.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Enable HTTP Ingress",
       "x-type": "IngressHttp"
@@ -204,6 +216,7 @@
           "default": null,
           "x-description": "Internal URL to access the service. This route is not protected by platform authorization and only workloads from the same project can access it.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Internal URL"
         },
@@ -219,6 +232,7 @@
           "default": null,
           "x-description": "External URL for accessing the service from outside the cluster. This route might be secured by platform authorization and is accessible from any network with a valid platform authorization token that has appropriate permissions.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "External URL"
         }
@@ -227,6 +241,7 @@
       "type": "object",
       "x-description": "The URL to access the MLFlow server.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "MLFlow Server URL",
       "x-type": "MLFlowTrackingServerURL"
@@ -238,6 +253,7 @@
           "type": "string",
           "x-description": "Specify the absolute path inside the container where the volume should be mounted.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Path"
         }
@@ -249,6 +265,7 @@
       "type": "object",
       "x-description": "Specify the absolute path.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Mount Path",
       "x-type": "MountPath"
@@ -267,6 +284,7 @@
       "type": "object",
       "x-description": "Disable authentication for this ingress. The application will be publicly accessible without any authentication.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "No Authentication",
       "x-type": "NoAuth"
@@ -278,6 +296,7 @@
           "type": "string",
           "x-description": "The name of the preset.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Resource Preset"
         }
@@ -289,6 +308,7 @@
       "type": "object",
       "x-description": "Select the resource preset used per service replica.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Resource Preset",
       "x-type": "Preset"
@@ -300,6 +320,7 @@
           "type": "string",
           "x-description": "The hostname of the HTTP endpoint.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Hostname"
         },
@@ -310,6 +331,7 @@
           "type": "integer",
           "x-description": "The port of the HTTP endpoint.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Port"
         },
@@ -319,6 +341,7 @@
           "type": "string",
           "x-description": "The protocol to use, e.g., http or https.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Protocol"
         },
@@ -335,6 +358,7 @@
           "title": "Timeout",
           "x-description": "Connection timeout in seconds.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Connection Timeout"
         },
@@ -357,6 +381,7 @@
       "type": "object",
       "x-description": "HTTP API Configuration.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "HTTP API",
       "x-type": "OpenAICompatibleEmbeddingsRestAPI"
@@ -376,6 +401,7 @@
       "type": "object",
       "x-description": "Mount external storage paths",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Storage Mounts",
       "x-type": "StorageMounts"
@@ -394,6 +420,7 @@
           "default": null,
           "x-description": "Override Apolo Files mount within the application workloads. If not set, Apolo will automatically mount \"storage:.apps/vscode/vscode-app/code\" to \"/home/coder/project\"",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Override Default Storage Mounts"
         }
@@ -402,6 +429,7 @@
       "type": "object",
       "x-description": "VSCode App configuration.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "VSCode App",
       "x-type": "VSCodeSpecificAppInputs"
@@ -426,6 +454,7 @@
       "default": null,
       "x-description": "Additional storage mounts for the application.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Extra Storage Mounts"
     },
@@ -445,6 +474,7 @@
       "default": null,
       "x-description": "MLFlow integration settings for the application. If not set, MLFlow integration will not be enabled.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "MLFlow Integration"
     }

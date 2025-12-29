@@ -14,6 +14,7 @@
       "type": "object",
       "x-description": "Use Apolo platform's built-in authentication and authorization. Requires authenticated user credentials with appropriate permissions.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Platform Authentication",
       "x-type": "ApoloAuth"
@@ -25,6 +26,7 @@
           "type": "string",
           "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Storage Path"
         }
@@ -36,6 +38,7 @@
       "type": "object",
       "x-description": "Specify the path within the Apolo Files application to read from or write to.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Path",
       "x-type": "ApoloFilesFile"
@@ -54,6 +57,7 @@
       "type": "object",
       "x-description": "Apolo Secret Configuration.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Secret",
       "x-type": "ApoloSecret"
@@ -66,6 +70,7 @@
           "type": "string",
           "x-description": "Name of the authentication middleware (with namespace) to apply to ingress traffic.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Middleware Name"
         }
@@ -77,6 +82,7 @@
       "type": "object",
       "x-description": "Configure authentication middleware for ingress traffic.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Authentication Ingress Middleware",
       "x-type": "AuthIngressMiddleware"
@@ -94,6 +100,7 @@
       "type": "object",
       "x-description": "Configure network access and authentication settings.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Networking Settings",
       "x-type": "BasicNetworkingConfig"
@@ -105,6 +112,7 @@
           "type": "string",
           "x-description": "Username for the Postgres user.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Postgres User"
         },
@@ -118,6 +126,7 @@
           "type": "string",
           "x-description": "Host of the Postgres instance.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Postgres Host"
         },
@@ -127,6 +136,7 @@
           "type": "integer",
           "x-description": "Port of the Postgres instance.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Postgres Port"
         },
@@ -135,6 +145,7 @@
           "type": "string",
           "x-description": "Host of the PGBouncer instance.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "PGBouncer Host"
         },
@@ -144,6 +155,7 @@
           "type": "integer",
           "x-description": "Port of the PGBouncer instance.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "PGBouncer Port"
         },
@@ -200,6 +212,7 @@
       "type": "object",
       "x-description": "Configuration for Crunchy Postgres user credentials.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Postgres User Credentials",
       "x-type": "CrunchyPostgresUserCredentials"
@@ -226,6 +239,7 @@
       "type": "object",
       "x-description": "Use a custom authentication middleware for this ingress. Allows integration with custom authentication providers.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Custom Authentication",
       "x-type": "CustomAuth"
@@ -244,6 +258,7 @@
           "title": "Database",
           "x-description": "Configure the database for OpenWebUI. Choose between local SQLite or Postgres.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Database Configuration"
         }
@@ -252,6 +267,7 @@
       "type": "object",
       "x-description": "Configure the database for OpenWebUI.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Database Configuration",
       "x-type": "DataBaseConfig"
@@ -263,6 +279,7 @@
           "type": "string",
           "x-description": "Specify the name of the environment variable to inject into the container.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Variable Name"
         },
@@ -272,6 +289,7 @@
               "type": "string",
               "x-description": "Specify the value of the environment variable.",
               "x-is-advanced-field": false,
+              "x-is-configurable": true,
               "x-meta-type": "inline",
               "x-title": "String variable Value"
             },
@@ -283,6 +301,7 @@
           "title": "Value",
           "x-description": "Specify the value of the environment variable.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Variable Value"
         }
@@ -294,6 +313,7 @@
       "type": "object",
       "x-description": "K8S container env var.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Env",
       "x-type": "Env"
@@ -314,6 +334,7 @@
       "type": "object",
       "x-description": "Configuration for the Hugging Face cache.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Hugging Face Cache",
       "x-type": "HuggingFaceCache"
@@ -325,6 +346,7 @@
           "type": "string",
           "x-description": "The name of the Hugging Face model.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Hugging Face Model Name"
         },
@@ -340,6 +362,7 @@
           "default": null,
           "x-description": "Provide a Hugging Face API token linked to an account with access to the model specified above. This token will be used to download model files from the Hugging Face Hub, including gated or private repositories where applicable.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "integration",
           "x-title": "Hugging Face Token"
         },
@@ -355,6 +378,7 @@
           "default": null,
           "x-description": "Enables caching of model files to reduce redundant downloads and speed up load times.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Model Cache"
         }
@@ -366,6 +390,7 @@
       "type": "object",
       "x-description": "Configure the Hugging Face model. Ensure it is available on the Hugging Face Hub and provide an API token with access rights if the repository is gated.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Hugging Face Model",
       "x-type": "HuggingFaceModel"
@@ -378,6 +403,7 @@
           "type": "string",
           "x-description": "The name of the Hugging Face token.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Token Name"
         },
@@ -395,6 +421,7 @@
       "type": "object",
       "x-description": "Provide a Hugging Face API token linked to an account with access to the model specified above. This token will be used to download model files from the Hugging Face Hub, including gated or private repositories where applicable.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "Hugging Face Token",
       "x-type": "HuggingFaceToken"
@@ -416,6 +443,7 @@
           "title": "Auth",
           "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Authentication"
         }
@@ -424,6 +452,7 @@
       "type": "object",
       "x-description": "Enable access to your application over the internet using HTTPS.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Enable HTTP Ingress",
       "x-type": "IngressHttp"
@@ -442,6 +471,7 @@
       "type": "object",
       "x-description": "Disable authentication for this ingress. The application will be publicly accessible without any authentication.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "No Authentication",
       "x-type": "NoAuth"
@@ -453,6 +483,7 @@
           "type": "string",
           "x-description": "The hostname of the HTTP endpoint.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Hostname"
         },
@@ -463,6 +494,7 @@
           "type": "integer",
           "x-description": "The port of the HTTP endpoint.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Port"
         },
@@ -472,6 +504,7 @@
           "type": "string",
           "x-description": "The protocol to use, e.g., http or https.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Protocol"
         },
@@ -488,6 +521,7 @@
           "title": "Timeout",
           "x-description": "Connection timeout in seconds.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Connection Timeout"
         },
@@ -531,6 +565,7 @@
           "default": null,
           "x-description": "Configure the Hugging Face model. Ensure it is available on the Hugging Face Hub and provide an API token with access rights if the repository is gated.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "integration",
           "x-title": "Hugging Face Model"
         }
@@ -542,6 +577,7 @@
       "type": "object",
       "x-description": "Configuration for OpenAI compatible chat API.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "OpenAI Compatible Chat API",
       "x-type": "OpenAICompatChatAPI"
@@ -553,6 +589,7 @@
           "type": "string",
           "x-description": "The hostname of the HTTP endpoint.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Hostname"
         },
@@ -563,6 +600,7 @@
           "type": "integer",
           "x-description": "The port of the HTTP endpoint.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Port"
         },
@@ -572,6 +610,7 @@
           "type": "string",
           "x-description": "The protocol to use, e.g., http or https.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Protocol"
         },
@@ -588,6 +627,7 @@
           "title": "Timeout",
           "x-description": "Connection timeout in seconds.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Connection Timeout"
         },
@@ -631,6 +671,7 @@
           "default": null,
           "x-description": "Configure the Hugging Face model. Ensure it is available on the Hugging Face Hub and provide an API token with access rights if the repository is gated.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "integration",
           "x-title": "Hugging Face Model"
         }
@@ -642,6 +683,7 @@
       "type": "object",
       "x-description": "Configuration for OpenAI compatible embeddings API.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "integration",
       "x-title": "OpenAI Compatible Embeddings API",
       "x-type": "OpenAICompatEmbeddingsAPI"
@@ -656,6 +698,7 @@
           "type": "array",
           "x-description": "List of environment variables to set in the OpenWebUI application.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Environment Variables"
         }
@@ -664,6 +707,7 @@
       "type": "object",
       "x-description": "Configure OpenWebUI additional parameters.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "OpenWebUI Specific"
     },
@@ -686,6 +730,7 @@
       "type": "object",
       "x-description": "Use a Postgres database for OpenWebUI.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Postgres Database",
       "x-type": "PostgresDatabase"
@@ -697,6 +742,7 @@
           "type": "string",
           "x-description": "The name of the preset.",
           "x-is-advanced-field": false,
+          "x-is-configurable": true,
           "x-meta-type": "inline",
           "x-title": "Resource Preset"
         }
@@ -708,6 +754,7 @@
       "type": "object",
       "x-description": "Select the resource preset used per service replica.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Resource Preset",
       "x-type": "Preset"
@@ -725,6 +772,7 @@
       "type": "object",
       "x-description": "Use a local SQLite database for OpenWebUI.",
       "x-is-advanced-field": false,
+      "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "SQLite Database",
       "x-type": "SQLiteDatabase"
