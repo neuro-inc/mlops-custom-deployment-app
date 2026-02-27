@@ -4,6 +4,10 @@ APP_TYPES_REVISION ?= v25.4.3
 
 SHELL := /bin/sh -e
 
+.PHONY: lock
+lock:
+	poetry lock
+
 .PHONY: install setup
 install setup: poetry.lock
 	poetry config virtualenvs.in-project true
