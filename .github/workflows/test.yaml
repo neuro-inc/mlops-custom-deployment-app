@@ -18,24 +18,12 @@ jobs:
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - name: Setup Python
-        uses: actions/setup-python@v6
-        with:
-          cache: pip
-          python-version-file: .python-version
+        uses: ./.github/actions/setup-python-poetry
       - name: Cache pre-commit hooks
         uses: actions/cache@v4
         with:
           path: ~/.cache/pre-commit
           key: pre-commit|py3.12|${{ hashFiles('.pre-commit-config.yaml') }}
-      - name: Install Poetry
-        run: pip install poetry==2.2.1
-      - name: Setup Python dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pypoetry
-          key: poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            poetry-
       - name: Install dependencies
         run: make setup
       - name: Run linters
@@ -50,20 +38,8 @@ jobs:
     steps:
       - name: Checkout commit
         uses: actions/checkout@v6
-      - name: Install python
-        uses: actions/setup-python@v6
-        with:
-          python-version-file: .python-version
-          cache: pip
-      - name: Install Poetry
-        run: pip install poetry==2.2.1
-      - name: Setup Python dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pypoetry
-          key: poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            poetry-
+      - name: Setup Python
+        uses: ./.github/actions/setup-python-poetry
       - name: Install dependencies
         run: make setup
       - name: Run unit tests
@@ -75,20 +51,8 @@ jobs:
     steps:
       - name: Checkout commit
         uses: actions/checkout@v6
-      - name: Install python
-        uses: actions/setup-python@v6
-        with:
-          python-version-file: .python-version
-          cache: pip
-      - name: Install Poetry
-        run: pip install poetry==2.2.1
-      - name: Setup Python dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pypoetry
-          key: poetry-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            poetry-
+      - name: Setup Python
+        uses: ./.github/actions/setup-python-poetry
       - name: Install dependencies
         run: make setup
       - name: Run integration tests
