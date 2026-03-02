@@ -41,7 +41,7 @@ async def test_service_deployment_values_generation_with_init_container(
     assert "initContainers" in helm_params
     assert helm_params["initContainers"] == [
         {
-            "name": "init-container",
+            "name": "init-container-1",
             "image": "busybox:1.36",
             "command": ["sh", "-c"],
             "args": ["echo init && sleep 1"],
