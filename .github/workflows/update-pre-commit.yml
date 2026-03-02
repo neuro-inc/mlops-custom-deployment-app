@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Setup Python
-        uses: ./.github/actions/setup-python-poetry
+        uses: neuro-inc/reuse/.github/actions/setup-python-poetry@master
       - name: Install dependencies
         run: make install
       - name: Run pre-commit autoupdate
