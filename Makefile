@@ -1,8 +1,14 @@
 IMAGE_NAME ?= mlops-custom-deployment-app
 IMAGE_TAG ?= latest
 APP_TYPES_REVISION ?= v25.4.3
+PYTHON_VERSION ?= $(strip $(shell cat .python-version 2>/dev/null || echo 3.12))
+POETRY_VERSION ?= $(strip $(shell cat .poetry-version 2>/dev/null || echo 2.2.1))
 
 SHELL := /bin/sh -e
+
+.PHONY: lock
+lock:
+	poetry lock
 
 .PHONY: install setup
 install setup: poetry.lock
@@ -39,6 +45,8 @@ test-integration:
 .PHONY: build-hook-image
 build-hook-image:
 	docker build \
+		--build-arg PYTHON_VERSION=$(PYTHON_VERSION) \
+		--build-arg POETRY_VERSION=$(POETRY_VERSION) \
 		-t $(IMAGE_NAME):latest \
 		-f hooks.Dockerfile \
 		.;

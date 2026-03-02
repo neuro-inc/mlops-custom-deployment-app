@@ -1,6 +1,9 @@
-FROM python:3.12-slim
+ARG PYTHON_VERSION=3.12
+FROM python:${PYTHON_VERSION}-slim
 
 LABEL org.opencontainers.image.source="https://github.com/neuro-inc/mlops-custom-deployment-app"
+
+ARG POETRY_VERSION=2.2.1
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
@@ -13,8 +16,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /app
 
-COPY README.md poetry.lock pyproject.toml .
-RUN pip --no-cache-dir install poetry && poetry install --no-root --no-cache
+COPY README.md poetry.lock pyproject.toml ./
+RUN pip --no-cache-dir install "poetry==${POETRY_VERSION}" \
+    && poetry install --no-root --no-cache
 
 COPY .apolo .apolo
 RUN poetry install --only-root --no-cache

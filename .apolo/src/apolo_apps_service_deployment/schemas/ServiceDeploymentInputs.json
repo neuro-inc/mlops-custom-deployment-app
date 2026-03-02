@@ -835,6 +835,78 @@
       "title": "IngressPathTypeEnum",
       "type": "string"
     },
+    "InitContainer": {
+      "properties": {
+        "command": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Command",
+          "x-description": "Override the container's default entrypoint by specifying a custom command.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Container Command"
+        },
+        "args": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Args",
+          "x-description": "Provide arguments to pass to the container's entrypoint or command.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Container Arguments"
+        },
+        "env": {
+          "items": {
+            "$ref": "#/$defs/Env"
+          },
+          "title": "Env",
+          "type": "array",
+          "x-description": "Define environment variables to inject into the container.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Environment Variables"
+        },
+        "image": {
+          "$ref": "#/$defs/ContainerImage",
+          "x-description": "Container image used for init container execution.",
+          "x-title": "Init Container Image"
+        }
+      },
+      "required": [
+        "image"
+      ],
+      "title": "InitContainer",
+      "type": "object",
+      "x-description": "Run an init container before the main application starts.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Init Container",
+      "x-type": "InitContainer"
+    },
     "MountPath": {
       "properties": {
         "path": {
@@ -1091,6 +1163,26 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Container"
+    },
+    "init_container": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/InitContainer"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Init Container",
+      "x-description": "Optional init container configurations.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Init Container(s)"
     },
     "config_map": {
       "anyOf": [
