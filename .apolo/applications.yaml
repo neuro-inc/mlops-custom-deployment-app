@@ -21,8 +21,8 @@
     configure resources, scaling, and networking with ease—no complex DevOps required.
     
     Resource sizing options:
-      Lean (dev/test): 0.1 vCPU, 1 GiB RAM (cpu-micro profile)
-      Balanced (standard prod): 1 vCPU, 3 GiB RAM (cpu-small-1-3 profile)
+      Lean (dev/test): 0.1 vCPU, 1 GiB RAM
+      Balanced (standard prod): 1 vCPU, 3 GiB RAM
   pub_date: "2025-01-01T00:00:00+00:00"
   changelog:
     file: ./CHANGELOG.md
