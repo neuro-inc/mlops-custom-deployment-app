@@ -81,9 +81,9 @@ resources:
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
-  requests:
-    cpu: 50m
-    memory: 64Mi
+  # requests:
+  #  cpu: 50m
+  #  memory: 64Mi
 
 #This section is for setting up autoscaling more information can be found here: https://kubernetes.io/docs/concepts/workloads/autoscaling/
 autoscaling:
