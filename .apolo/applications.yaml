@@ -19,9 +19,6 @@
     Service Deployment lets you deploy any containerized application as a scalable,
     production-ready web service. Bring your own Docker image and
     configure resources, scaling, and networking with ease—no complex DevOps required.
-    Resource sizing options:
-    - Lean (dev/test): 0.1 vCPU, 1 GiB RAM
-    - Balanced (prod): 1 vCPU, 3 GiB RAM
   pub_date: "2025-01-01T00:00:00+00:00"
   changelog:
     file: ./CHANGELOG.md
