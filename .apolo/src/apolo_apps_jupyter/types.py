@@ -136,7 +136,7 @@ class JupyterAppInputs(AppInputs):
     preset: Preset = Field(
         ...,
         json_schema_extra=SchemaExtraMetadata(
-            title="Jupiter preset",
+            title="Jupyter server preset",
             description="Select the resource preset used for the "
             "Jupiter instance. "
             "Minimal resources: 0.5 CPU cores, 512 MiB memory.",
