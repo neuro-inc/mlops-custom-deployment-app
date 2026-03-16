@@ -148,7 +148,9 @@
   },
   "properties": {
     "preset": {
-      "$ref": "#/$defs/Preset"
+      "$ref": "#/$defs/Preset",
+      "x-description": "Select the resource preset used for the Foocus instance. Minimal resources: 4 CPU cores, 8 GiB memory, 1 GPU with 4 GiB memory.",
+      "x-title": "Foocus preset"
     },
     "ingress_http": {
       "$ref": "#/$defs/IngressHttp"
