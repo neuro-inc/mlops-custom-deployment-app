@@ -69,7 +69,15 @@ class PrivateGptSpecific(BaseModel):
 
 
 class PrivateGPTAppInputs(AppInputs):
-    preset: Preset
+    preset: Preset = Field(
+        ...,
+        json_schema_extra=SchemaExtraMetadata(
+            title="PrivateGPT preset",
+            description="Select the resource preset used for the "
+            "PrivateGPT instance. "
+            "Minimal resources: 0.5 CPU cores, 512 MiB memory.",
+        ).as_json_schema_extra(),
+    )
     ingress_http: IngressHttp
     pgvector_user: CrunchyPostgresUserCredentials
     embeddings_api: OpenAICompatEmbeddingsAPI

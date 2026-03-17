@@ -76,7 +76,15 @@ class MLFlowAppInputs(AppInputs):
         ).as_json_schema_extra(),
     )
 
-    preset: Preset
+    preset: Preset = Field(
+        ...,
+        json_schema_extra=SchemaExtraMetadata(
+            title="MLFlow preset",
+            description="Select the resource preset used for the "
+            "MLFlow instance. "
+            "Minimal resources: 0.5 CPU cores, 1 GiB memory.",
+        ).as_json_schema_extra(),
+    )
     ingress_http: IngressHttp
     metadata_storage: MLFlowMetaStorage
 

@@ -10,7 +10,15 @@ from apolo_app_types.protocols.common import (
 
 
 class ShellAppInputs(AppInputs):
-    preset: Preset
+    preset: Preset = Field(
+        ...,
+        json_schema_extra=SchemaExtraMetadata(
+            title="Shell preset",
+            description="Select the resource preset used for the "
+            "Shell instance. "
+            "Minimal resources: 0.1 CPU cores, 128 MiB memory.",
+        ).as_json_schema_extra(),
+    )
     networking: BasicNetworkingConfig = Field(
         default_factory=BasicNetworkingConfig,
         json_schema_extra=SchemaExtraMetadata(

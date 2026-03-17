@@ -1127,7 +1127,9 @@
   },
   "properties": {
     "preset": {
-      "$ref": "#/$defs/Preset"
+      "$ref": "#/$defs/Preset",
+      "x-description": "Select the resource preset used for the instance. Minimal resources depends on your application needs, but a good starting point is 0.5 CPU cores and 512 MiB memory.",
+      "x-title": "Service Deployment preset"
     },
     "image": {
       "$ref": "#/$defs/ContainerImage"

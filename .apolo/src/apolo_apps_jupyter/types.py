@@ -133,7 +133,15 @@ class JupyterSpecificAppInputs(AbstractAppFieldType):
 
 
 class JupyterAppInputs(AppInputs):
-    preset: Preset
+    preset: Preset = Field(
+        ...,
+        json_schema_extra=SchemaExtraMetadata(
+            title="Jupyter server preset",
+            description="Select the resource preset used for the "
+            "Jupiter instance. "
+            "Minimal resources: 0.5 CPU cores, 512 MiB memory.",
+        ).as_json_schema_extra(),
+    )
 
     jupyter_specific: JupyterSpecificAppInputs
 

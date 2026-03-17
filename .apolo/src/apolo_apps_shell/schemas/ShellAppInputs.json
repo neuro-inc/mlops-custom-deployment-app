@@ -166,7 +166,9 @@
   },
   "properties": {
     "preset": {
-      "$ref": "#/$defs/Preset"
+      "$ref": "#/$defs/Preset",
+      "x-description": "Select the resource preset used for the Shell instance. Minimal resources: 0.1 CPU cores, 128 MiB memory.",
+      "x-title": "Shell preset"
     },
     "networking": {
       "$ref": "#/$defs/BasicNetworkingConfig",
