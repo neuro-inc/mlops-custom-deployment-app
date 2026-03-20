@@ -370,7 +370,9 @@
   "description": "The overall MLFlow app config, referencing:\n  - 'preset' for CPU/GPU resources\n  - 'ingress' for external URL\n  - 'metadata_storage' for MLFlow settings\n  - 'artifact_store' for artifacts location",
   "properties": {
     "preset": {
-      "$ref": "#/$defs/Preset"
+      "$ref": "#/$defs/Preset",
+      "x-description": "Select the resource preset used for the MLFlow instance. Minimal resources: 0.5 CPU cores, 1 GiB memory.",
+      "x-title": "MLFlow preset"
     },
     "ingress_http": {
       "$ref": "#/$defs/IngressHttp"

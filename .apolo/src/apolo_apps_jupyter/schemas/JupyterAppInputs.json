@@ -735,7 +735,9 @@
   },
   "properties": {
     "preset": {
-      "$ref": "#/$defs/Preset"
+      "$ref": "#/$defs/Preset",
+      "x-description": "Select the resource preset used for the Jupiter instance. Minimal resources: 0.5 CPU cores, 512 MiB memory.",
+      "x-title": "Jupyter server preset"
     },
     "jupyter_specific": {
       "$ref": "#/$defs/JupyterSpecificAppInputs"

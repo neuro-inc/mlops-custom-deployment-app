@@ -708,7 +708,9 @@
   },
   "properties": {
     "preset": {
-      "$ref": "#/$defs/Preset"
+      "$ref": "#/$defs/Preset",
+      "x-description": "Select the resource preset used for the PrivateGPT instance. Minimal resources: 0.5 CPU cores, 512 MiB memory.",
+      "x-title": "PrivateGPT preset"
     },
     "ingress_http": {
       "$ref": "#/$defs/IngressHttp"

@@ -794,7 +794,9 @@
   },
   "properties": {
     "preset": {
-      "$ref": "#/$defs/Preset"
+      "$ref": "#/$defs/Preset",
+      "x-description": "Select the resource preset used for the OpenWebUI instance. Minimal resources: 0.5 CPU cores, 512 MiB memory.",
+      "x-title": "OpenWebUI preset"
     },
     "networking_config": {
       "$ref": "#/$defs/BasicNetworkingConfig",
