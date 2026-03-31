@@ -53,7 +53,7 @@ async def test_shell_values_generation(setup_clients):
         f".apps/shell/shell-app"
     )
     assert parsed_storage[0]["mount_path"] == "/var/storage"
-    assert parsed_storage[0]["mount_mode"] == "r"
+    assert parsed_storage[0]["mount_mode"] == "rw"
 
     pod_labels = helm_params.get("podLabels", {})
     assert pod_labels.get("platform.apolo.us/inject-storage") == "true"
