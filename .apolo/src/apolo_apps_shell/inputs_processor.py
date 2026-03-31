@@ -93,7 +93,7 @@ class ShellAppChartValueProcessor(BaseChartValueProcessor[ShellAppInputs]):
                             path=str(data_storage_path),
                         ),
                         mount_path=MountPath(path=str(data_container_dir)),
-                        mode=ApoloMountMode(mode="r"),
+                        mode=ApoloMountMode(mode="rw"),
                     ),
                 ]
             ),
