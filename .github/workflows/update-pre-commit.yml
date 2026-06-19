@@ -8,7 +8,7 @@ jobs:
   auto-update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Setup Python
         uses: neuro-inc/reuse/.github/actions/setup-python-poetry@v26.6.1
       - name: Install dependencies
