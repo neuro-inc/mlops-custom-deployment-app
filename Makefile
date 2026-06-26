@@ -2,7 +2,7 @@ IMAGE_NAME ?= mlops-custom-deployment-app
 IMAGE_TAG ?= latest
 APP_TYPES_REVISION ?= v25.4.3
 PYTHON_VERSION ?= $(strip $(shell cat .python-version 2>/dev/null || echo 3.12))
-POETRY_VERSION ?= $(strip $(shell cat .poetry-version 2>/dev/null || echo 2.2.1))
+POETRY_VERSION ?= $(strip $(shell cat .poetry-version 2>/dev/null || echo 2.4.1))
 
 SHELL := /bin/sh -e
 

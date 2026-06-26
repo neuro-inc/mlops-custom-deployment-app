@@ -3,7 +3,7 @@ FROM python:${PYTHON_VERSION}-slim
 
 LABEL org.opencontainers.image.source="https://github.com/neuro-inc/mlops-custom-deployment-app"
 
-ARG POETRY_VERSION=2.2.1
+ARG POETRY_VERSION=2.4.1
 
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \

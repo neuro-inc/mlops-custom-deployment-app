@@ -10,7 +10,7 @@ dynamic = ["version"]
 requires-python = ">=3.11.0,<4.0"
 
 [tool.poetry]
-requires-poetry = "==2.2.1"
+requires-poetry = ">=2.4.1"
 name = "apolo-apps-generic-service-deployment"
 authors = ["Apolo.us"]
 packages = [
@@ -24,7 +24,7 @@ pydantic = "^2.13.4"
 pyyaml = "^6.0.2"
 types-PyYAML = "^6.0.12.20260518"
 yarl = "^1.24.2"
-apolo-app-types = "^26.4.2"
+apolo-app-types = "^26.6.0"
 pre-commit = "^4.6.0"
 multidict = "^6.7.1"
 
