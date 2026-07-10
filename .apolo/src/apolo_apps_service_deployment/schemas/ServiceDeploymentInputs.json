@@ -1032,9 +1032,11 @@
         },
         "path": {
           "default": "/",
+          "minLength": 1,
+          "pattern": "^\\S+$",
           "title": "Path",
           "type": "string",
-          "x-description": "Set the URL path for routing traffic to this port.",
+          "x-description": "Set the URL path for routing traffic to this port. For 'Prefix' and 'Exact' path types this must be a literal URL path: it has to start with '/' and may only contain letters, digits, the characters '-', '.', '_', '~', '/', or percent-encoded octets (e.g. '%20'). For 'ImplementationSpecific' the path is interpreted by the ingress controller (e.g. a Go/RE2 regular expression in Traefik) and only needs to be a valid regular expression.",
           "x-is-advanced-field": false,
           "x-is-configurable": true,
           "x-meta-type": "inline",
