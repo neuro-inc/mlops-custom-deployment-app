@@ -131,6 +131,7 @@
               "type": "null"
             }
           ],
+          "default": null,
           "title": "Pgbouncer Host",
           "x-description": "Host of the PGBouncer instance.",
           "x-is-advanced-field": false,
@@ -148,6 +149,7 @@
               "type": "null"
             }
           ],
+          "default": null,
           "title": "Pgbouncer Port",
           "x-description": "Port of the PGBouncer instance.",
           "x-is-advanced-field": false,
@@ -200,9 +202,7 @@
         "user",
         "password",
         "host",
-        "port",
-        "pgbouncer_host",
-        "pgbouncer_port"
+        "port"
       ],
       "title": "CrunchyPostgresUserCredentials",
       "type": "object",
