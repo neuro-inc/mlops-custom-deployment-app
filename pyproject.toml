@@ -24,7 +24,9 @@ pydantic = "^2.13.4"
 pyyaml = "^6.0.2"
 types-PyYAML = "^6.0.12.20260518"
 yarl = "^1.24.5"
-apolo-app-types = "^26.7.1"
+# TODO(IT-56): switch back to a released version (>= 26.8.0) once the
+# app-types GitHub app PR is merged and released.
+apolo-app-types = { git = "https://github.com/neuro-inc/app-types.git", branch = "feature/IT-56-github-app" }
 pre-commit = "^4.6.1"
 multidict = "^6.7.1"
 
