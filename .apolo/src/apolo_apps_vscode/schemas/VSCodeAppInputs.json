@@ -70,7 +70,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Path",
-      "x-type": "ApoloFilesFile"
+      "x-type": "ApoloFilesPath"
     },
     "ApoloMountMode": {
       "properties": {
@@ -384,7 +384,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "HTTP API",
-      "x-type": "OpenAICompatibleEmbeddingsRestAPI"
+      "x-type": "RestAPI"
     },
     "StorageMounts": {
       "properties": {

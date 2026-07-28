@@ -41,7 +41,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Path",
-      "x-type": "ApoloFilesFile"
+      "x-type": "ApoloFilesPath"
     },
     "ApoloSecret": {
       "properties": {
