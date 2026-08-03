@@ -19,7 +19,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-apolo-sdk = "^26.3.0"
+apolo-sdk = "^26.7.2"
 pydantic = "^2.13.4"
 pyyaml = "^6.0.2"
 types-PyYAML = "^6.0.12.20260724"
