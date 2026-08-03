@@ -323,18 +323,18 @@ yarl = ">=1.23.0,<2.0.0"
 
 [[package]]
 name = "apolo-sdk"
-version = "26.3.0"
+version = "26.7.2"
 description = "Apolo SDK"
 optional = false
 python-versions = ">=3.10.0"
 groups = ["main"]
 files = [
-    {file = "apolo_sdk-26.3.0-py3-none-any.whl", hash = "sha256:edf368ec9022e267b5f388ed1cbd6093e92adb777348f84423437eccbe9d45ce"},
-    {file = "apolo_sdk-26.3.0.tar.gz", hash = "sha256:e889b27478620ef5054b2aeb36a5670be873e1b51d768b45c1182e5745ea0142"},
+    {file = "apolo_sdk-26.7.2-py3-none-any.whl", hash = "sha256:74a72c09cce5aa6de8791d77ecebcde5bedb68fd0180f07e46e393d13d9df792"},
+    {file = "apolo_sdk-26.7.2.tar.gz", hash = "sha256:86a5bb1822cc3f2e6a83b5e0fc9626ea96459df79035ad22f5957a77d2acb339"},
 ]
 
 [package.dependencies]
-aiobotocore = ">=2.3.0,<4.0"
+aiobotocore = ">=3.0.0,<4.0"
 aiodocker = ">=0.24.0"
 aiohttp = ">=3.11.3"
 azure-storage-blob = ">=12.8.1,<12.9.0 || >12.9.0"
@@ -3113,4 +3113,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11.0,<4.0"
-content-hash = "f94123b388c9ecd6257f4b33cb3684eb6e77c18ddd82505ab3227be9810f9689"
+content-hash = "d260ed57847f62b1a995f4579f5254ab2d39ede982f4abd4188ff40262cc6fd0"
