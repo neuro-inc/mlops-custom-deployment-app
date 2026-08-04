@@ -165,7 +165,7 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
             preset=input_.preset,
             image=ContainerImage(
                 repository="ghcr.io/apolo-actions/mlflow",
-                tag="v3.1.4",
+                tag="v3.15.1",
             ),
             container=Container(
                 command=mlflow_cmd,
