@@ -121,15 +121,16 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
     def _gen_allowed_hosts(base_vals: dict[str, t.Any], namespace: str) -> list[str]:
         """Host headers MLflow should answer, on top of its own defaults.
 
-        Adds the in-cluster service name, which clients running as platform jobs
-        use, and the ingress hostname the UI is served on. MLflow compares the
-        Host header verbatim, so entries carrying a port need their own pattern.
+        Covers the ingress hostname the UI is served on and the in-cluster
+        service name. The latter is reached under several suffixes: platform
+        jobs address it as `<svc>.<namespace>`, while the outputs sidecar uses
+        the fully qualified `<svc>.<namespace>.svc.cluster.local`. MLflow
+        matches the Host header verbatim and does not strip the port, so every
+        form needs both a bare and a `:port` pattern.
         """
-        allowed = [
-            *_MLFLOW_DEFAULT_ALLOWED_HOSTS,
-            f"*.{namespace}",
-            f"*.{namespace}:*",
-        ]
+        allowed = [*_MLFLOW_DEFAULT_ALLOWED_HOSTS]
+        for suffix in ("", ".svc", ".svc.cluster.local"):
+            allowed += [f"*.{namespace}{suffix}", f"*.{namespace}{suffix}:*"]
         for host_cfg in base_vals.get("ingress", {}).get("hosts", []):
             if host := host_cfg.get("host"):
                 allowed += [host, f"{host}:*"]

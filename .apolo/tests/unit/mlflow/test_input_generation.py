@@ -1,3 +1,5 @@
+import fnmatch
+
 import pytest
 from apolo_app_types_fixtures.constants import (
     APP_ID,
@@ -240,10 +242,22 @@ async def test_values_mlflow_allowed_hosts_and_jobs_disabled(
     assert "10.*" in allowed
     assert "localhost" in allowed
 
-    # clients running as platform jobs reach the service by its in-cluster name,
-    # and send a port in the Host header
-    assert f"*.{DEFAULT_NAMESPACE}" in allowed
-    assert f"*.{DEFAULT_NAMESPACE}:*" in allowed
+    # the in-cluster service is addressed under several DNS suffixes: platform
+    # jobs use the short form, the outputs sidecar the fully qualified one. The
+    # port is part of the Host header and is not stripped before matching.
+    internal_hosts = [
+        f"mlflow-svc.{DEFAULT_NAMESPACE}",
+        f"mlflow-svc.{DEFAULT_NAMESPACE}:5000",
+        f"mlflow-svc.{DEFAULT_NAMESPACE}.svc:5000",
+        f"mlflow-svc.{DEFAULT_NAMESPACE}.svc.cluster.local:5000",
+    ]
+    for internal_host in internal_hosts:
+        assert any(
+            fnmatch.fnmatch(internal_host, pattern)
+            if "*" in pattern
+            else internal_host == pattern
+            for pattern in allowed
+        ), f"{internal_host} would be rejected with 403"
 
     # the UI is served on the ingress hostname
     ingress_hosts = [h["host"] for h in helm_params["ingress"]["hosts"]]
