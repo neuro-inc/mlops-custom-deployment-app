@@ -206,14 +206,7 @@ async def test_values_mlflow_generation_postgres_uri(
 async def test_values_mlflow_allowed_hosts_and_jobs_disabled(
     setup_clients, mock_get_preset_cpu
 ):
-    """
-    MLflow 3.x answers 403 for any Host header it does not recognise, and its
-    defaults cover only loopback and private IPs — which the kubelet probes
-    satisfy while real traffic does not. Setting MLFLOW_SERVER_ALLOWED_HOSTS
-    replaces those defaults rather than extending them, so the generated list
-    has to carry the ingress hostname, the in-cluster service name and the
-    original defaults all at once.
-    """
+    """Every Host that reaches MLflow must be allowed, or it answers 403."""
     input_data = MLFlowAppInputs(
         preset=Preset(name="cpu-small"),
         ingress_http=IngressHttp(clusterName="test"),
@@ -242,9 +235,6 @@ async def test_values_mlflow_allowed_hosts_and_jobs_disabled(
     assert "10.*" in allowed
     assert "localhost" in allowed
 
-    # the in-cluster service is addressed under several DNS suffixes: platform
-    # jobs use the short form, the outputs sidecar the fully qualified one. The
-    # port is part of the Host header and is not stripped before matching.
     internal_hosts = [
         f"mlflow-svc.{DEFAULT_NAMESPACE}",
         f"mlflow-svc.{DEFAULT_NAMESPACE}:5000",
@@ -259,7 +249,6 @@ async def test_values_mlflow_allowed_hosts_and_jobs_disabled(
             for pattern in allowed
         ), f"{internal_host} would be rejected with 403"
 
-    # the UI is served on the ingress hostname
     ingress_hosts = [h["host"] for h in helm_params["ingress"]["hosts"]]
     assert ingress_hosts
     for host in ingress_hosts:

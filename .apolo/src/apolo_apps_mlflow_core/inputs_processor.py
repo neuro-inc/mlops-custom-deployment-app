@@ -32,16 +32,10 @@ from apolo_app_types.protocols.custom_deployment import (
 from apolo_apps_mlflow_core.types import MLFlowAppInputs, MLFlowMetadataPostgres
 
 
-# MLflow 3.x rejects any request whose Host header it does not recognise, with
-# 403 "Invalid Host header - possible DNS rebinding attack detected". Its
-# built-in list covers loopback and private IPs, so the kubelet probes pass
-# (they address the pod IP) while the ingress hostname and the in-cluster
-# service name are both refused — the app reports healthy while every request a
-# user actually makes fails.
-#
-# MLFLOW_SERVER_ALLOWED_HOSTS *replaces* that built-in list rather than adding
-# to it, so the defaults are repeated here; dropping them would break the
-# probes. Mirrors mlflow.server.security_utils.get_default_allowed_hosts().
+# MLFLOW_SERVER_ALLOWED_HOSTS replaces MLflow's own defaults instead of adding
+# to it, and they include the private IPs the kubelet probes come from — so
+# dropping them here would fail the probes. Mirrors
+# mlflow.server.security_utils.get_default_allowed_hosts().
 _MLFLOW_DEFAULT_ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
@@ -121,12 +115,9 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
     def _gen_allowed_hosts(base_vals: dict[str, t.Any], namespace: str) -> list[str]:
         """Host headers MLflow should answer, on top of its own defaults.
 
-        Covers the ingress hostname the UI is served on and the in-cluster
-        service name. The latter is reached under several suffixes: platform
-        jobs address it as `<svc>.<namespace>`, while the outputs sidecar uses
-        the fully qualified `<svc>.<namespace>.svc.cluster.local`. MLflow
-        matches the Host header verbatim and does not strip the port, so every
-        form needs both a bare and a `:port` pattern.
+        The in-cluster service is addressed under several DNS suffixes: jobs use
+        `<svc>.<namespace>`, the outputs sidecar the fully qualified form.
+        Matching is literal and keeps the port, hence the `:*` variants.
         """
         allowed = [*_MLFLOW_DEFAULT_ALLOWED_HOSTS]
         for suffix in ("", ".svc", ".svc.cluster.local"):
@@ -187,11 +178,8 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
             )
         )
 
-        # The Huey-backed job scheduler behind MLflow's server-side GenAI
-        # features (online scoring, trace archival, judges) idles at well over a
-        # gigabyte — see mlflow/mlflow#22792 and #23702. None of it is used by a
-        # tracking server and model registry, and leaving it on pushes the
-        # container past the memory limit of the smaller presets.
+        # Unused here, and its Huey workers idle at over a gigabyte, which
+        # overruns the smaller presets (mlflow/mlflow#22792, #23702).
         envs.append(Env(name="MLFLOW_SERVER_ENABLE_JOB_EXECUTION", value="false"))
 
         artifact_mounts: StorageMounts | None = None
