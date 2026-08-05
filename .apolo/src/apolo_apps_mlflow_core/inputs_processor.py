@@ -53,6 +53,14 @@ _MLFLOW_DEFAULT_ALLOWED_HOSTS = [
 ]
 
 
+def _ingress_hosts(base_vals: dict[str, t.Any]) -> list[str]:
+    return [
+        host
+        for host_cfg in base_vals.get("ingress", {}).get("hosts", [])
+        if (host := host_cfg.get("host"))
+    ]
+
+
 class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
     """
     Enhanced MLFlow chart processor that supports:
@@ -122,10 +130,24 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
         allowed = [*_MLFLOW_DEFAULT_ALLOWED_HOSTS]
         for suffix in ("", ".svc", ".svc.cluster.local"):
             allowed += [f"*.{namespace}{suffix}", f"*.{namespace}{suffix}:*"]
-        for host_cfg in base_vals.get("ingress", {}).get("hosts", []):
-            if host := host_cfg.get("host"):
-                allowed += [host, f"{host}:*"]
+        for host in _ingress_hosts(base_vals):
+            allowed += [host, f"{host}:*"]
         return allowed
+
+    @staticmethod
+    def _gen_allowed_origins(base_vals: dict[str, t.Any]) -> list[str]:
+        """Origins allowed to send state-changing requests.
+
+        MLflow blocks every non-localhost origin on POST/PUT/DELETE unless it is
+        listed, and the browser sends an Origin even same-origin — so without
+        this the UI loads over the ingress but every write, including
+        `runs/search`, comes back 403. Both schemes are served: reaching the app
+        over http does not redirect, it authenticates and returns there.
+        """
+        origins = []
+        for host in _ingress_hosts(base_vals):
+            origins += [f"https://{host}", f"http://{host}"]
+        return origins
 
     async def gen_extra_values(
         self,
@@ -177,6 +199,13 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
                 value=",".join(self._gen_allowed_hosts(base_vals, namespace)),
             )
         )
+        if allowed_origins := self._gen_allowed_origins(base_vals):
+            envs.append(
+                Env(
+                    name="MLFLOW_SERVER_CORS_ALLOWED_ORIGINS",
+                    value=",".join(allowed_origins),
+                )
+            )
 
         # Unused here, and its Huey workers idle at over a gigabyte, which
         # overruns the smaller presets (mlflow/mlflow#22792, #23702).

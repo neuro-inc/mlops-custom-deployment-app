@@ -261,3 +261,37 @@ async def test_values_mlflow_allowed_hosts_and_jobs_disabled(
     )
     assert jobs_env is not None
     assert jobs_env["value"] == "false"
+
+
+@pytest.mark.asyncio
+async def test_values_mlflow_cors_allows_the_ui_origin(
+    setup_clients, mock_get_preset_cpu
+):
+    """The UI's own origin must be allowed, or every write from it 403s."""
+    input_data = MLFlowAppInputs(
+        preset=Preset(name="cpu-small"),
+        ingress_http=IngressHttp(clusterName="test"),
+        metadata_storage=MLFlowMetadataSQLite(),
+    )
+    processor = MLFlowChartValueProcessor(client=setup_clients)
+    helm_params = await processor.gen_extra_values(
+        input_=input_data,
+        app_name="my-mlflow",
+        namespace=DEFAULT_NAMESPACE,
+        app_secrets_name=APP_SECRETS_NAME,
+        app_id=APP_ID,
+    )
+
+    origins = next(
+        e
+        for e in helm_params["container"]["env"]
+        if e["name"] == "MLFLOW_SERVER_CORS_ALLOWED_ORIGINS"
+    )["value"].split(",")
+
+    ingress_hosts = [h["host"] for h in helm_params["ingress"]["hosts"]]
+    assert ingress_hosts
+    for host in ingress_hosts:
+        assert f"https://{host}" in origins
+
+    # only our own origins, so a foreign site still cannot post here
+    assert all(any(host in o for host in ingress_hosts) for o in origins)
