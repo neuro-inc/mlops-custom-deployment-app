@@ -198,3 +198,63 @@ async def test_values_mlflow_generation_postgres_uri(
     assert artifact_env["value"] == "file:///mlflow-artifacts"
 
     assert helm_params["labels"]["application"] == "mlflow"
+
+
+@pytest.mark.asyncio
+async def test_values_mlflow_allowed_hosts_and_jobs_disabled(
+    setup_clients, mock_get_preset_cpu
+):
+    """
+    MLflow 3.x answers 403 for any Host header it does not recognise, and its
+    defaults cover only loopback and private IPs — which the kubelet probes
+    satisfy while real traffic does not. Setting MLFLOW_SERVER_ALLOWED_HOSTS
+    replaces those defaults rather than extending them, so the generated list
+    has to carry the ingress hostname, the in-cluster service name and the
+    original defaults all at once.
+    """
+    input_data = MLFlowAppInputs(
+        preset=Preset(name="cpu-small"),
+        ingress_http=IngressHttp(clusterName="test"),
+        metadata_storage=MLFlowMetadataSQLite(),
+        artifact_store=ApoloFilesPath(
+            path="storage://test-cluster/myorg/proj/mlflow-artifacts"
+        ),
+    )
+    processor = MLFlowChartValueProcessor(client=setup_clients)
+    helm_params = await processor.gen_extra_values(
+        input_=input_data,
+        app_name="my-mlflow",
+        namespace=DEFAULT_NAMESPACE,
+        app_secrets_name=APP_SECRETS_NAME,
+        app_id=APP_ID,
+    )
+
+    env_vars = helm_params["container"]["env"]
+    allowed_env = next(
+        (e for e in env_vars if e["name"] == "MLFLOW_SERVER_ALLOWED_HOSTS"), None
+    )
+    assert allowed_env is not None
+    allowed = allowed_env["value"].split(",")
+
+    # probes address the pod IP, so the private-IP defaults must survive
+    assert "10.*" in allowed
+    assert "localhost" in allowed
+
+    # clients running as platform jobs reach the service by its in-cluster name,
+    # and send a port in the Host header
+    assert f"*.{DEFAULT_NAMESPACE}" in allowed
+    assert f"*.{DEFAULT_NAMESPACE}:*" in allowed
+
+    # the UI is served on the ingress hostname
+    ingress_hosts = [h["host"] for h in helm_params["ingress"]["hosts"]]
+    assert ingress_hosts
+    for host in ingress_hosts:
+        assert host in allowed
+        assert f"{host}:*" in allowed
+
+    jobs_env = next(
+        (e for e in env_vars if e["name"] == "MLFLOW_SERVER_ENABLE_JOB_EXECUTION"),
+        None,
+    )
+    assert jobs_env is not None
+    assert jobs_env["value"] == "false"

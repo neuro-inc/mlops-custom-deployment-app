@@ -32,6 +32,33 @@ from apolo_app_types.protocols.custom_deployment import (
 from apolo_apps_mlflow_core.types import MLFlowAppInputs, MLFlowMetadataPostgres
 
 
+# MLflow 3.x rejects any request whose Host header it does not recognise, with
+# 403 "Invalid Host header - possible DNS rebinding attack detected". Its
+# built-in list covers loopback and private IPs, so the kubelet probes pass
+# (they address the pod IP) while the ingress hostname and the in-cluster
+# service name are both refused — the app reports healthy while every request a
+# user actually makes fails.
+#
+# MLFLOW_SERVER_ALLOWED_HOSTS *replaces* that built-in list rather than adding
+# to it, so the defaults are repeated here; dropping them would break the
+# probes. Mirrors mlflow.server.security_utils.get_default_allowed_hosts().
+_MLFLOW_DEFAULT_ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+    "0.0.0.0",
+    "localhost:*",
+    "127.0.0.1:*",
+    "[[]::1]:*",
+    "0.0.0.0:*",
+    "192.168.*",
+    "10.*",
+    *[f"172.{octet}.*" for octet in range(16, 32)],
+    "fc00:*",
+    "fd00:*",
+]
+
+
 class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
     """
     Enhanced MLFlow chart processor that supports:
@@ -90,6 +117,24 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
     async def gen_extra_helm_args(self, *_: t.Any) -> list[str]:
         return ["--timeout", "30m"]
 
+    @staticmethod
+    def _gen_allowed_hosts(base_vals: dict[str, t.Any], namespace: str) -> list[str]:
+        """Host headers MLflow should answer, on top of its own defaults.
+
+        Adds the in-cluster service name, which clients running as platform jobs
+        use, and the ingress hostname the UI is served on. MLflow compares the
+        Host header verbatim, so entries carrying a port need their own pattern.
+        """
+        allowed = [
+            *_MLFLOW_DEFAULT_ALLOWED_HOSTS,
+            f"*.{namespace}",
+            f"*.{namespace}:*",
+        ]
+        for host_cfg in base_vals.get("ingress", {}).get("hosts", []):
+            if host := host_cfg.get("host"):
+                allowed += [host, f"{host}:*"]
+        return allowed
+
     async def gen_extra_values(
         self,
         input_: MLFlowAppInputs,
@@ -133,6 +178,20 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
             backend_uri = "sqlite:///mlflow-data/mlflow.db"
 
         envs.append(Env(name="MLFLOW_TRACKING_URI", value=backend_uri))
+
+        envs.append(
+            Env(
+                name="MLFLOW_SERVER_ALLOWED_HOSTS",
+                value=",".join(self._gen_allowed_hosts(base_vals, namespace)),
+            )
+        )
+
+        # The Huey-backed job scheduler behind MLflow's server-side GenAI
+        # features (online scoring, trace archival, judges) idles at well over a
+        # gigabyte — see mlflow/mlflow#22792 and #23702. None of it is used by a
+        # tracking server and model registry, and leaving it on pushes the
+        # container past the memory limit of the smaller presets.
+        envs.append(Env(name="MLFLOW_SERVER_ENABLE_JOB_EXECUTION", value="false"))
 
         artifact_mounts: StorageMounts | None = None
         artifact_env_val = None
