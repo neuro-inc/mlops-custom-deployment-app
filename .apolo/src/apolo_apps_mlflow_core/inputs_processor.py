@@ -32,6 +32,27 @@ from apolo_app_types.protocols.custom_deployment import (
 from apolo_apps_mlflow_core.types import MLFlowAppInputs, MLFlowMetadataPostgres
 
 
+# MLFLOW_SERVER_ALLOWED_HOSTS replaces MLflow's own defaults instead of adding
+# to it, and they include the private IPs the kubelet probes come from — so
+# dropping them here would fail the probes. Mirrors
+# mlflow.server.security_utils.get_default_allowed_hosts().
+_MLFLOW_DEFAULT_ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+    "0.0.0.0",
+    "localhost:*",
+    "127.0.0.1:*",
+    "[[]::1]:*",
+    "0.0.0.0:*",
+    "192.168.*",
+    "10.*",
+    *[f"172.{octet}.*" for octet in range(16, 32)],
+    "fc00:*",
+    "fd00:*",
+]
+
+
 class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
     """
     Enhanced MLFlow chart processor that supports:
@@ -90,6 +111,22 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
     async def gen_extra_helm_args(self, *_: t.Any) -> list[str]:
         return ["--timeout", "30m"]
 
+    @staticmethod
+    def _gen_allowed_hosts(base_vals: dict[str, t.Any], namespace: str) -> list[str]:
+        """Host headers MLflow should answer, on top of its own defaults.
+
+        The in-cluster service is addressed under several DNS suffixes: jobs use
+        `<svc>.<namespace>`, the outputs sidecar the fully qualified form.
+        Matching is literal and keeps the port, hence the `:*` variants.
+        """
+        allowed = [*_MLFLOW_DEFAULT_ALLOWED_HOSTS]
+        for suffix in ("", ".svc", ".svc.cluster.local"):
+            allowed += [f"*.{namespace}{suffix}", f"*.{namespace}{suffix}:*"]
+        for host_cfg in base_vals.get("ingress", {}).get("hosts", []):
+            if host := host_cfg.get("host"):
+                allowed += [host, f"{host}:*"]
+        return allowed
+
     async def gen_extra_values(
         self,
         input_: MLFlowAppInputs,
@@ -133,6 +170,17 @@ class MLFlowChartValueProcessor(BaseChartValueProcessor[MLFlowAppInputs]):
             backend_uri = "sqlite:///mlflow-data/mlflow.db"
 
         envs.append(Env(name="MLFLOW_TRACKING_URI", value=backend_uri))
+
+        envs.append(
+            Env(
+                name="MLFLOW_SERVER_ALLOWED_HOSTS",
+                value=",".join(self._gen_allowed_hosts(base_vals, namespace)),
+            )
+        )
+
+        # Unused here, and its Huey workers idle at over a gigabyte, which
+        # overruns the smaller presets (mlflow/mlflow#22792, #23702).
+        envs.append(Env(name="MLFLOW_SERVER_ENABLE_JOB_EXECUTION", value="false"))
 
         artifact_mounts: StorageMounts | None = None
         artifact_env_val = None
