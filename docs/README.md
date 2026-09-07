@@ -12,4 +12,3 @@ Keep service-specific documentation here and shared guidance in the harness.
 ## Existing documents
 
 - [App development](engineering/app-development.md)
-- [IT-196: global static hostname](architecture/it-196/)
