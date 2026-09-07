@@ -42,7 +42,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Service APIs",
-      "x-type": "ServiceAPI[WebApp]"
+      "x-type": "ServiceAPI[GrpcAPI]"
     },
     "WebApp": {
       "properties": {
@@ -115,7 +115,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "HTTP API",
-      "x-type": "WebApp"
+      "x-type": "OpenAICompatibleEmbeddingsRestAPI"
     }
   },
   "description": "PrivateGPT outputs:\n  - app_url (inherited from AppOutputs)",

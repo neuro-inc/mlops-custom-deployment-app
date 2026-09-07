@@ -553,7 +553,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "HTTP API",
-      "x-type": "RestAPI"
+      "x-type": "OpenAICompatibleEmbeddingsRestAPI"
     },
     "ServiceAPI_WebApp_": {
       "properties": {
@@ -597,7 +597,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Service APIs",
-      "x-type": "ServiceAPI[WebApp]"
+      "x-type": "ServiceAPI[GrpcAPI]"
     },
     "WebApp": {
       "properties": {
@@ -670,7 +670,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "HTTP API",
-      "x-type": "WebApp"
+      "x-type": "OpenAICompatibleEmbeddingsRestAPI"
     }
   },
   "properties": {

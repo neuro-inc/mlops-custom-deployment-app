@@ -2,6 +2,12 @@
 
 This repository contains a generic Helm chart for deploying scalable applications on the Apolo platform. This chart is designed to be used as a Custom Deployment application that is installed by the Apps API.
 
+## Documentation
+
+- [App creation and deployment flow](docs/engineering/app-development.md): authoring, validation, catalog discovery, and promotion through Apolo Dev and Prod.
+
+- [IT-196: Service Deployment global static hostname](docs/architecture/it-196/README.md): optional hostname input, App release flow, and dated platform observations. This is design evidence, not a claim that the feature is implemented.
+
 ## Structure
 
 - `charts/custom-deployment/`: Contains the Helm chart for the custom application.
