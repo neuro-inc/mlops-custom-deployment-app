@@ -2,12 +2,6 @@
 
 This repository contains a generic Helm chart for deploying scalable applications on the Apolo platform. This chart is designed to be used as a Custom Deployment application that is installed by the Apps API.
 
-## Documentation
-
-- [App creation and deployment flow](docs/engineering/app-development.md): authoring, validation, catalog discovery, and promotion through Apolo Dev and Prod.
-
-- [IT-196: Service Deployment global static hostname](docs/architecture/it-196/README.md): optional hostname input, App release flow, and dated platform observations. This is design evidence, not a claim that the feature is implemented.
-
 ## Structure
 
 - `charts/custom-deployment/`: Contains the Helm chart for the custom application.
@@ -33,3 +27,18 @@ To deploy the application using this Helm chart, follow these steps:
 2. Install the chart using the Helm CLI:
    ```sh
    helm install custom-deployment charts/custom-deployment
+
+## Service Deployment static hostname
+
+When the Apps API has global-host routing enabled for the cluster, Service Deployment accepts:
+
+```yaml
+networking:
+  service_enabled: true
+  ingress_http:
+    static_hostname: my-api
+```
+
+The hostname label is optional. The Apps API reserves its global name and exposes `static_url` after routing and TLS verification; the generated URL remains available. This input is specific to the Service Deployment App, not a direct Helm chart value.
+
+The companion [Apps API implementation](https://github.com/neuro-inc/platform-apps/pull/999) owns reservation, transfer, DNS, and rollout configuration. Deploy its backend, authentication, and infrastructure prerequisites before publishing this template.
