@@ -27,6 +27,7 @@ To deploy the application using this Helm chart, follow these steps:
 2. Install the chart using the Helm CLI:
    ```sh
    helm install custom-deployment charts/custom-deployment
+   ```
 
 ## Service Deployment static hostname
 
