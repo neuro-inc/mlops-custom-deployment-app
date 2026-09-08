@@ -7,7 +7,7 @@ The [IT-196](https://apolocloud.atlassian.net/browse/IT-196) scope is global sta
 - [Ticket deployment flow](app-creation-flow.md): recorded pipeline evidence and IT-196 release dependencies.
 - [Apolo Main platform inspection](apolo-main-platform.md): dated routing, DNS, and TLS observations from 2026-09-07; revalidate before implementation.
 
-**Recommendation:** resolve the optional label as `<static_hostname>.<global-apps-domain>`, using an Apolo-managed zone independent of installation context. Keep the generated URL and route the static hostname to the bound deployment's own Service. Reserve ownership separately from the instance, retain it on detachment/uninstall, and authorize every transfer. No target selectors or separate alias App are required.
+**Implementation:** resolve the optional label as `<static_hostname>.apps.apolo.us` in Prod and `<static_hostname>.apps.dev.apolo.us` in Dev, independent of installation context. Keep the generated URL and route the static hostname to the bound deployment's own Service through a separate control-plane-owned route. Reserve ownership separately from the instance, retain it on detachment/uninstall, and authorize every transfer. No target selectors or separate alias App are required. Source changes are opt-in; live rollout and certificate readiness remain pending.
 
 Choose separate Dev/Prod zones; no actual global domain has been selected or provisioned. DNS, ingress, TLS, authentication, outputs, and stale operations require coordinated lifecycle handling. Migration can interrupt traffic during cutover and DNS convergence; this is stable naming, not a zero-downtime guarantee. The proposal does not implement customer-owned custom domains or independence from Apolo's ownership of its DNS suffix.
 

@@ -70,7 +70,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "Apolo Files Path",
-      "x-type": "ApoloFilesFile"
+      "x-type": "ApoloFilesPath"
     },
     "ApoloMountMode": {
       "properties": {
@@ -362,21 +362,25 @@
           "x-meta-type": "inline",
           "x-title": "Container Image Tag"
         },
-        "dockerconfigjson": {
+        "imagepullsecret": {
           "anyOf": [
             {
               "$ref": "#/$defs/DockerConfigModel"
+            },
+            {
+              "$ref": "#/$defs/GithubImageRegistryAuth"
             },
             {
               "type": "null"
             }
           ],
           "default": null,
-          "x-description": "ImagePullSecrets for DockerHub",
+          "title": "Imagepullsecret",
+          "x-description": "Credentials used to pull the container image from a private registry: either a Docker config (e.g. from the DockerHub app) or a GitHub Container Registry auth (from the GitHub app).",
           "x-is-advanced-field": false,
           "x-is-configurable": true,
           "x-meta-type": "integration",
-          "x-title": "ImagePullSecrets for DockerHub"
+          "x-title": "Image Pull Secret"
         },
         "pull_policy": {
           "$ref": "#/$defs/ContainerImagePullPolicy",
@@ -581,6 +585,46 @@
       "x-meta-type": "inline",
       "x-title": "gRPC Health Check",
       "x-type": "GRPCHealthCheckConfig"
+    },
+    "GithubImageRegistryAuth": {
+      "properties": {
+        "username": {
+          "title": "Username",
+          "type": "string",
+          "x-description": "GitHub account username the personal access token belongs to.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Username"
+        },
+        "token": {
+          "$ref": "#/$defs/ApoloSecret",
+          "x-description": "GitHub personal access token (classic). For pulling container images it needs the read:packages scope, see https://docs.github.com/en/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries",
+          "x-title": "GitHub Personal Access Token"
+        },
+        "registry_url": {
+          "default": "ghcr.io",
+          "title": "Registry Url",
+          "type": "string",
+          "x-description": "Container registry host. Use ghcr.io for github.com or containers.HOSTNAME for GitHub Enterprise Server.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Registry Host"
+        }
+      },
+      "required": [
+        "username",
+        "token"
+      ],
+      "title": "GithubImageRegistryAuth",
+      "type": "object",
+      "x-description": "Credentials for pulling container images from the GitHub Container Registry (ghcr.io or a GitHub Enterprise Server host).",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "GitHub Container Registry Auth",
+      "x-type": "GithubImageRegistryAuth"
     },
     "HTTPHealthCheckConfig": {
       "description": "HTTP-specific health check configuration.",
@@ -795,37 +839,6 @@
       "x-title": "Health Check Probes",
       "x-type": "HealthCheckProbesConfig"
     },
-    "IngressHttp": {
-      "properties": {
-        "auth": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ApoloAuth"
-            },
-            {
-              "$ref": "#/$defs/NoAuth"
-            },
-            {
-              "$ref": "#/$defs/CustomAuth"
-            }
-          ],
-          "title": "Auth",
-          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Authentication"
-        }
-      },
-      "title": "IngressHttp",
-      "type": "object",
-      "x-description": "Enable access to your application over the internet using HTTPS.",
-      "x-is-advanced-field": false,
-      "x-is-configurable": true,
-      "x-meta-type": "inline",
-      "x-title": "Enable HTTP Ingress",
-      "x-type": "IngressHttp"
-    },
     "IngressPathTypeEnum": {
       "enum": [
         "Prefix",
@@ -931,54 +944,6 @@
       "x-title": "Mount Path",
       "x-type": "MountPath"
     },
-    "NetworkingConfig": {
-      "properties": {
-        "service_enabled": {
-          "default": true,
-          "title": "Service Enabled",
-          "type": "boolean",
-          "x-description": "Enable or disable the internal network service for the deployment.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Service Enabled"
-        },
-        "ingress_http": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/IngressHttp"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "x-description": "Define HTTP ingress configuration for exposing services over the web.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "HTTP Ingress"
-        },
-        "ports": {
-          "items": {
-            "$ref": "#/$defs/Port"
-          },
-          "title": "Ports",
-          "type": "array",
-          "x-description": "Specify which ports should be exposed by the application.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Exposed Ports"
-        }
-      },
-      "title": "NetworkingConfig",
-      "type": "object",
-      "x-description": "Configure custom networking options for your deployment, including ports and ingress settings.",
-      "x-is-advanced-field": true,
-      "x-is-configurable": true,
-      "x-meta-type": "inline",
-      "x-title": "Network Configuration"
-    },
     "NoAuth": {
       "properties": {
         "type": {
@@ -1032,9 +997,11 @@
         },
         "path": {
           "default": "/",
+          "minLength": 1,
+          "pattern": "^\\S+$",
           "title": "Path",
           "type": "string",
-          "x-description": "Set the URL path for routing traffic to this port.",
+          "x-description": "Set the URL path for routing traffic to this port. For 'Prefix' and 'Exact' path types this must be a literal URL path: it has to start with '/' and may only contain letters, digits, the characters '-', '.', '_', '~', '/', or percent-encoded octets (e.g. '%20'). For 'ImplementationSpecific' the path is interpreted by the ingress controller (e.g. a Go/RE2 regular expression in Traefik) and only needs to be a valid regular expression.",
           "x-is-advanced-field": false,
           "x-is-configurable": true,
           "x-meta-type": "inline",
@@ -1048,7 +1015,7 @@
       "x-is-configurable": true,
       "x-meta-type": "inline",
       "x-title": "",
-      "x-type": "Image"
+      "x-type": "Port"
     },
     "Preset": {
       "properties": {
@@ -1073,6 +1040,100 @@
       "x-meta-type": "inline",
       "x-title": "Resource Preset",
       "x-type": "Preset"
+    },
+    "ServiceDeploymentIngress": {
+      "properties": {
+        "auth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloAuth"
+            },
+            {
+              "$ref": "#/$defs/NoAuth"
+            },
+            {
+              "$ref": "#/$defs/CustomAuth"
+            }
+          ],
+          "title": "Auth",
+          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Authentication"
+        },
+        "static_hostname": {
+          "anyOf": [
+            {
+              "maxLength": 63,
+              "minLength": 1,
+              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Static Hostname",
+          "x-description": "Optional globally reserved name, such as my-api. The platform adds its Apps domain and retains ownership across deployments.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Static hostname"
+        }
+      },
+      "title": "ServiceDeploymentIngress",
+      "type": "object",
+      "x-description": "Enable access to your application over the internet using HTTPS.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Enable HTTP Ingress",
+      "x-type": "ServiceDeploymentIngress"
+    },
+    "ServiceDeploymentNetworking": {
+      "properties": {
+        "service_enabled": {
+          "default": true,
+          "title": "Service Enabled",
+          "type": "boolean",
+          "x-description": "Enable or disable the internal network service for the deployment.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Service Enabled"
+        },
+        "ingress_http": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceDeploymentIngress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ports": {
+          "items": {
+            "$ref": "#/$defs/Port"
+          },
+          "title": "Ports",
+          "type": "array",
+          "x-description": "Specify which ports should be exposed by the application.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Exposed Ports"
+        }
+      },
+      "title": "ServiceDeploymentNetworking",
+      "type": "object",
+      "x-description": "Configure custom networking options for your deployment, including ports and ingress settings.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Network Configuration"
     },
     "StorageMounts": {
       "properties": {
@@ -1214,7 +1275,7 @@
       "x-title": "Storage Mounts"
     },
     "networking": {
-      "$ref": "#/$defs/NetworkingConfig"
+      "$ref": "#/$defs/ServiceDeploymentNetworking"
     },
     "health_checks": {
       "anyOf": [

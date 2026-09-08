@@ -18,12 +18,12 @@ Resolve it against a configured, Apolo-managed global Apps DNS zone:
 <static_hostname>.<global-apps-domain>
 ```
 
-For example, `my-api.apps.example.com` is illustrative, not a selected or provisioned domain. The production suffix is shared across participating clusters and contains no project, organization, or cluster identifiers. Store the full reserved hostname; changing a platform label or default domain configuration must not rewrite existing names. Retain DNS ownership and certificate support for previously issued names.
+Use `my-api.apps.apolo.us` in Prod and `my-api.apps.dev.apolo.us` in Dev. These suffixes follow the verified `cloud-infra` zone and wildcard certificate declarations; destination routing and certificate installation remain rollout prerequisites. The production suffix is shared across participating clusters and contains no project, organization, or cluster identifiers. Store the full reserved hostname; changing a platform label or default domain configuration must not rewrite existing names. Retain DNS ownership and certificate support for previously issued names.
 
 The destination's cluster, organization, project, instance, namespace, and Service still come from trusted platform metadata. They determine routing and authorization, not the public hostname. Add no target selectors to the ordinary installation form. User-owned custom domains and a global HTTP proxy are outside this implementation; an Apolo-owned suffix remains dependent on Apolo retaining that domain.
 
 - Omitted or null `static_hostname` preserves existing behavior on initial installation. Removing it from an installation detaches its static route and retains the reservation for its owner.
-- Require enabled HTTP ingress and an internal Service. Validate a single 1–63 character lowercase ASCII DNS label with alphanumeric ends and optional internal hyphens. Reject explicit blanks, dots, slashes, wildcards, whitespace, underscores, reserved platform labels, and invalid full hostname lengths; do not silently rewrite input.
+- Require enabled HTTP ingress and an internal Service. Validate a single 1–63 character lowercase ASCII DNS label with alphanumeric ends and optional internal hyphens. Reject explicit blanks, dots, slashes, wildcards, whitespace, underscores and invalid full hostname lengths; do not silently rewrite input.
 - Keep the generated URL and add the static host to the same Service, paths, and ports. Preserve the selected Apolo/custom/no-auth policy on both routes.
 - Accept the field only for `service-deployment`, in both generated schemas and server validation. It identifies this deployment's desired hostname, not another App's Service or an image-wide alias.
 - A fresh claim creates a reservation. The owner can bind an unbound reservation to a new Service Deployment. Entering an already-bound name does not steal or transfer it; use the authorized transfer operation below.
@@ -75,9 +75,9 @@ This initial design permits a bounded interruption during cutover and DNS conver
 
 At the recorded source baseline, `ServiceDeploymentInputs` inherits `CustomDeploymentInputs`, and its input processor subclasses `CustomDeploymentChartValueProcessor`. Add Service Deployment-specific networking/HTTP-ingress models; do not expose the field globally to all `IngressHttp` consumers. Update its input/output processors and generated schemas, reusing the package, manifest, AppType, workflow, and `charts/custom-deployment` chart.
 
-The chart already iterates `ingress.hosts`. Supply the validated global host only for an authorized binding, alongside the generated host and existing paths/ports/middleware. Include the control-plane certificate reference through the chart's supported TLS configuration, extending that wiring if needed. Shared helper changes must remain optional for other Apps.
+Keep the workload chart's generated host unchanged. A separate control-plane-owned Argo Application renders the authorized global route with the same observed HTTP paths, owned Service, and authentication middleware. It supplies the certificate reference and a final generation guard. Workload updates cannot create that resource.
 
-The inspected `get_ingress_host_port` rejects multiple rules in one Ingress. Extend it with explicit expected-host selection; preserve strict defaults for other callers and never select an arbitrary first rule. Keep `app_url` as the generated URL and add optional `static_url` for the verified active global endpoint. Reconcile outputs after detach/transfer so the previous instance cannot continue advertising the alias. Expose pending/failed binding progress without presenting an unverified alias as ready; preserve older revision/output compatibility.
+The inspected `get_ingress_host_port` rejects multiple rules in one Ingress. The separate route avoids changing this shared contract: the workload still has one generated hostname. Keep `app_url` as that URL; the Apps API derives optional `static_url` from the verified active registry binding and ignores stale workflow-provided values. Binding status exposes pending/error state separately.
 
 Sources: [Service Deployment types](https://github.com/neuro-inc/mlops-custom-deployment-app/blob/e4e2b16fc436563542266221a9a5a67666bd262e/.apolo/src/apolo_apps_service_deployment/types.py), [input processor](https://github.com/neuro-inc/mlops-custom-deployment-app/blob/e4e2b16fc436563542266221a9a5a67666bd262e/.apolo/src/apolo_apps_service_deployment/inputs_processor.py), [Ingress template](https://github.com/neuro-inc/mlops-custom-deployment-app/blob/e4e2b16fc436563542266221a9a5a67666bd262e/charts/custom-deployment/templates/ingress.yaml), [output helper](https://github.com/neuro-inc/app-types/blob/ab144d9baf651b2a28d83963bdf59239f6b0ec77/src/apolo_app_types/outputs/utils/ingress.py).
 
@@ -99,16 +99,16 @@ The historical Apolo Main certificate covered cluster-specific domains, not the 
 
 Use separate Dev and Prod global zones and isolated DNS credentials/registries. "Global" means shared across participating clusters within that environment. Dev cannot claim or modify production hostnames. Preserve issued production names when clusters or platform configuration change.
 
-Release changed `app-types` helpers first, then update processor dependencies and generated schemas. Deploy registry/reconciliation, authentication, DNS, and certificate prerequisites to Dev before testing a Service Deployment branch. Validate at least two destinations and the cross-scope transfer paths before promoting dependencies and a tested App tag to Prod. Catalog publication does not update existing instances. Follow [the generic creation/release flow](../../engineering/app-development.md) and [ticket release details](app-creation-flow.md).
+No shared `app-types` change is required by this implementation. Regenerate the Service Deployment schemas with its locked dependency and publish the static-route chart at a reviewed commit. Deploy registry/reconciliation, authentication, DNS, and certificate prerequisites to Dev before testing a Service Deployment branch. Validate at least two destinations and the cross-scope transfer paths before promoting dependencies and a tested App tag to Prod. Catalog publication does not update existing instances. Follow [the generic creation/release flow](../../engineering/app-development.md) and [ticket release details](app-creation-flow.md).
 
 ## Changes by repository
 
 | Repository | Change |
 | --- | --- |
-| `mlops-custom-deployment-app` | Service Deployment-only input/output models, processors, schemas, multiple-host/TLS chart values, and compatibility checks. |
-| `app-types` | Optional resolved-host and deterministic output-selection support where needed; preserve other Apps. No new AppType. |
+| `mlops-custom-deployment-app` | Service Deployment-only input/output models, generated schemas, and compatibility checks; workload processors/chart stay unchanged. |
+| `app-types` | Unchanged: the separate control-plane route preserves existing helper behavior and AppType. |
 | `platform-apps` | Global reservation ownership, binding/transfer/release API, generation checks, lifecycle reconciliation and status, DNS coordination, canonical-hostname resolution, and stale-output cleanup. |
-| `cloud-infra` / `platform-operator` | Global zones per environment, scoped DNS integration, public ingress endpoint metadata, certificate issuance/distribution/renewal, and route readiness/withdrawal support. |
+| `cloud-infra` / `platform-operator` | Opt-in control-plane configuration and scoped DNS/cluster-reader secrets. Operators configure existing destination certificate issuance/distribution/renewal before enabling a cluster. |
 | `neuro-web-ui` | Optional field/output and clear conflict/pending/failure presentation. No target selectors in the ordinary form; API transfer support is sufficient initially. |
 | `platform-ingress-auth` | Global-zone recognition, authoritative active-binding lookup, and authentication parity/fail-closed behavior. |
 
@@ -127,6 +127,6 @@ Release changed `app-types` helpers first, then update processor dependencies an
 | TLS | Verified hostname/SNI, DNS, issuance, renewal, destination certificate installation, and issuer/distribution failures are covered. Existing cluster certificates are not assumed valid for the global zone. |
 | Reconciliation | A delayed workflow, old revision rollback, source uninstall, or controller restart cannot restore an obsolete route, remove a new binding, or publish stale outputs. |
 
-Before implementation, select the actual Dev/Prod DNS zones and provider permissions, map ownership and transfer/release actions to existing platform identities, and define the measured DNS/drain quarantine policy. These are rollout configuration/authorization decisions, not optional org/project fields in the App form.
+The implementation selects the verified Apolo Apps suffixes, uses the existing authenticated `User.name` owner identity, and defaults to a one-hour quarantine after confirmed cleanup (minimum ten minutes). Before rollout, provision scoped provider/reader credentials, validate certificate delivery and ingress exclusivity, and confirm the quarantine against DNS/drain behavior. These are rollout configuration/authorization decisions, not optional org/project fields in the App form.
 
-Use focused model/processor/output/API tests, chart render/lint checks, and Dev end-to-end validation before promotion. This document specifies proposed implementation; no feature code or live global-domain deployment has been validated.
+Use focused model/processor/output/API tests, chart render/lint checks, and Dev end-to-end validation before promotion. Source implementation and focused tests are present; live global-domain deployment remains unvalidated. The controller records transfer input revisions and preserves registry identity across code rollback. Every route ends its authentication chain with an uncached generation guard, including public routes. See [implementation architecture](../../../../platform-apps/docs/architecture/static-hostnames.md) and [configuration/rollout](../../../../platform-apps/docs/operations/static-hostnames.md). These links assume sibling repositories.
