@@ -2,11 +2,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: {{ .Values.configMap.nameOverride | default (include "custom-deployment.fullname" .) }}
-    labels:
-        {{- include "custom-deployment.labels" . | nindent 4 }}
+  name: {{ required "configMap.name is required when configMap.enabled is true" .Values.configMap.name }}
+  labels:
+    {{- include "custom-deployment.labels" . | nindent 4 }}
 data:
 {{- range $key, $value := .Values.configMap.data }}
-    {{ $key }}: {{ $value | quote }}
+  {{ $key }}: {{ $value | quote }}
 {{- end }}
 {{- end -}}
