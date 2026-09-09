@@ -20,6 +20,8 @@ make test-unit
 
 Review generated changes; `make lint` includes formatting hooks that can modify files. Follow [the test workflow](../../.github/workflows/test.yaml) for required checks and prepare the configured environment before integration tests.
 
+Use `make typecheck` for the type check alone, without formatting. It reads its targets from `pyproject.toml`: all `.apolo/src` packages and the Service Deployment test directory, including new files. Other App test directories are not yet part of the typed baseline; extend coverage when changing them. Shared fixture constants are inspected from their source because that package does not publish a `py.typed` marker.
+
 The [schema-generation hook](../../.pre-commit-config.yaml) runs `make gen-types-schemas`. Add new model/schema pairs to [the Makefile](../../Makefile) and commit the generated files.
 
 ## Processor image publication

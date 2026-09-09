@@ -61,6 +61,7 @@ known-first-party = ["apolo_app_types"]
 known-local-folder = ["tests"]
 
 [tool.mypy]
+files = [".apolo/src", ".apolo/tests/unit/service_deployment"]
 check_untyped_defs = true
 disallow_any_generics = true
 disallow_untyped_defs = true
@@ -70,14 +71,16 @@ warn_redundant_casts = true
 warn_unused_ignores = true
 warn_unused_configs = true
 plugins = ['pydantic.mypy']
-exclude = [
-  "tests/"
-]
 
 
 [[tool.mypy.overrides]]
 module = "pytest"
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Shared fixture constants lack py.typed; inspect their source instead of ignoring imports.
+module = "apolo_app_types_fixtures.constants"
+follow_untyped_imports = true
 
 
 [tool.flake8]
