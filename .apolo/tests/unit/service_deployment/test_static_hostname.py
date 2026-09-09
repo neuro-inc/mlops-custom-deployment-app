@@ -11,20 +11,22 @@ from apolo_app_types.protocols.custom_deployment import NetworkingConfig
 @pytest.mark.parametrize(
     "label", ["", "Upper", "a.b", "*", "-api", "api-", "a" * 64, "a\n", "é"]
 )
-def test_invalid_static_hostname(label):
+def test_invalid_static_hostname(label: str) -> None:
     with pytest.raises(ValidationError):
         ServiceDeploymentNetworking(ingress_http={"static_hostname": label})
 
 
-def test_static_hostname_requires_service():
+def test_static_hostname_requires_service() -> None:
     with pytest.raises(ValidationError):
         ServiceDeploymentNetworking(
             service_enabled=False, ingress_http={"static_hostname": "api"}
         )
 
 
-def test_optional_field_and_legacy_outputs():
-    assert ServiceDeploymentNetworking().ingress_http.static_hostname is None
+def test_optional_field_and_legacy_outputs() -> None:
+    ingress = ServiceDeploymentNetworking().ingress_http
+    assert ingress is not None
+    assert ingress.static_hostname is None
     assert ServiceDeploymentOutputs().static_url is None
     assert (
         "static_hostname"

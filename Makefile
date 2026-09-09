@@ -31,7 +31,7 @@ endif
 
 .PHONY: lint
 lint: format
-	poetry run mypy .apolo
+	poetry run mypy .apolo .apolo/tests/unit/service_deployment/test_static_hostname.py
 
 .PHONY: test-unit
 test-unit:
