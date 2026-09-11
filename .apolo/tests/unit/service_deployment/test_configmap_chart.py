@@ -13,6 +13,7 @@ CHART_PATH = PROJECT_ROOT / "charts" / "custom-deployment"
 
 @pytest.mark.skipif(HELM is None, reason="Helm is required to render the chart")
 def test_config_map_name_matches_deployment_volume(tmp_path: Path) -> None:
+    assert HELM is not None  # The skip marker excludes an unavailable executable.
     values_path = tmp_path / "values.yaml"
     values_path.write_text(
         yaml.safe_dump(
@@ -76,6 +77,7 @@ def test_config_map_name_matches_deployment_volume(tmp_path: Path) -> None:
 
 @pytest.mark.skipif(HELM is None, reason="Helm is required to render the chart")
 def test_config_map_name_is_required() -> None:
+    assert HELM is not None
     rendered = subprocess.run(
         [
             HELM,

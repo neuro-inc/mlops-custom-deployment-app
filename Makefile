@@ -29,9 +29,12 @@ else
 	poetry run pre-commit run --all-files || poetry run pre-commit run --all-files
 endif
 
-.PHONY: lint
+.PHONY: lint typecheck
 lint: format
-	poetry run mypy .apolo
+	$(MAKE) typecheck
+
+typecheck:
+	poetry run python -m mypy
 
 .PHONY: test-unit
 test-unit:

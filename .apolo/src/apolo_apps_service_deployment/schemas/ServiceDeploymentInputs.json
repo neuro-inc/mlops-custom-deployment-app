@@ -839,37 +839,6 @@
       "x-title": "Health Check Probes",
       "x-type": "HealthCheckProbesConfig"
     },
-    "IngressHttp": {
-      "properties": {
-        "auth": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/ApoloAuth"
-            },
-            {
-              "$ref": "#/$defs/NoAuth"
-            },
-            {
-              "$ref": "#/$defs/CustomAuth"
-            }
-          ],
-          "title": "Auth",
-          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Authentication"
-        }
-      },
-      "title": "IngressHttp",
-      "type": "object",
-      "x-description": "Enable access to your application over the internet using HTTPS.",
-      "x-is-advanced-field": false,
-      "x-is-configurable": true,
-      "x-meta-type": "inline",
-      "x-title": "Enable HTTP Ingress",
-      "x-type": "IngressHttp"
-    },
     "IngressPathTypeEnum": {
       "enum": [
         "Prefix",
@@ -975,54 +944,6 @@
       "x-title": "Mount Path",
       "x-type": "MountPath"
     },
-    "NetworkingConfig": {
-      "properties": {
-        "service_enabled": {
-          "default": true,
-          "title": "Service Enabled",
-          "type": "boolean",
-          "x-description": "Enable or disable the internal network service for the deployment.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Service Enabled"
-        },
-        "ingress_http": {
-          "anyOf": [
-            {
-              "$ref": "#/$defs/IngressHttp"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "x-description": "Define HTTP ingress configuration for exposing services over the web.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "HTTP Ingress"
-        },
-        "ports": {
-          "items": {
-            "$ref": "#/$defs/Port"
-          },
-          "title": "Ports",
-          "type": "array",
-          "x-description": "Specify which ports should be exposed by the application.",
-          "x-is-advanced-field": false,
-          "x-is-configurable": true,
-          "x-meta-type": "inline",
-          "x-title": "Exposed Ports"
-        }
-      },
-      "title": "NetworkingConfig",
-      "type": "object",
-      "x-description": "Configure custom networking options for your deployment, including ports and ingress settings.",
-      "x-is-advanced-field": true,
-      "x-is-configurable": true,
-      "x-meta-type": "inline",
-      "x-title": "Network Configuration"
-    },
     "NoAuth": {
       "properties": {
         "type": {
@@ -1119,6 +1040,100 @@
       "x-meta-type": "inline",
       "x-title": "Resource Preset",
       "x-type": "Preset"
+    },
+    "ServiceDeploymentIngress": {
+      "properties": {
+        "auth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloAuth"
+            },
+            {
+              "$ref": "#/$defs/NoAuth"
+            },
+            {
+              "$ref": "#/$defs/CustomAuth"
+            }
+          ],
+          "title": "Auth",
+          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Authentication"
+        },
+        "static_hostname": {
+          "anyOf": [
+            {
+              "maxLength": 63,
+              "minLength": 1,
+              "pattern": "^[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Static Hostname",
+          "x-description": "Optional globally reserved name, such as my-api. The platform adds its Apps domain and retains ownership across deployments.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Static hostname"
+        }
+      },
+      "title": "ServiceDeploymentIngress",
+      "type": "object",
+      "x-description": "Enable access to your application over the internet using HTTPS.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Enable HTTP Ingress",
+      "x-type": "ServiceDeploymentIngress"
+    },
+    "ServiceDeploymentNetworking": {
+      "properties": {
+        "service_enabled": {
+          "default": true,
+          "title": "Service Enabled",
+          "type": "boolean",
+          "x-description": "Enable or disable the internal network service for the deployment.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Service Enabled"
+        },
+        "ingress_http": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ServiceDeploymentIngress"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ports": {
+          "items": {
+            "$ref": "#/$defs/Port"
+          },
+          "title": "Ports",
+          "type": "array",
+          "x-description": "Specify which ports should be exposed by the application.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Exposed Ports"
+        }
+      },
+      "title": "ServiceDeploymentNetworking",
+      "type": "object",
+      "x-description": "Configure custom networking options for your deployment, including ports and ingress settings.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Network Configuration"
     },
     "StorageMounts": {
       "properties": {
@@ -1260,7 +1275,7 @@
       "x-title": "Storage Mounts"
     },
     "networking": {
-      "$ref": "#/$defs/NetworkingConfig"
+      "$ref": "#/$defs/ServiceDeploymentNetworking"
     },
     "health_checks": {
       "anyOf": [
