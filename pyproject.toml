@@ -24,7 +24,7 @@ pydantic = "^2.13.5"
 pyyaml = "^6.0.2"
 types-PyYAML = "^6.0.12.20260906"
 yarl = "^1.24.5"
-apolo-app-types = "^26.9.0"
+apolo-app-types = "^26.9.1"
 pre-commit = "^4.6.2"
 multidict = "^6.8.0"
 
