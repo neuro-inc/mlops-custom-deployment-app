@@ -1,3 +1,5 @@
+from unittest.mock import Mock
+
 import pytest
 from apolo_app_types_fixtures.constants import (
     APP_ID,
@@ -8,6 +10,7 @@ from apolo_apps_service_deployment.inputs_processor import (
     ServiceDeploymentInputsProcessor,
 )
 from apolo_apps_service_deployment.types import ServiceDeploymentInputs
+from apolo_sdk import Client
 
 from apolo_app_types.protocols.common import (
     ContainerImage,
@@ -17,8 +20,8 @@ from apolo_app_types.protocols.common import (
 
 
 async def test_service_deployment_values_generation_with_init_container(
-    setup_clients, mock_get_preset_cpu
-):
+    setup_clients: Client, mock_get_preset_cpu: Mock
+) -> None:
     processor = ServiceDeploymentInputsProcessor(client=setup_clients)
     # noinspection PyArgumentList
     helm_params = await processor.gen_extra_values(
@@ -53,8 +56,8 @@ async def test_service_deployment_values_generation_with_init_container(
 
 
 async def test_service_deployment_values_generation_without_init_container(
-    setup_clients, mock_get_preset_cpu
-):
+    setup_clients: Client, mock_get_preset_cpu: Mock
+) -> None:
     processor = ServiceDeploymentInputsProcessor(client=setup_clients)
     # noinspection PyArgumentList
     helm_params = await processor.gen_extra_values(
@@ -72,8 +75,8 @@ async def test_service_deployment_values_generation_without_init_container(
 
 
 async def test_service_deployment_values_generation_with_multiple_init_containers(
-    setup_clients, mock_get_preset_cpu
-):
+    setup_clients: Client, mock_get_preset_cpu: Mock
+) -> None:
     processor = ServiceDeploymentInputsProcessor(client=setup_clients)
     # noinspection PyArgumentList
     helm_params = await processor.gen_extra_values(
@@ -121,7 +124,9 @@ async def test_service_deployment_values_generation_with_multiple_init_container
 
 
 @pytest.mark.usefixtures("_mock_get_preset_gpu_np")
-async def test_service_deployment_values_generation_with_gpu_preset(setup_clients):
+async def test_service_deployment_values_generation_with_gpu_preset(
+    setup_clients: Client,
+) -> None:
     processor = ServiceDeploymentInputsProcessor(client=setup_clients)
     # noinspection PyArgumentList
     helm_params = await processor.gen_extra_values(

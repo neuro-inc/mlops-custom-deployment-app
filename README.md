@@ -31,3 +31,19 @@ To deploy the application using this Helm chart, follow these steps:
 2. Install the chart using the Helm CLI:
    ```sh
    helm install custom-deployment charts/custom-deployment
+   ```
+
+## Service Deployment static hostname
+
+When the Apps API has global-host routing enabled for the cluster, Service Deployment accepts:
+
+```yaml
+networking:
+  service_enabled: true
+  ingress_http:
+    static_hostname: my-api
+```
+
+The hostname label is optional. The Apps API reserves its global name and exposes `static_url` after routing and TLS verification; the generated URL remains available. This input is specific to the Service Deployment App, not a direct Helm chart value.
+
+The companion [Apps API implementation](https://github.com/neuro-inc/platform-apps/pull/999) owns reservation, transfer, DNS, and rollout configuration. Deploy its backend, authentication, and infrastructure prerequisites before publishing this template.

@@ -131,6 +131,19 @@
       "default": null,
       "description": "The main application URL for accessing the service. This is the primary endpoint users should use to access the application.",
       "title": "Application URL"
+    },
+    "static_url": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Verified global URL, populated by the Apps API after routing is ready.",
+      "title": "Static Url"
     }
   },
   "title": "ServiceDeploymentOutputs",
