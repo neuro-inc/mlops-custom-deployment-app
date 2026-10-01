@@ -1284,5 +1284,8 @@
   "x-is-advanced-field": false,
   "x-is-configurable": true,
   "x-meta-type": "inline",
+  "x-routing-inputs": [
+    "networking"
+  ],
   "x-title": "Custom Deployment"
 }

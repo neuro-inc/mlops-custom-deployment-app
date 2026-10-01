@@ -1,3 +1,6 @@
+import json
+from pathlib import Path
+
 import pytest
 from apolo_app_types_fixtures.constants import (
     APP_ID,
@@ -8,12 +11,82 @@ from apolo_apps_service_deployment.inputs_processor import (
     ServiceDeploymentInputsProcessor,
 )
 from apolo_apps_service_deployment.types import ServiceDeploymentInputs
+from apolo_sdk import Client
 
 from apolo_app_types.protocols.common import (
     ContainerImage,
     InitContainer,
     Preset,
 )
+
+
+def test_routing_input_contract_is_in_generated_schema() -> None:
+    schema = ServiceDeploymentInputs.model_json_schema()
+    schema_path = (
+        Path(__file__).parents[3]
+        / "src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json"
+    )
+    assert json.loads(schema_path.read_text()) == schema
+    assert schema["x-routing-inputs"] == ["networking"]
+
+
+@pytest.mark.usefixtures("mock_get_preset_cpu")
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("preset", {"name": "cpu-medium"}),
+        ("image", {"repository": "nginx", "tag": "1.28"}),
+        ("autoscaling", {"min_replicas": 2, "max_replicas": 4}),
+        ("container", {"env": [{"name": "MODE", "value": "production"}]}),
+        ("init_container", [{"image": {"repository": "busybox", "tag": "1.36"}}]),
+        (
+            "config_map",
+            {
+                "mount_path": {"path": "/config"},
+                "data": [{"key": "mode", "value": "production"}],
+            },
+        ),
+        (
+            "storage_mounts",
+            {
+                "mounts": [
+                    {
+                        "storage_uri": {
+                            "path": "storage://test-cluster/test-org/test-project/data"
+                        },
+                        "mount_path": {"path": "/data"},
+                    }
+                ]
+            },
+        ),
+        (
+            "health_checks",
+            {"readiness": {"health_check_config": {"type": "HTTP", "port": 8080}}},
+        ),
+    ],
+)
+async def test_workload_changes_preserve_service_and_ingress(
+    setup_clients: Client, field: str, value: object
+) -> None:
+    assert field not in ServiceDeploymentInputs.model_json_schema()["x-routing-inputs"]
+    processor = ServiceDeploymentInputsProcessor(client=setup_clients)
+    inputs: dict[str, object] = {
+        "preset": {"name": "cpu-small"},
+        "image": {"repository": "nginx", "tag": "1.27"},
+    }
+    values = []
+    for configuration in (inputs, {**inputs, field: value}):
+        values.append(
+            await processor.gen_extra_values(
+                input_=ServiceDeploymentInputs.model_validate(configuration),
+                app_name="service-app",
+                namespace=DEFAULT_NAMESPACE,
+                app_secrets_name=APP_SECRETS_NAME,
+                app_id=APP_ID,
+            )
+        )
+    assert values[0]["service"] == values[1]["service"]
+    assert values[0]["ingress"] == values[1]["ingress"]
 
 
 async def test_service_deployment_values_generation_with_init_container(
