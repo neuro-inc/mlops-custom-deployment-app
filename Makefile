@@ -58,19 +58,19 @@ push-hook-image:
 
 .PHONY: gen-types-schemas
 gen-types-schemas:
-	app-types dump-types-schema .apolo/src/apolo_apps_service_deployment ServiceDeploymentInputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_service_deployment ServiceDeploymentOutputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentOutputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppInputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppOutputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_shell ShellAppInputs .apolo/src/apolo_apps_shell/schemas/ShellAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_shell ShellAppOutputs .apolo/src/apolo_apps_shell/schemas/ShellAppOutputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_vscode VSCodeAppInputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_vscode VSCodeAppOutputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppOutputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_openwebui OpenWebUIAppInputs .apolo/src/apolo_apps_openwebui/schemas/OpenWebUIAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_openwebui OpenWebUIAppOutputs .apolo/src/apolo_apps_openwebui/schemas/OpenWebUIAppOutputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_privategpt PrivateGPTAppInputs .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_privategpt PrivateGPTAppOutputs .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppOutputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_fooocus FooocusAppInputs .apolo/src/apolo_apps_fooocus/schemas/FooocusAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_fooocus FooocusAppOutputs .apolo/src/apolo_apps_fooocus/schemas/FooocusAppOutputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_jupyter JupyterAppInputs .apolo/src/apolo_apps_jupyter/schemas/JupyterAppInputs.json
-	app-types dump-types-schema .apolo/src/apolo_apps_jupyter JupyterAppOutputs .apolo/src/apolo_apps_jupyter/schemas/JupyterAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_service_deployment ServiceDeploymentInputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_service_deployment ServiceDeploymentOutputs .apolo/src/apolo_apps_service_deployment/schemas/ServiceDeploymentOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppInputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_mlflow_core MLFlowAppOutputs .apolo/src/apolo_apps_mlflow_core/schemas/MLFlowAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_shell ShellAppInputs .apolo/src/apolo_apps_shell/schemas/ShellAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_shell ShellAppOutputs .apolo/src/apolo_apps_shell/schemas/ShellAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_vscode VSCodeAppInputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_vscode VSCodeAppOutputs .apolo/src/apolo_apps_vscode/schemas/VSCodeAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_openwebui OpenWebUIAppInputs .apolo/src/apolo_apps_openwebui/schemas/OpenWebUIAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_openwebui OpenWebUIAppOutputs .apolo/src/apolo_apps_openwebui/schemas/OpenWebUIAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_privategpt PrivateGPTAppInputs .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_privategpt PrivateGPTAppOutputs .apolo/src/apolo_apps_privategpt/schemas/PrivateGPTAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_fooocus FooocusAppInputs .apolo/src/apolo_apps_fooocus/schemas/FooocusAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_fooocus FooocusAppOutputs .apolo/src/apolo_apps_fooocus/schemas/FooocusAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_jupyter JupyterAppInputs .apolo/src/apolo_apps_jupyter/schemas/JupyterAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_jupyter JupyterAppOutputs .apolo/src/apolo_apps_jupyter/schemas/JupyterAppOutputs.json
