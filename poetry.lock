@@ -1551,14 +1551,14 @@ files = [
 
 [[package]]
 name = "google-auth"
-version = "2.60.0"
+version = "2.61.0"
 description = "Google Authentication Library"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "google_auth-2.60.0-py3-none-any.whl", hash = "sha256:e78414cd2e22cc02884768707def024ca32da17695f2c0e6194cdbe1316c4cd4"},
-    {file = "google_auth-2.60.0.tar.gz", hash = "sha256:34aa0283ef72c99cd410e35db4417211fa3e6aaa5399183227bbe3b82bd15192"},
+    {file = "google_auth-2.61.0-py3-none-any.whl", hash = "sha256:ca60266a37475ae68b63bac007272f46094b3d571abe92aded329b6cfb568025"},
+    {file = "google_auth-2.61.0.tar.gz", hash = "sha256:37f0815967322e8c32b12bf422531e8b637cafdaae0acbb9141117cfe6a96f23"},
 ]
 
 [package.dependencies]
@@ -2491,6 +2491,7 @@ description = "Python interface for c-ares"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
+markers = "sys_platform != \"android\" and sys_platform != \"ios\""
 files = [
     {file = "pycares-5.1.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:3697d5e05ef34ea2171a7943abce64eb80b9f01f79319d9085adb51745c0a9e9"},
     {file = "pycares-5.1.0-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:5aad919d40c9256ff78d99ef3f1868b795235bcf96119fbae89cefaa1e99bbcc"},
