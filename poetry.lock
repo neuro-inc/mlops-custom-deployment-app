@@ -342,14 +342,14 @@ trio = ["trio (>=0.32.0)"]
 
 [[package]]
 name = "apolo-app-types"
-version = "26.10.1"
+version = "26.10.2"
 description = "Apolo Platform App Types."
 optional = false
 python-versions = "<4.0,>=3.10.0"
 groups = ["main"]
 files = [
-    {file = "apolo_app_types-26.10.1-py3-none-any.whl", hash = "sha256:07452039003f4250ab50eface0ed9ec5850f44fb1192a98869e01131fdba7c79"},
-    {file = "apolo_app_types-26.10.1.tar.gz", hash = "sha256:ed4e315634e06e0eb11a90dbf8843220b143c0cbad54c6e4a1847442a7d1faa9"},
+    {file = "apolo_app_types-26.10.2-py3-none-any.whl", hash = "sha256:24d3d19cbee19daf0e86ec2b187703eb1365c0c367f378523fca667bdacba0b1"},
+    {file = "apolo_app_types-26.10.2.tar.gz", hash = "sha256:4d5ffaf6541997f887f4d37930517d713971aaadbbb71e9df4c25861be7e7c8e"},
 ]
 
 [package.dependencies]
@@ -2596,6 +2596,7 @@ description = "C parser in Python"
 optional = false
 python-versions = ">=3.10"
 groups = ["main"]
+markers = "implementation_name != \"PyPy\""
 files = [
     {file = "pycparser-3.11-py3-none-any.whl", hash = "sha256:51d5a8ba2be0bbe440b99d2112604c95bbbc3c2748a64260186c541e1729cd80"},
     {file = "pycparser-3.11.tar.gz", hash = "sha256:d875f09c3507d00e1aba0eecc6dcadc1352f30fff09dc6bff2f1c2935e97c2bc"},
@@ -3457,4 +3458,4 @@ propcache = ">=0.2.1"
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.11.0,<4.0"
-content-hash = "cc92f96cb1da26fcfb28774b8e7accbba02f85fd7740f8ee0cdef9c84296c421"
+content-hash = "3974851ed18d273d682da35d121fc83d43b3602afbb2ebafcc0c5e4e639e9289"
