@@ -55,6 +55,7 @@ class OpenWebUIInputsProcessor(BaseChartValueProcessor[OpenWebUIAppInputs]):
             "RAG_OPENAI_API_BASE_URL": str(
                 URL(input_.embeddings_api.complete_url) / "v1"
             ),
+            "RAG_EMBEDDING_MODEL": input_.embeddings_api.hf_model.model_hf_name,
         }
 
         if input_.database_config.database.database_type == DBTypes.POSTGRES:

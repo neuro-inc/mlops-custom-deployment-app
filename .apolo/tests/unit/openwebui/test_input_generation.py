@@ -227,6 +227,12 @@ def assert_common_env_vars(helm_params):
     assert rag_base_url is not None
     assert rag_base_url["value"] == "https://text-embeddings-inference-host:3000/v1"
 
+    rag_model = next(
+        (env for env in env_vars if env["name"] == "RAG_EMBEDDING_MODEL"), None
+    )
+    assert rag_model is not None
+    assert rag_model["value"] == "text-embeddings-inference-model"
+
 
 def assert_middleware_annotations(
     helm_params, expected_middleware_names: list[str], *, auth_enabled: bool
