@@ -151,11 +151,13 @@ class OpenWebUIAppInputs(AppInputs):
         if (self.openai_api is None) == (self.llm_chat_api is None):
             msg = "Set either the model gateway API or the LLM chat API"
             raise ValueError(msg)
-        if self.openai_api and not (
-            self.openai_api.get_model_names(OpenAICompatCapability.CHAT)
-            or self.openai_api.model_prefixes
+        if self.openai_api and not self.openai_api.get_model_names(
+            OpenAICompatCapability.CHAT
         ):
-            msg = "The model gateway API serves no chat model"
+            msg = (
+                "The model gateway API lists no chat model: list one in the "
+                "gateway, such as Chat Models of a Bifrost provider"
+            )
             raise ValueError(msg)
         return self
 

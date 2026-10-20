@@ -33,7 +33,6 @@ GATEWAY_API = {
             "__type__": "OpenAICompatModel",
         },
     ],
-    "model_prefixes": ["openai/"],
     "__type__": "OpenAICompatAPI",
 }
 
@@ -95,20 +94,11 @@ def test_gateway_embeddings_models_are_not_picked_implicitly():
         OpenWebUIAppInputs.model_validate(inputs)
 
 
-@pytest.mark.asyncio
-async def test_gateway_needs_a_chat_model_or_a_provider(setup_clients):
-    embeddings_only = {
-        **GATEWAY_API,
-        "models": GATEWAY_API["models"][1:],
-        "model_prefixes": [],
-    }
+def test_gateway_needs_a_chat_model():
+    embeddings_only = {**GATEWAY_API, "models": GATEWAY_API["models"][1:]}
 
-    with pytest.raises(ValidationError, match="serves no chat model"):
+    with pytest.raises(ValidationError, match="lists no chat model"):
         OpenWebUIAppInputs.model_validate(gateway_inputs(openai_api=embeddings_only))
-
-    providers_only = {**embeddings_only, "model_prefixes": ["openai/"]}
-    env = await generate_env(setup_clients, gateway_inputs(openai_api=providers_only))
-    assert env["OPENAI_API_BASE_URL"] == GATEWAY_URL
 
 
 @pytest.mark.asyncio
