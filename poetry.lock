@@ -2486,6 +2486,7 @@ description = "Python interface for c-ares"
 optional = false
 python-versions = ">=3.11"
 groups = ["main"]
+markers = "sys_platform != \"android\" and sys_platform != \"ios\""
 files = [
     {file = "pycares-5.2.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:ffd0fd10118ab09d9d6ad2d2180c686f72d653cb6658986f0a26f120c61b832e"},
     {file = "pycares-5.2.0-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:22438b81d173836448bda9f3b2e8917ba2cff923447941ebdc4310c78cc051f6"},
@@ -2876,14 +2877,14 @@ six = ">=1.5"
 
 [[package]]
 name = "python-discovery"
-version = "1.6.2"
+version = "1.6.3"
 description = "Python interpreter discovery"
 optional = false
 python-versions = ">=3.9"
 groups = ["main", "dev"]
 files = [
-    {file = "python_discovery-1.6.2-py3-none-any.whl", hash = "sha256:f0c697f95a3aaec4174a6e5e58f5885e25768684bafc76f1afde384709ebdcf2"},
-    {file = "python_discovery-1.6.2.tar.gz", hash = "sha256:cd1738ca1d37c86ef9d0b654dd46fcee1e41c97c6add12575e8501ced39afdb4"},
+    {file = "python_discovery-1.6.3-py3-none-any.whl", hash = "sha256:cb7654125e3dcb594269a6feb56ac693f1f13b7c654493a93eba72dc22d18034"},
+    {file = "python_discovery-1.6.3.tar.gz", hash = "sha256:a62b301d96cf5489cb96ab023b32e068421867fdd5df2e42eece877869047fa2"},
 ]
 
 [package.dependencies]
