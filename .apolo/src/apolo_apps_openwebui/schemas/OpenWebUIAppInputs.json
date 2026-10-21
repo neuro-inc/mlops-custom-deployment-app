@@ -490,6 +490,96 @@
       "x-title": "No Authentication",
       "x-type": "NoAuth"
     },
+    "OpenAICompatAPI": {
+      "properties": {
+        "host": {
+          "title": "Host",
+          "type": "string",
+          "x-description": "The hostname of the HTTP endpoint.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Hostname"
+        },
+        "port": {
+          "default": 80,
+          "exclusiveMinimum": 0,
+          "title": "Port",
+          "type": "integer",
+          "x-description": "The port of the HTTP endpoint.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Port"
+        },
+        "protocol": {
+          "default": "http",
+          "title": "Protocol",
+          "type": "string",
+          "x-description": "The protocol to use, e.g., http or https.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Protocol"
+        },
+        "timeout": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": 30.0,
+          "title": "Timeout",
+          "x-description": "Connection timeout in seconds.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Connection Timeout"
+        },
+        "base_path": {
+          "default": "/",
+          "title": "Base Path",
+          "type": "string"
+        },
+        "api_type": {
+          "const": "rest",
+          "default": "rest",
+          "title": "Api Type",
+          "type": "string"
+        },
+        "api_base_path": {
+          "default": "/v1",
+          "title": "Api Base Path",
+          "type": "string"
+        },
+        "models": {
+          "items": {
+            "$ref": "#/$defs/OpenAICompatModel"
+          },
+          "title": "Models",
+          "type": "array",
+          "x-description": "Models the API serves, with the endpoints of each.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Models"
+        }
+      },
+      "required": [
+        "host"
+      ],
+      "title": "OpenAICompatAPI",
+      "type": "object",
+      "x-description": "OpenAI compatible API that serves several models.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "OpenAI Compatible API",
+      "x-type": "OpenAICompatAPI"
+    },
     "OpenAICompatChatAPI": {
       "properties": {
         "host": {
@@ -702,6 +792,44 @@
       "x-title": "OpenAI Compatible Embeddings API",
       "x-type": "OpenAICompatEmbeddingsAPI"
     },
+    "OpenAICompatModel": {
+      "properties": {
+        "name": {
+          "minLength": 1,
+          "title": "Name",
+          "type": "string",
+          "x-description": "Name to request the model by.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Model Name"
+        },
+        "capabilities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Capabilities",
+          "type": "array",
+          "x-description": "Endpoints that serve the model, such as chat, embeddings, rerank or speech. Other values can appear.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Capabilities"
+        }
+      },
+      "required": [
+        "name",
+        "capabilities"
+      ],
+      "title": "OpenAICompatModel",
+      "type": "object",
+      "x-description": "A model served by an OpenAI compatible API.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "OpenAI Compatible Model",
+      "x-type": "OpenAICompatModel"
+    },
     "OpenWebUISpecific": {
       "properties": {
         "env": {
@@ -814,11 +942,40 @@
     "database_config": {
       "$ref": "#/$defs/DataBaseConfig"
     },
+    "openai_api": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OpenAICompatAPI"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-description": "OpenAI compatible API of a model gateway such as Bifrost, used instead of an LLM Chat API. Chat offers every model the gateway lists, including embeddings, speech and transcription models; limit the list with Model IDs in Admin Settings > Connections. Documents are embedded only with the Embeddings API, which can be an embeddings API of the same gateway. OpenWebUI keeps the connection URL and the embedding settings once they are saved in Admin Settings > Connections or Documents, so an existing installation switched to a gateway keeps the old values until they are changed there.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Model Gateway API"
+    },
     "embeddings_api": {
       "$ref": "#/$defs/OpenAICompatEmbeddingsAPI"
     },
     "llm_chat_api": {
-      "$ref": "#/$defs/OpenAICompatChatAPI"
+      "anyOf": [
+        {
+          "$ref": "#/$defs/OpenAICompatChatAPI"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-description": "Chat API of a single model server. Use it instead of a model gateway API.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "LLM Chat API"
     },
     "openwebui_specific": {
       "$ref": "#/$defs/OpenWebUISpecific"
@@ -828,8 +985,7 @@
     "preset",
     "networking_config",
     "database_config",
-    "embeddings_api",
-    "llm_chat_api"
+    "embeddings_api"
   ],
   "title": "OpenWebUIAppInputs",
   "type": "object"

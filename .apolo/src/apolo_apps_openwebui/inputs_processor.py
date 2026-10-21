@@ -25,9 +25,11 @@ from apolo_app_types.protocols.common.health_check import (
     HTTPHealthCheckConfig,
 )
 from apolo_app_types.protocols.common.k8s import Container, Env, Port
+from apolo_app_types.protocols.common.openai_compat import get_api_base_url
 from apolo_app_types.protocols.common.storage import ApoloMountModes
 from apolo_app_types.protocols.custom_deployment import NetworkingConfig
-from apolo_app_types.protocols.openwebui import DBTypes, OpenWebUIAppInputs
+
+from .types import DBTypes, OpenWebUIAppInputs
 
 
 class OpenWebUIInputsProcessor(BaseChartValueProcessor[OpenWebUIAppInputs]):
@@ -39,18 +41,24 @@ class OpenWebUIInputsProcessor(BaseChartValueProcessor[OpenWebUIAppInputs]):
             *args, **kwargs
         )
 
+    def _get_chat_base_url(self, input_: OpenWebUIAppInputs) -> str:
+        if input_.openai_api:
+            return get_api_base_url(input_.openai_api)
+        if not input_.llm_chat_api or not input_.llm_chat_api.hf_model:
+            err_msg = "llm_chat_api.hf_model is required"
+            raise ValueError(err_msg)
+        return str(URL(input_.llm_chat_api.complete_url) / "v1")
+
     async def _configure_env(
         self, input_: OpenWebUIAppInputs
     ) -> dict[str, str | ApoloSecret]:
-        if not input_.llm_chat_api.hf_model:
-            err_msg = "llm_chat_api.hf_model is required"
-            raise ValueError(err_msg)
+        chat_base_url = self._get_chat_base_url(input_)
         if not input_.embeddings_api.hf_model:
             err_msg = "embeddings_api.hf_model is required"
             raise ValueError(err_msg)
 
         env: dict[str, str | ApoloSecret] = {
-            "OPENAI_API_BASE_URL": str(URL(input_.llm_chat_api.complete_url) / "v1"),
+            "OPENAI_API_BASE_URL": chat_base_url,
             "RAG_EMBEDDING_ENGINE": "openai",
             "RAG_OPENAI_API_BASE_URL": str(
                 URL(input_.embeddings_api.complete_url) / "v1"

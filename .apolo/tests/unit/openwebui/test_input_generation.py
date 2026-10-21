@@ -13,6 +13,12 @@ from apolo_app_types_fixtures.constants import (
     DEFAULT_POSTGRES_CREDS,
 )
 from apolo_apps_openwebui.inputs_processor import OpenWebUIInputsProcessor
+from apolo_apps_openwebui.types import (
+    DataBaseConfig,
+    OpenWebUIAppInputs,
+    PostgresDatabase,
+    SQLiteDatabase,
+)
 
 from apolo_app_types import HuggingFaceModel
 from apolo_app_types.protocols.common import (
@@ -29,12 +35,6 @@ from apolo_app_types.protocols.common.middleware import AuthIngressMiddleware
 from apolo_app_types.protocols.common.openai_compat import (
     OpenAICompatChatAPI,
     OpenAICompatEmbeddingsAPI,
-)
-from apolo_app_types.protocols.openwebui import (
-    DataBaseConfig,
-    OpenWebUIAppInputs,
-    PostgresDatabase,
-    SQLiteDatabase,
 )
 
 
