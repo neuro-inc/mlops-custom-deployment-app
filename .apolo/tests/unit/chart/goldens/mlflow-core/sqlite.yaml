@@ -9,7 +9,7 @@ metadata:
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -23,13 +23,13 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-release-extra-deploy-custom-deployment
+  name: test-org-test-project-mlflow-core-b1aeaf65-extra-deploy-custom
   labels:
     application: mlflow
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
     module: extra-deployment
@@ -43,20 +43,20 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     module: extra-deployment
 ---
 # Source: custom-deployment/templates/service.yaml
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-mlflow-core-b1aeaf65-custom-deployment
   labels:
     application: mlflow
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -68,20 +68,20 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     module: main-app
 ---
 # Source: custom-deployment/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-mlflow-core-b1aeaf65-custom-deployment
   labels:
     application: mlflow
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -89,7 +89,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: custom-deployment
-      app.kubernetes.io/instance: app-release
+      app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
       module: main-app
   template:
     metadata:
@@ -102,7 +102,7 @@ spec:
         helm.sh/chart: custom-deployment-0.1.0
         platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
         app.kubernetes.io/name: custom-deployment
-        app.kubernetes.io/instance: app-release
+        app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
         module: main-app
@@ -128,7 +128,7 @@ spec:
               - name: MLFLOW_TRACKING_URI
                 value: "sqlite:///mlflow-data/mlflow.db"
               - name: MLFLOW_SERVER_ALLOWED_HOSTS
-                value: "localhost,127.0.0.1,[::1],0.0.0.0,localhost:*,127.0.0.1:*,[[]::1]:*,0.0.0.0:*,192.168.*,10.*,172.16.*,172.17.*,172.18.*,172.19.*,172.20.*,172.21.*,172.22.*,172.23.*,172.24.*,172.25.*,172.26.*,172.27.*,172.28.*,172.29.*,172.30.*,172.31.*,fc00:*,fd00:*,*.platform--test-org--test-project,*.platform--test-org--test-project:*,*.platform--test-org--test-project.svc,*.platform--test-org--test-project.svc:*,*.platform--test-org--test-project.svc.cluster.local,*.platform--test-org--test-project.svc.cluster.local:*,mlflow--b1aeaf654526474ba22480d00e5b0109.apps.some.org.neu.ro,mlflow--b1aeaf654526474ba22480d00e5b0109.apps.some.org.neu.ro:*"
+                value: "localhost,127.0.0.1,[::1],0.0.0.0,localhost:*,127.0.0.1:*,[[]::1]:*,0.0.0.0:*,192.168.*,10.*,172.16.*,172.17.*,172.18.*,172.19.*,172.20.*,172.21.*,172.22.*,172.23.*,172.24.*,172.25.*,172.26.*,172.27.*,172.28.*,172.29.*,172.30.*,172.31.*,fc00:*,fd00:*,*.platform--test-org--test-project--a5e4118c50842e7acbd85e28,*.platform--test-org--test-project--a5e4118c50842e7acbd85e28:*,*.platform--test-org--test-project--a5e4118c50842e7acbd85e28.svc,*.platform--test-org--test-project--a5e4118c50842e7acbd85e28.svc:*,*.platform--test-org--test-project--a5e4118c50842e7acbd85e28.svc.cluster.local,*.platform--test-org--test-project--a5e4118c50842e7acbd85e28.svc.cluster.local:*,mlflow--b1aeaf654526474ba22480d00e5b0109.apps.some.org.neu.ro,mlflow--b1aeaf654526474ba22480d00e5b0109.apps.some.org.neu.ro:*"
               - name: MLFLOW_SERVER_CORS_ALLOWED_ORIGINS
                 value: "https://mlflow--b1aeaf654526474ba22480d00e5b0109.apps.some.org.neu.ro,http://mlflow--b1aeaf654526474ba22480d00e5b0109.apps.some.org.neu.ro"
               - name: MLFLOW_SERVER_ENABLE_JOB_EXECUTION
@@ -207,13 +207,13 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-release-extra-deploy-custom-deployment
+  name: test-org-test-project-mlflow-core-b1aeaf65-extra-deploy-custom
   labels:
     application: mlflow
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
     module: extra-deployment
@@ -222,7 +222,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: custom-deployment
-      app.kubernetes.io/instance: app-release
+      app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
       module: extra-deployment
   template:
     metadata:
@@ -234,7 +234,7 @@ spec:
         helm.sh/chart: custom-deployment-0.1.0
         platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
         app.kubernetes.io/name: custom-deployment
-        app.kubernetes.io/instance: app-release
+        app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
         platform.apolo.us/component: app
@@ -243,7 +243,7 @@ spec:
       securityContext:
         {}
       containers:
-        - name: app-release-extra-deploy-custom-deployment
+        - name: test-org-test-project-mlflow-core-b1aeaf65-extra-deploy-custom
           securityContext:
             {}
           image: "ghcr.io/neuro-inc/mlflow-outputs:latest"
@@ -251,11 +251,11 @@ spec:
               - name: MLFLOW_PORT
                 value: "5000"
               - name: MAIN_APP_DEPLOYMENT_NAME
-                value: app-release-custom-deployment
+                value: test-org-test-project-mlflow-core-b1aeaf65-custom-deployment
               - name: MAIN_APP_DEPLOYMENT_NAMESPACE
-                value: platform--test-org--test-project
+                value: platform--test-org--test-project--a5e4118c50842e7acbd85e28
               - name: MAIN_APP_RELEASE_NAME
-                value: app-release
+                value: test-org-test-project-mlflow-core-b1aeaf65
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
@@ -294,13 +294,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-mlflow-core-b1aeaf65-custom-deployment
   labels:
     application: mlflow
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -315,7 +315,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app-release-custom-deployment
+                name: test-org-test-project-mlflow-core-b1aeaf65-custom-deployment
                 port:
                   name: http
 ---
@@ -323,13 +323,13 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: app-release-custom-deployment-test-connection
+  name: test-org-test-project-mlflow-core-b1aeaf65-cust-test-connection
   labels:
     application: mlflow
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-mlflow-core-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -339,5 +339,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['app-release-custom-deployment:']
+      args: ['test-org-test-project-mlflow-core-b1aeaf65-custom-deployment:']
   restartPolicy: Never

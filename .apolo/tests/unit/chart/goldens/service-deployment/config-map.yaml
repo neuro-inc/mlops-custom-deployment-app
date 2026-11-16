@@ -3,13 +3,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: app-release-configmap
+  name: test-org-test-project-service-deployment-b1aeaf65-configmap
   labels:
     application: custom-deployment
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 data:
@@ -20,13 +20,13 @@ data:
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-service-deployment-b1aeaf65-custom-deploy
   labels:
     application: custom-deployment
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -38,20 +38,20 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
     module: main-app
 ---
 # Source: custom-deployment/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-service-deployment-b1aeaf65-custom-deploy
   labels:
     application: custom-deployment
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -59,7 +59,7 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: custom-deployment
-      app.kubernetes.io/instance: app-release
+      app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
       module: main-app
   template:
     metadata:
@@ -71,7 +71,7 @@ spec:
         helm.sh/chart: custom-deployment-0.1.0
         platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
         app.kubernetes.io/name: custom-deployment
-        app.kubernetes.io/instance: app-release
+        app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
         module: main-app
@@ -107,11 +107,11 @@ spec:
               memory: 4096M
           volumeMounts:
             - mountPath: /etc/app
-              name: app-release-configmap
+              name: test-org-test-project-service-deployment-b1aeaf65-configmap
       volumes:
         - configMap:
-            name: app-release-configmap
-          name: app-release-configmap
+            name: test-org-test-project-service-deployment-b1aeaf65-configmap
+          name: test-org-test-project-service-deployment-b1aeaf65-configmap
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
@@ -138,13 +138,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-service-deployment-b1aeaf65-custom-deploy
   labels:
     application: custom-deployment
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -159,7 +159,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app-release-custom-deployment
+                name: test-org-test-project-service-deployment-b1aeaf65-custom-deploy
                 port:
                   name: http
 ---
@@ -167,13 +167,13 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: app-release-custom-deployment-test-connection
+  name: test-org-test-project-service-deployment-b1aeaf-test-connection
   labels:
     application: custom-deployment
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-service-deployment-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -183,5 +183,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['app-release-custom-deployment:']
+      args: ['test-org-test-project-service-deployment-b1aeaf65-custom-deploy:']
   restartPolicy: Never

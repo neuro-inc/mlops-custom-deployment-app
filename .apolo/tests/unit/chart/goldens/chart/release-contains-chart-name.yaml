@@ -1,0 +1,102 @@
+---
+# Source: custom-deployment/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-org-test-project-custom-deployment-b1aeaf65
+  labels:
+    application: custom-deployment
+    helm.sh/chart: custom-deployment-0.1.0
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-custom-deployment-b1aeaf65
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-custom-deployment-b1aeaf65
+    module: main-app
+---
+# Source: custom-deployment/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-org-test-project-custom-deployment-b1aeaf65
+  labels:
+    application: custom-deployment
+    helm.sh/chart: custom-deployment-0.1.0
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-custom-deployment-b1aeaf65
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: custom-deployment
+      app.kubernetes.io/instance: test-org-test-project-custom-deployment-b1aeaf65
+      module: main-app
+  template:
+    metadata:
+      annotations:
+        
+        {}
+      labels:
+        application: custom-deployment
+        helm.sh/chart: custom-deployment-0.1.0
+        app.kubernetes.io/name: custom-deployment
+        app.kubernetes.io/instance: test-org-test-project-custom-deployment-b1aeaf65
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+        module: main-app
+        platform.apolo.us/preset: 
+        platform.apolo.us/component: app
+    spec:
+      securityContext:
+        {}
+      containers:
+        - name: custom-deployment
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          image: "nginx:latest"
+          env:
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+              name: http
+          resources:
+            {}
+---
+# Source: custom-deployment/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-org-test-project-custom-deployment-b1aeaf6-test-connection
+  labels:
+    application: custom-deployment
+    helm.sh/chart: custom-deployment-0.1.0
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-custom-deployment-b1aeaf65
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['test-org-test-project-custom-deployment-b1aeaf65:']
+  restartPolicy: Never

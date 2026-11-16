@@ -3,13 +3,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-openwebui-b1aeaf65-custom-deployment
   labels:
     application: openwebui
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-openwebui-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -21,20 +21,20 @@ spec:
       name: http
   selector:
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-openwebui-b1aeaf65
     module: main-app
 ---
 # Source: custom-deployment/templates/deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-openwebui-b1aeaf65-custom-deployment
   labels:
     application: openwebui
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-openwebui-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -42,20 +42,20 @@ spec:
   selector:
     matchLabels:
       app.kubernetes.io/name: custom-deployment
-      app.kubernetes.io/instance: app-release
+      app.kubernetes.io/instance: test-org-test-project-openwebui-b1aeaf65
       module: main-app
   template:
     metadata:
       annotations:
         
-        platform.apolo.us/inject-storage: '[{"storage_uri": "storage://cluster/test-org/test-project/.apps/openwebui/app-release",
+        platform.apolo.us/inject-storage: '[{"storage_uri": "storage://cluster/test-org/test-project/.apps/openwebui/test-org-test-project-openwebui-b1aeaf65",
           "mount_path": "/app/backend/data", "mount_mode": "rw"}]'
       labels:
         application: openwebui
         helm.sh/chart: custom-deployment-0.1.0
         platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
         app.kubernetes.io/name: custom-deployment
-        app.kubernetes.io/instance: app-release
+        app.kubernetes.io/instance: test-org-test-project-openwebui-b1aeaf65
         app.kubernetes.io/version: "1.16.0"
         app.kubernetes.io/managed-by: Helm
         module: main-app
@@ -142,13 +142,13 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: app-release-custom-deployment
+  name: test-org-test-project-openwebui-b1aeaf65-custom-deployment
   labels:
     application: openwebui
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-openwebui-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
 spec:
@@ -161,7 +161,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: app-release-custom-deployment
+                name: test-org-test-project-openwebui-b1aeaf65-custom-deployment
                 port:
                   name: http
 ---
@@ -169,13 +169,13 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: app-release-custom-deployment-test-connection
+  name: test-org-test-project-openwebui-b1aeaf65-custom-test-connection
   labels:
     application: openwebui
     helm.sh/chart: custom-deployment-0.1.0
     platform.apolo.us/app-id: "b1aeaf654526474ba22480d00e5b0109"
     app.kubernetes.io/name: custom-deployment
-    app.kubernetes.io/instance: app-release
+    app.kubernetes.io/instance: test-org-test-project-openwebui-b1aeaf65
     app.kubernetes.io/version: "1.16.0"
     app.kubernetes.io/managed-by: Helm
   annotations:
@@ -185,5 +185,5 @@ spec:
     - name: wget
       image: busybox
       command: ['wget']
-      args: ['app-release-custom-deployment:']
+      args: ['test-org-test-project-openwebui-b1aeaf65-custom-deployment:']
   restartPolicy: Never

@@ -12,7 +12,9 @@ import yaml
 from apolo_app_types_fixtures.constants import (
     APP_ID,
     APP_SECRETS_NAME,
+    DEFAULT_ORG_NAME,
     DEFAULT_POSTGRES_CREDS,
+    DEFAULT_PROJECT_NAME,
 )
 from apolo_sdk import Preset
 from neuro_config_client import NvidiaGPUPreset
@@ -29,8 +31,8 @@ HELM = shutil.which("helm")
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 GOLDENS_PATH = Path(__file__).parent / "goldens"
 CHART = "charts/custom-deployment"
-RELEASE_NAME = "app-release"
-NAMESPACE = "platform--test-org--test-project"
+MAX_KUBE_APP_NAME_LENGTH = 53
+NAMESPACE = "platform--test-org--test-project--a5e4118c50842e7acbd85e28"
 KUBE_VERSION = "1.31.0"
 
 APPLICATIONS = {
@@ -98,12 +100,6 @@ CASES = [
         "service-deployment",
         "ingress-disabled",
         service_deployment(networking={"ingress_http": None}),
-        None,
-    ),
-    (
-        "service-deployment",
-        "service-disabled",
-        service_deployment(networking={"service_enabled": False, "ingress_http": None}),
         None,
     ),
     (
@@ -313,7 +309,7 @@ CASES = [
             },
             "mlflow_integration": {
                 "internal_url": {
-                    "host": "mlflow-svc.platform--test-org--test-project",
+                    "host": f"mlflow-svc.{NAMESPACE}",
                     "port": 5000,
                     "protocol": "http",
                     "base_path": "/",
@@ -406,19 +402,78 @@ CASES = [
     ),
 ]
 
+RAW_CASES = [
+    ("defaults", "chart", {}),
+    (
+        "unused-values",
+        "chart",
+        {
+            "image": {"repository": "nginx", "tag": "1.27"},
+            "imagePullSecrets": [{"name": "registry-credentials"}],
+            "podAnnotations": {"example.com/owner": "ml-team"},
+            "podSecurityContext": {"fsGroup": 1000},
+            "container": {
+                "entrypoint": ["/docker-entrypoint.sh"],
+                "command": ["nginx"],
+                "args": ["-g", "daemon off;"],
+            },
+            "nodeSelector": {"kubernetes.io/arch": "amd64"},
+            "storageMounts": [
+                {
+                    "storage_path": {
+                        "path": "storage://cluster/test-org/test-project/data"
+                    },
+                    "mount_path": {"path": "/data"},
+                    "mode": {"mode": "rw"},
+                }
+            ],
+            "service": {
+                "labels": {"output-server": "true"},
+                "ports": [{"name": "http", "containerPort": 8080}],
+            },
+            "ingress": {
+                "enabled": True,
+                "hosts": [
+                    {
+                        "host": "app.example.com",
+                        "paths": [
+                            {"path": "/", "pathType": "Prefix", "portName": "http"},
+                            {"path": "/api", "pathType": "Exact", "portName": "http"},
+                        ],
+                    }
+                ],
+            },
+        },
+    ),
+    (
+        "service-disabled-ingress-without-hosts",
+        "chart",
+        {"service": {"enabled": False}, "ingress": {"enabled": True, "hosts": []}},
+    ),
+    ("fullname-override", "chart", {"fullnameOverride": "custom-name"}),
+    ("name-override", "chart", {"nameOverride": "web"}),
+    ("release-contains-chart-name", "custom-deployment", {}),
+]
+
 
 @pytest.fixture
 def presets_available() -> dict[str, Preset]:
     return PRESETS
 
 
-def render(values_path: Path) -> str:
+def kube_app_name(app_name: str) -> str:
+    suffix = f"-{APP_ID[:8]}"
+    prefix = f"{DEFAULT_ORG_NAME}-{DEFAULT_PROJECT_NAME}-{app_name}"
+    return prefix[: MAX_KUBE_APP_NAME_LENGTH - len(suffix)] + suffix
+
+
+def render(release_name: str, values_path: Path) -> str:
     assert HELM is not None
     rendered = subprocess.run(
         [
             HELM,
             "template",
-            RELEASE_NAME,
+            release_name,
             str(PROJECT_ROOT / CHART),
             "--namespace",
             NAMESPACE,
@@ -437,6 +492,24 @@ def render(values_path: Path) -> str:
 def test_every_app_on_the_chart_has_a_case() -> None:
     assert APPLICATIONS
     assert {app for app, *_ in CASES} == set(APPLICATIONS)
+
+
+def test_every_golden_has_a_case() -> None:
+    assert {
+        path.relative_to(GOLDENS_PATH) for path in GOLDENS_PATH.glob("**/*.yaml")
+    } <= {Path(app) / f"{case}.yaml" for app, case, *_ in CASES} | {
+        Path("chart") / f"{case}.yaml" for case, *_ in RAW_CASES
+    }
+
+
+def assert_matches_golden(
+    request: pytest.FixtureRequest, golden_path: Path, rendered: str
+) -> None:
+    if request.config.getoption("--update-goldens"):
+        golden_path.parent.mkdir(parents=True, exist_ok=True)
+        golden_path.write_text(rendered)
+    assert golden_path.exists(), f"{golden_path} is missing, run make update-goldens"
+    assert rendered == golden_path.read_text()
 
 
 @pytest.mark.skipif(
@@ -469,9 +542,10 @@ async def test_chart_render_matches_golden(
     assert inputs_class is not None
     assert processor_class is not None
 
+    release_name = kube_app_name(app_name)
     values = await processor_class(setup_clients).gen_extra_values(
         input_=inputs_class.model_validate(json.loads(json.dumps(inputs))),
-        app_name=RELEASE_NAME,
+        app_name=release_name,
         namespace=NAMESPACE,
         app_secrets_name=APP_SECRETS_NAME,
         app_id=APP_ID,
@@ -480,11 +554,28 @@ async def test_chart_render_matches_golden(
         values["APOLO_PASSED_CONFIG"] = passed_config
     values_path = tmp_path / "values.json"
     values_path.write_text(json.dumps(values))
-    rendered = render(values_path)
+    rendered = render(release_name, values_path)
 
-    golden_path = GOLDENS_PATH / app_name / f"{case}.yaml"
-    if request.config.getoption("--update-goldens"):
-        golden_path.parent.mkdir(parents=True, exist_ok=True)
-        golden_path.write_text(rendered)
-    assert golden_path.exists(), f"{golden_path} is missing, run make update-goldens"
-    assert rendered == golden_path.read_text()
+    assert_matches_golden(request, GOLDENS_PATH / app_name / f"{case}.yaml", rendered)
+
+
+@pytest.mark.skipif(
+    HELM is None and not os.environ.get("CI"),
+    reason="Helm is required to render the chart",
+)
+@pytest.mark.parametrize(
+    ("case", "release_app_name", "values"),
+    [pytest.param(*case, id=case[0]) for case in RAW_CASES],
+)
+def test_chart_render_of_raw_values_matches_golden(
+    request: pytest.FixtureRequest,
+    tmp_path: Path,
+    case: str,
+    release_app_name: str,
+    values: dict[str, Any],
+) -> None:
+    values_path = tmp_path / "values.json"
+    values_path.write_text(json.dumps(values))
+    rendered = render(kube_app_name(release_app_name), values_path)
+
+    assert_matches_golden(request, GOLDENS_PATH / "chart" / f"{case}.yaml", rendered)
