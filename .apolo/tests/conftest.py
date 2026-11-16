@@ -20,6 +20,10 @@ TEST_PRESETS_WITH_GPU_NP_CLUSTER = {
 }
 
 
+def pytest_addoption(parser):
+    parser.addoption("--update-goldens", action="store_true", default=False)
+
+
 @pytest.fixture
 def _mock_get_preset_gpu_np(setup_clients):
     from unittest.mock import AsyncMock
