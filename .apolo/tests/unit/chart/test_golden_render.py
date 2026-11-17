@@ -1,5 +1,4 @@
 import json
-import os
 import re
 import shutil
 import subprocess
@@ -468,7 +467,7 @@ def kube_app_name(app_name: str) -> str:
 
 
 def render(release_name: str, values_path: Path) -> str:
-    assert HELM is not None
+    assert HELM is not None, "helm is required to render the chart"
     rendered = subprocess.run(
         [
             HELM,
@@ -512,10 +511,6 @@ def assert_matches_golden(
     assert rendered == golden_path.read_text()
 
 
-@pytest.mark.skipif(
-    HELM is None and not os.environ.get("CI"),
-    reason="Helm is required to render the chart",
-)
 @pytest.mark.parametrize(
     ("app_name", "case", "inputs", "passed_config"),
     [pytest.param(*case, id=f"{case[0]}-{case[1]}") for case in CASES],
@@ -559,10 +554,6 @@ async def test_chart_render_matches_golden(
     assert_matches_golden(request, GOLDENS_PATH / app_name / f"{case}.yaml", rendered)
 
 
-@pytest.mark.skipif(
-    HELM is None and not os.environ.get("CI"),
-    reason="Helm is required to render the chart",
-)
 @pytest.mark.parametrize(
     ("case", "release_app_name", "values"),
     [pytest.param(*case, id=case[0]) for case in RAW_CASES],

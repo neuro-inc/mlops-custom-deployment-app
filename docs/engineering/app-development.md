@@ -22,7 +22,7 @@ Review generated changes; `make lint` includes formatting hooks that can modify 
 
 The [schema-generation hook](../../.pre-commit-config.yaml) runs `make gen-types-schemas`. Add new model/schema pairs to [the Makefile](../../Makefile) and commit the generated files.
 
-[The golden render test](../../.apolo/tests/unit/chart/test_golden_render.py) runs each App's processor on its cases, renders `charts/custom-deployment` with `helm template` and compares the output with [the goldens](../../.apolo/tests/unit/chart/goldens). Chart branches that no App reaches are rendered from hand-written values in `RAW_CASES`. Locally it is skipped without `helm` on `PATH`; CI installs Helm v3.22.1 and fails the test if Helm is missing. A new App on this chart needs a case there. After an intended chart or processor change, run `make update-goldens` and review the golden diff before committing it.
+[The golden render test](../../.apolo/tests/unit/chart/test_golden_render.py) runs each App's processor on its cases, renders `charts/custom-deployment` with `helm template` and compares the output with [the goldens](../../.apolo/tests/unit/chart/goldens). Chart branches that no App reaches are rendered from hand-written values in `RAW_CASES`. It needs `helm` on `PATH` and fails without it; CI installs Helm v3.22.1. A new App on this chart needs a case there. After an intended chart or processor change, run `make update-goldens` and review the golden diff before committing it.
 
 ## Processor image publication
 
