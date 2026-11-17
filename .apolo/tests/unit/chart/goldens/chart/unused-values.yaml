@@ -1,0 +1,148 @@
+---
+# Source: custom-deployment/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: test-org-test-project-chart-b1aeaf65-custom-deployment
+  labels:
+    application: custom-deployment
+    helm.sh/chart: custom-deployment-0.1.0
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-chart-b1aeaf65
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+    
+    output-server: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-chart-b1aeaf65
+    module: main-app
+---
+# Source: custom-deployment/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-org-test-project-chart-b1aeaf65-custom-deployment
+  labels:
+    application: custom-deployment
+    helm.sh/chart: custom-deployment-0.1.0
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-chart-b1aeaf65
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: custom-deployment
+      app.kubernetes.io/instance: test-org-test-project-chart-b1aeaf65
+      module: main-app
+  template:
+    metadata:
+      annotations:
+        
+        platform.apolo.us/inject-storage: [{"mode":{"mode":"rw"},"mount_path":{"path":"/data"},"storage_path":{"path":"storage://cluster/test-org/test-project/data"}}]
+        example.com/owner: ml-team
+      labels:
+        application: custom-deployment
+        helm.sh/chart: custom-deployment-0.1.0
+        app.kubernetes.io/name: custom-deployment
+        app.kubernetes.io/instance: test-org-test-project-chart-b1aeaf65
+        app.kubernetes.io/version: "1.16.0"
+        app.kubernetes.io/managed-by: Helm
+        module: main-app
+        platform.apolo.us/preset: 
+        platform.apolo.us/component: app
+    spec:
+      imagePullSecrets:
+        - name: registry-credentials
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: custom-deployment
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            seccompProfile:
+              type: RuntimeDefault
+          image: "nginx:1.27"
+          env:
+          imagePullPolicy: IfNotPresent
+          command:
+            - nginx
+          entrypoint:
+            - /docker-entrypoint.sh
+          args:
+            - -g
+            - daemon off;
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+              name: http
+          resources:
+            {}
+      nodeSelector:
+        kubernetes.io/arch: amd64
+---
+# Source: custom-deployment/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-org-test-project-chart-b1aeaf65-custom-deployment
+  labels:
+    application: custom-deployment
+    helm.sh/chart: custom-deployment-0.1.0
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-chart-b1aeaf65
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  rules:
+    - host: "app.example.com"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: test-org-test-project-chart-b1aeaf65-custom-deployment
+                port:
+                  name: http
+          - path: /api
+            pathType: Exact
+            backend:
+              service:
+                name: test-org-test-project-chart-b1aeaf65-custom-deployment
+                port:
+                  name: http
+---
+# Source: custom-deployment/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: test-org-test-project-chart-b1aeaf65-custom-dep-test-connection
+  labels:
+    application: custom-deployment
+    helm.sh/chart: custom-deployment-0.1.0
+    app.kubernetes.io/name: custom-deployment
+    app.kubernetes.io/instance: test-org-test-project-chart-b1aeaf65
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['test-org-test-project-chart-b1aeaf65-custom-deployment:']
+  restartPolicy: Never

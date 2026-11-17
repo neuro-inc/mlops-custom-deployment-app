@@ -37,6 +37,10 @@ lint: format
 test-unit:
 	poetry run pytest -vvs --cov=.apolo --cov-report xml:.coverage.unit.xml .apolo/tests/unit
 
+.PHONY: update-goldens
+update-goldens:
+	poetry run pytest .apolo/tests/unit/chart --update-goldens
+
 .PHONY: test-integration
 test-integration:
 	poetry run pytest -vv --cov=.apolo --cov-report xml:.coverage.integration.xml .apolo/tests/integration
