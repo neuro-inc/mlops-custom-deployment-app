@@ -75,6 +75,23 @@ EMBEDDINGS_API = {
     "base_path": "/",
     "hf_model": {"model_hf_name": "text-embeddings-inference-model"},
 }
+TRITON_DIGEST = "sha256:" + "0" * 64
+TRITON_AUTH = {
+    "traefik.ingress.kubernetes.io/router.middlewares": (
+        "platform-platform-control-plane-ingress-auth@kubernetescrd"
+    )
+}
+TRITON_GRPC_ENTRYPOINT = {
+    "traefik.ingress.kubernetes.io/router.entrypoints": "websecure"
+}
+HF_TOKEN_SECRET = {"secretKeyRef": {"name": APP_SECRETS_NAME, "key": "hf-token"}}
+TRITON_STORAGE = [
+    {
+        "storage_uri": "storage://cluster/test-org/test-project/triton/models",
+        "mount_path": "/models",
+        "mount_mode": "r",
+    }
+]
 
 
 def service_deployment(**fields: Any) -> dict[str, Any]:
@@ -90,6 +107,95 @@ def openwebui(auth: dict[str, Any], database: dict[str, Any]) -> dict[str, Any]:
         **STORED_INPUTS,
         "networking_config": {"ingress_http": {"auth": auth}},
         "database_config": {"database": database},
+    }
+
+
+def triton_ingress(
+    host_label: str, port_name: str, annotations: dict[str, str]
+) -> dict[str, Any]:
+    return {
+        "enabled": True,
+        "className": "traefik",
+        "annotations": annotations,
+        "hosts": [
+            {
+                "host": f"{host_label}--{APP_ID}.apps.some.org.neu.ro",
+                "paths": [{"path": "/", "pathType": "Prefix", "portName": port_name}],
+            }
+        ],
+    }
+
+
+def triton_probe(path: str, period: int, failure_threshold: int) -> dict[str, Any]:
+    return {
+        "httpGet": {"path": path, "port": "http"},
+        "periodSeconds": period,
+        "failureThreshold": failure_threshold,
+        "timeoutSeconds": 2,
+    }
+
+
+def triton(
+    http: dict[str, Any] | None, grpc: dict[str, Any] | None, **fields: Any
+) -> dict[str, Any]:
+    return {
+        "fullnameOverride": f"triton-{APP_ID}",
+        "apolo_app_id": APP_ID,
+        "preset_name": "gpu-small",
+        "labels": {"application": "triton"},
+        "strategy": {"type": "Recreate"},
+        "progressDeadlineSeconds": 2100,
+        "image": {
+            "repository": "nvcr.io/nvidia/tritonserver",
+            "tag": "26.10-py3",
+            "pullPolicy": "IfNotPresent",
+        },
+        "podLabels": {
+            "platform.apolo.us/inject-storage": "true",
+            "platform.apolo.us/org": DEFAULT_ORG_NAME,
+            "platform.apolo.us/project": DEFAULT_PROJECT_NAME,
+        },
+        "podAnnotations": {
+            "platform.apolo.us/inject-storage": json.dumps(TRITON_STORAGE)
+        },
+        "container": {
+            "args": [
+                "tritonserver",
+                "--model-repository=/models",
+                "--http-port=8000",
+                "--grpc-port=8001",
+                "--metrics-port=8002",
+            ],
+            "env": [{"name": "HF_TOKEN", "value": {"valueFrom": HF_TOKEN_SECRET}}],
+        },
+        "service": {
+            "ports": [
+                {"name": "http", "containerPort": 8000},
+                {"name": "grpc", "containerPort": 8001},
+                {"name": "metrics", "containerPort": 8002},
+            ]
+        },
+        "health_checks": {
+            "startupProbe": triton_probe("/v2/health/live", 10, 180),
+            "livenessProbe": triton_probe("/v2/health/live", 30, 9),
+            "readinessProbe": triton_probe("/v2/health/ready", 10, 3),
+        },
+        "volumes": [{"name": "dshm", "emptyDir": {"medium": "Memory"}}],
+        "volumeMounts": [{"name": "dshm", "mountPath": "/dev/shm"}],
+        "ingress": http or {"enabled": False},
+        "extraServices": [
+            {
+                "name": "grpc",
+                "annotations": {
+                    "traefik.ingress.kubernetes.io/service.serversscheme": "h2c"
+                },
+                "ports": [{"name": "grpc", "containerPort": 8001}],
+                "ingress": grpc,
+            }
+        ]
+        if grpc
+        else [],
+        **fields,
     }
 
 
@@ -452,6 +558,55 @@ RAW_CASES = [
     ("fullname-override", "chart", {"fullnameOverride": "custom-name"}),
     ("name-override", "chart", {"nameOverride": "web"}),
     ("release-contains-chart-name", "custom-deployment", {}),
+    (
+        "extra-service-without-ingress",
+        "chart",
+        {
+            "extraServices": [
+                {
+                    "name": "metrics",
+                    "type": "NodePort",
+                    "ports": [{"name": "metrics", "containerPort": 9090}],
+                    "ingress": {"enabled": False},
+                }
+            ]
+        },
+    ),
+    (
+        "triton-both-endpoints",
+        "triton",
+        triton(
+            triton_ingress("triton", "http", TRITON_AUTH),
+            triton_ingress(
+                "triton-grpc", "grpc", {**TRITON_GRPC_ENTRYPOINT, **TRITON_AUTH}
+            ),
+            image={
+                "repository": "nvcr.io/nvidia/tritonserver",
+                "digest": TRITON_DIGEST,
+                "pullPolicy": "IfNotPresent",
+            },
+        ),
+    ),
+    (
+        "triton-http-only-no-auth",
+        "triton",
+        triton(triton_ingress("triton", "http", {}), None),
+    ),
+    (
+        "triton-grpc-only",
+        "triton",
+        triton(
+            None,
+            triton_ingress(
+                "triton-grpc", "grpc", {**TRITON_GRPC_ENTRYPOINT, **TRITON_AUTH}
+            ),
+        ),
+    ),
+    (
+        "triton-no-endpoints",
+        "triton",
+        triton(None, None),
+    ),
 ]
 
 

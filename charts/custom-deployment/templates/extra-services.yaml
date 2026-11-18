@@ -1,0 +1,58 @@
+{{- range .Values.extraServices }}
+{{- $name := printf "%s-%s" (include "custom-deployment.fullname" $) .name | trunc 63 | trimSuffix "-" }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "custom-deployment.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .type | default "ClusterIP" }}
+  ports:
+    {{- range .ports }}
+    - port: {{ .containerPort }}
+      targetPort: {{ .name }}
+      protocol: TCP
+      name: {{ .name }}
+    {{- end }}
+  selector:
+    {{- include "custom-deployment.selectorLabels" $ | nindent 4 }}
+    module: main-app
+{{- if (.ingress).enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "custom-deployment.labels" $ | nindent 4 }}
+  {{- with .ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  rules:
+    {{- range .ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $name }}
+                port:
+                  name: {{ .portName }}
+          {{- end }}
+    {{- end }}
+{{- end }}
+{{- end }}
