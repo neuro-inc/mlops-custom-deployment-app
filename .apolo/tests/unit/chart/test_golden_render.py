@@ -837,3 +837,17 @@ def test_invalid_extra_services_fail_to_render(
     with pytest.raises(subprocess.CalledProcessError) as exc_info:
         render(kube_app_name("chart"), values_path)
     assert error in exc_info.value.stderr
+
+
+def test_docker_config_renders_one_secret(tmp_path: Path) -> None:
+    docker_config = 'e30=" \n'
+    values_path = tmp_path / "values.json"
+    values_path.write_text(json.dumps({"dockerconfigjson": docker_config}))
+    secrets = [
+        document
+        for document in yaml.safe_load_all(render(kube_app_name("chart"), values_path))
+        if document and document["kind"] == "Secret"
+    ]
+    assert [secret["data"][".dockerconfigjson"] for secret in secrets] == [
+        docker_config
+    ]
