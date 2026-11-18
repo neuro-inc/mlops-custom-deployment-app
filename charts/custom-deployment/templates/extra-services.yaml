@@ -1,0 +1,73 @@
+{{- $seen := dict }}
+{{- range .Values.extraServices }}
+{{- $suffix := required "extraServices[].name is required" .name }}
+{{- if gt (len $suffix) 61 }}
+{{- fail (printf "extraServices[%s].name must be at most 61 characters" $suffix) }}
+{{- end }}
+{{- if hasKey $seen $suffix }}
+{{- fail (printf "extraServices: duplicate name %s" $suffix) }}
+{{- end }}
+{{- $_ := set $seen $suffix true }}
+{{- if not .ports }}
+{{- fail (printf "extraServices[%s].ports is required" $suffix) }}
+{{- end }}
+{{- if and (.ingress).enabled (not .ingress.hosts) }}
+{{- fail (printf "extraServices[%s].ingress.hosts is required" $suffix) }}
+{{- end }}
+{{- $name := printf "%s-%s" (include "custom-deployment.fullname" $ | trunc (int (sub 62 (len $suffix))) | trimSuffix "-") $suffix }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "custom-deployment.labels" $ | nindent 4 }}
+  {{- with .annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .type | default "ClusterIP" }}
+  ports:
+    {{- range .ports }}
+    - port: {{ .containerPort }}
+      targetPort: {{ .containerPort }}
+      protocol: TCP
+      name: {{ .name }}
+    {{- end }}
+  selector:
+    {{- include "custom-deployment.selectorLabels" $ | nindent 4 }}
+    module: main-app
+{{- if (.ingress).enabled }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $name }}
+  labels:
+    {{- include "custom-deployment.labels" $ | nindent 4 }}
+  {{- with .ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with .ingress.className }}
+  ingressClassName: {{ . }}
+  {{- end }}
+  rules:
+    {{- range .ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
+            backend:
+              service:
+                name: {{ $name }}
+                port:
+                  name: {{ .portName }}
+          {{- end }}
+    {{- end }}
+{{- end }}
+{{- end }}
