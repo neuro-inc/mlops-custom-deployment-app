@@ -812,6 +812,10 @@ def test_rendered_object_names_are_unique(
             ],
             "extraServices: duplicate name grpc",
         ),
+        (
+            [{"name": "a" * 62, "ports": [{"name": "http", "containerPort": 80}]}],
+            f"extraServices[{'a' * 62}].name must be at most 61 characters",
+        ),
         ([{"name": "grpc", "ports": []}], "extraServices[grpc].ports is required"),
         (
             [

@@ -1,6 +1,9 @@
 {{- $seen := dict }}
 {{- range .Values.extraServices }}
 {{- $suffix := required "extraServices[].name is required" .name }}
+{{- if gt (len $suffix) 61 }}
+{{- fail (printf "extraServices[%s].name must be at most 61 characters" $suffix) }}
+{{- end }}
 {{- if hasKey $seen $suffix }}
 {{- fail (printf "extraServices: duplicate name %s" $suffix) }}
 {{- end }}
