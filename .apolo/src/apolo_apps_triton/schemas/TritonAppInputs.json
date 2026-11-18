@@ -1,0 +1,615 @@
+{
+  "$defs": {
+    "ApoloAuth": {
+      "properties": {
+        "type": {
+          "const": "apolo_auth",
+          "default": "apolo_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "ApoloAuth",
+      "type": "object",
+      "x-description": "Use Apolo platform's built-in authentication and authorization. Requires authenticated user credentials with appropriate permissions.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Apolo Platform Authentication",
+      "x-type": "ApoloAuth"
+    },
+    "ApoloFilesPath": {
+      "properties": {
+        "path": {
+          "title": "Path",
+          "type": "string",
+          "x-description": "Provide the Apolo Storage path starting with `storage:` to locate your files.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Storage Path"
+        }
+      },
+      "required": [
+        "path"
+      ],
+      "title": "ApoloFilesPath",
+      "type": "object",
+      "x-description": "Specify the path within the Apolo Files application to read from or write to.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Apolo Files Path",
+      "x-type": "ApoloFilesPath"
+    },
+    "ApoloSecret": {
+      "properties": {
+        "key": {
+          "title": "Key",
+          "type": "string"
+        }
+      },
+      "required": [
+        "key"
+      ],
+      "title": "ApoloSecret",
+      "type": "object",
+      "x-description": "Apolo Secret Configuration.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Secret",
+      "x-type": "ApoloSecret"
+    },
+    "AuthIngressMiddleware": {
+      "properties": {
+        "name": {
+          "pattern": "^platform",
+          "title": "Name",
+          "type": "string",
+          "x-description": "Name of the authentication middleware (with namespace) to apply to ingress traffic.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Middleware Name"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "AuthIngressMiddleware",
+      "type": "object",
+      "x-description": "Configure authentication middleware for ingress traffic.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Authentication Ingress Middleware",
+      "x-type": "AuthIngressMiddleware"
+    },
+    "ContainerImage": {
+      "properties": {
+        "repository": {
+          "title": "Repository",
+          "type": "string",
+          "x-description": "Choose a repository for the container image.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Container Image Repository"
+        },
+        "tag": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Tag",
+          "x-description": "Choose a tag for the container image.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Container Image Tag"
+        },
+        "imagepullsecret": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/DockerConfigModel"
+            },
+            {
+              "$ref": "#/$defs/GithubImageRegistryAuth"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Imagepullsecret",
+          "x-description": "Credentials used to pull the container image from a private registry: either a Docker config (e.g. from the DockerHub app) or a GitHub Container Registry auth (from the GitHub app).",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "integration",
+          "x-title": "Image Pull Secret"
+        },
+        "pull_policy": {
+          "$ref": "#/$defs/ContainerImagePullPolicy",
+          "default": "IfNotPresent",
+          "x-description": "Specify the pull policy for the container image.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Container Image Pull Policy"
+        }
+      },
+      "required": [
+        "repository"
+      ],
+      "title": "ContainerImage",
+      "type": "object",
+      "x-description": "Container image to be used in application",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Container Image",
+      "x-type": "ContainerImage"
+    },
+    "ContainerImagePullPolicy": {
+      "enum": [
+        "Always",
+        "Never",
+        "IfNotPresent"
+      ],
+      "title": "ContainerImagePullPolicy",
+      "type": "string"
+    },
+    "CustomAuth": {
+      "properties": {
+        "type": {
+          "const": "custom_auth",
+          "default": "custom_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
+        },
+        "middleware": {
+          "$ref": "#/$defs/AuthIngressMiddleware",
+          "x-description": "Custom authentication middleware configuration.",
+          "x-title": "Authentication Middleware"
+        }
+      },
+      "required": [
+        "middleware"
+      ],
+      "title": "CustomAuth",
+      "type": "object",
+      "x-description": "Use a custom authentication middleware for this ingress. Allows integration with custom authentication providers.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Custom Authentication",
+      "x-type": "CustomAuth"
+    },
+    "DockerConfigModel": {
+      "properties": {
+        "filecontents": {
+          "title": "Filecontents",
+          "type": "string",
+          "x-description": "The contents of the Docker config file.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Docker Config File Contents"
+        }
+      },
+      "required": [
+        "filecontents"
+      ],
+      "title": "DockerConfigModel",
+      "type": "object",
+      "x-description": "Docker configuration content.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Docker Config",
+      "x-type": "DockerConfigModel"
+    },
+    "Env": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "x-description": "Specify the name of the environment variable to inject into the container.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Variable Name"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "x-description": "Specify the value of the environment variable.",
+              "x-is-advanced-field": false,
+              "x-is-configurable": true,
+              "x-meta-type": "inline",
+              "x-title": "String variable Value"
+            },
+            {
+              "$ref": "#/$defs/ApoloSecret"
+            }
+          ],
+          "default": "",
+          "title": "Value",
+          "x-description": "Specify the value of the environment variable.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Variable Value"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Env",
+      "type": "object",
+      "x-description": "K8S container env var.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Env",
+      "x-type": "Env"
+    },
+    "GithubImageRegistryAuth": {
+      "properties": {
+        "username": {
+          "title": "Username",
+          "type": "string",
+          "x-description": "GitHub account username the personal access token belongs to.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Username"
+        },
+        "token": {
+          "$ref": "#/$defs/ApoloSecret",
+          "x-description": "GitHub personal access token (classic). For pulling container images it needs the read:packages scope, see https://docs.github.com/en/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries",
+          "x-title": "GitHub Personal Access Token"
+        },
+        "registry_url": {
+          "default": "ghcr.io",
+          "title": "Registry Url",
+          "type": "string",
+          "x-description": "Container registry host. Use ghcr.io for github.com or containers.HOSTNAME for GitHub Enterprise Server.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Registry Host"
+        }
+      },
+      "required": [
+        "username",
+        "token"
+      ],
+      "title": "GithubImageRegistryAuth",
+      "type": "object",
+      "x-description": "Credentials for pulling container images from the GitHub Container Registry (ghcr.io or a GitHub Enterprise Server host).",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "GitHub Container Registry Auth",
+      "x-type": "GithubImageRegistryAuth"
+    },
+    "HuggingFaceCache": {
+      "properties": {
+        "files_path": {
+          "$ref": "#/$defs/ApoloFilesPath",
+          "default": {
+            "path": "storage:.apps/hugging-face-cache",
+            "__type__": "ApoloFilesPath"
+          },
+          "x-description": "The path to the Apolo Files directory where Hugging Face artifacts are cached.",
+          "x-title": "Files Path"
+        }
+      },
+      "title": "HuggingFaceCache",
+      "type": "object",
+      "x-description": "Configuration for the Hugging Face cache.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Hugging Face Cache",
+      "x-type": "HuggingFaceCache"
+    },
+    "HuggingFaceToken": {
+      "properties": {
+        "token_name": {
+          "minLength": 0,
+          "title": "Token Name",
+          "type": "string",
+          "x-description": "The name of the Hugging Face token.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Token Name"
+        },
+        "token": {
+          "$ref": "#/$defs/ApoloSecret",
+          "x-description": "The Hugging Face API token used to access models.",
+          "x-title": "Hugging Face Token"
+        }
+      },
+      "required": [
+        "token_name",
+        "token"
+      ],
+      "title": "HuggingFaceToken",
+      "type": "object",
+      "x-description": "Provide a Hugging Face API token linked to an account with access to the model specified above. This token will be used to download model files from the Hugging Face Hub, including gated or private repositories where applicable.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Hugging Face Token",
+      "x-type": "HuggingFaceToken"
+    },
+    "IngressGrpc": {
+      "properties": {
+        "auth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloAuth"
+            },
+            {
+              "$ref": "#/$defs/NoAuth"
+            },
+            {
+              "$ref": "#/$defs/CustomAuth"
+            }
+          ],
+          "title": "Auth",
+          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Authentication"
+        }
+      },
+      "title": "IngressGrpc",
+      "type": "object",
+      "x-description": "Enable access to your service over the internet using gRPC.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Enable gRPC Ingress",
+      "x-type": "IngressGrpc"
+    },
+    "IngressHttp": {
+      "properties": {
+        "auth": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ApoloAuth"
+            },
+            {
+              "$ref": "#/$defs/NoAuth"
+            },
+            {
+              "$ref": "#/$defs/CustomAuth"
+            }
+          ],
+          "title": "Auth",
+          "x-description": "Configure authentication for this ingress. Choose Apolo platform authentication, custom middleware, or no authentication.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Authentication"
+        }
+      },
+      "title": "IngressHttp",
+      "type": "object",
+      "x-description": "Enable access to your application over the internet using HTTPS.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Enable HTTP Ingress",
+      "x-type": "IngressHttp"
+    },
+    "NoAuth": {
+      "properties": {
+        "type": {
+          "const": "no_auth",
+          "default": "no_auth",
+          "description": "Authentication type identifier",
+          "title": "Type",
+          "type": "string"
+        }
+      },
+      "title": "NoAuth",
+      "type": "object",
+      "x-description": "Disable authentication for this ingress. The application will be publicly accessible without any authentication.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "No Authentication",
+      "x-type": "NoAuth"
+    },
+    "Preset": {
+      "properties": {
+        "name": {
+          "title": "Name",
+          "type": "string",
+          "x-description": "The name of the preset.",
+          "x-is-advanced-field": false,
+          "x-is-configurable": true,
+          "x-meta-type": "inline",
+          "x-title": "Resource Preset"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "title": "Preset",
+      "type": "object",
+      "x-custom-validators": [
+        {
+          "preset_validator": {
+            "exists": true
+          }
+        }
+      ],
+      "x-description": "Select the resource preset used per service replica.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Resource Preset",
+      "x-type": "Preset"
+    },
+    "TritonModelRepository": {
+      "properties": {
+        "files_path": {
+          "$ref": "#/$defs/ApoloFilesPath",
+          "x-description": "Storage path of an existing directory, e.g. storage:triton/models. It must be in the same project as the Triton app.",
+          "x-title": "Repository Path"
+        }
+      },
+      "required": [
+        "files_path"
+      ],
+      "title": "TritonModelRepository",
+      "type": "object",
+      "x-custom-validators": [
+        {
+          "storage_path_validator": {
+            "exists": true,
+            "is_dir": true,
+            "same_project": true
+          }
+        }
+      ],
+      "x-description": "Apolo Files directory with a Triton model repository: one sub-directory per model with config.pbtxt and numbered version directories. Layout: https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/model_repository.html#repository-layout",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Triton Model Repository",
+      "x-type": "TritonModelRepository"
+    }
+  },
+  "properties": {
+    "preset": {
+      "$ref": "#/$defs/Preset"
+    },
+    "image": {
+      "$ref": "#/$defs/ContainerImage",
+      "default": {
+        "repository": "nvcr.io/nvidia/tritonserver",
+        "tag": "26.10-py3",
+        "dockerconfigjson": null,
+        "imagepullsecret": null,
+        "pull_policy": "IfNotPresent",
+        "__type__": "ContainerImage"
+      },
+      "x-description": "Triton Inference Server image with a tag (e.g. 26.10-py3) or a sha256 digest. The server is started as `tritonserver --model-repository=/models <extra args>` through the image entrypoint.",
+      "x-title": "Triton Server Image"
+    },
+    "model_repository": {
+      "$ref": "#/$defs/TritonModelRepository"
+    },
+    "ingress_http": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/IngressHttp"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-description": "Expose the Triton HTTP/REST API (inference and model management) over HTTPS. Platform authentication is on by default.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Public HTTP Endpoint"
+    },
+    "ingress_grpc": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/IngressGrpc"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-description": "Expose the Triton gRPC API over TLS on port 443. Platform authentication is on by default: send `authorization: Bearer <token>` as call metadata.",
+      "x-is-advanced-field": false,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Public gRPC Endpoint"
+    },
+    "server_extra_args": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Server Extra Args",
+      "type": "array",
+      "x-description": "Arguments appended to the tritonserver command, e.g. --log-verbose=1 or --exit-on-error=false --strict-readiness=false. Ports, addresses and gRPC TLS are managed by the app.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Server Extra Arguments"
+    },
+    "hf_cache": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HuggingFaceCache"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-description": "Mounted at /root/.cache/huggingface; HF_HOME points there.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Hugging Face Cache"
+    },
+    "hf_token": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/HuggingFaceToken"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "x-description": "Passed to the server as HF_TOKEN.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "integration",
+      "x-title": "Hugging Face Token"
+    },
+    "extra_env_vars": {
+      "items": {
+        "$ref": "#/$defs/Env"
+      },
+      "title": "Extra Env Vars",
+      "type": "array",
+      "x-description": "Added to the server container; they override variables set by the app, HF_HOME and HF_TOKEN included.",
+      "x-is-advanced-field": true,
+      "x-is-configurable": true,
+      "x-meta-type": "inline",
+      "x-title": "Extra Environment Variables"
+    }
+  },
+  "required": [
+    "preset",
+    "model_repository"
+  ],
+  "title": "TritonAppInputs",
+  "type": "object"
+}

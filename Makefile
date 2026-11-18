@@ -78,3 +78,5 @@ gen-types-schemas:
 	poetry run app-types dump-types-schema .apolo/src/apolo_apps_fooocus FooocusAppOutputs .apolo/src/apolo_apps_fooocus/schemas/FooocusAppOutputs.json
 	poetry run app-types dump-types-schema .apolo/src/apolo_apps_jupyter JupyterAppInputs .apolo/src/apolo_apps_jupyter/schemas/JupyterAppInputs.json
 	poetry run app-types dump-types-schema .apolo/src/apolo_apps_jupyter JupyterAppOutputs .apolo/src/apolo_apps_jupyter/schemas/JupyterAppOutputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_triton TritonAppInputs .apolo/src/apolo_apps_triton/schemas/TritonAppInputs.json
+	poetry run app-types dump-types-schema .apolo/src/apolo_apps_triton TritonAppOutputs .apolo/src/apolo_apps_triton/schemas/TritonAppOutputs.json
