@@ -665,6 +665,38 @@ async def test_valid_env_names_are_accepted(setup_clients, minimal_inputs):
     assert [env["name"] for env in values["container"]["env"]] == ["_X", "aip_x1"]
 
 
+YAML_SCALAR_NAMES = [
+    spelling
+    for word in ("y", "yes", "n", "no", "true", "false", "on", "off", "null")
+    for spelling in (word, word.capitalize(), word.upper())
+]
+
+
+@pytest.mark.parametrize("name", YAML_SCALAR_NAMES)
+async def test_env_names_read_as_yaml_scalars_are_refused(
+    setup_clients, minimal_inputs, name
+):
+    inputs = minimal_inputs.model_copy(
+        update={"extra_env_vars": [Env(name=name, value="1")]}
+    )
+
+    with pytest.raises(ValueError, match="YAML reads it as a boolean or null"):
+        await generate(setup_clients, inputs)
+
+
+async def test_env_names_close_to_yaml_scalars_are_accepted(
+    setup_clients, minimal_inputs
+):
+    names = ["yES", "nULL", "Nil", "OFFSET", "Yes_"]
+    inputs = minimal_inputs.model_copy(
+        update={"extra_env_vars": [Env(name=name, value="1") for name in names]}
+    )
+
+    values = await generate(setup_clients, inputs)
+
+    assert [env["name"] for env in values["container"]["env"]] == names
+
+
 UNSAFE_STORAGE_PATHS = [
     "storage:triton:models",
     "storage:triton/models?x=1",

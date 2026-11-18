@@ -55,6 +55,11 @@ HEALTH_API = "health"
 VARIABLE_REFERENCE = "$("
 VERTEX_AI_ENV_PREFIX = "AIP_"
 ENV_NAME_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
+YAML_SCALAR_ENV_NAMES = frozenset(
+    spelling
+    for word in ("y", "yes", "n", "no", "true", "false", "on", "off", "null")
+    for spelling in (word, word.capitalize(), word.upper())
+)
 DIGEST_RE = re.compile(r"sha256:[0-9a-f]{64}")
 STORAGE_PREFIX = "storage:"
 FORBIDDEN_FLAGS = frozenset(
@@ -300,6 +305,13 @@ def _check_env_names(input_: TritonAppInputs) -> None:
             msg = (
                 f"Environment variable name {env_var.name!r} must start with a "
                 "letter or '_' and contain only letters, digits and '_'"
+            )
+            raise ValueError(msg)
+        if env_var.name in YAML_SCALAR_ENV_NAMES:
+            msg = (
+                f"Environment variable name {env_var.name!r} is not allowed: "
+                "the chart writes names unquoted and YAML reads it as a boolean "
+                "or null"
             )
             raise ValueError(msg)
         if env_var.name.startswith(VERTEX_AI_ENV_PREFIX):

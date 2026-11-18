@@ -283,6 +283,17 @@ async def test_env_values_are_not_expanded_by_kubernetes(
     ]
 
 
+async def test_env_names_render_as_strings(setup_clients, minimal_inputs, tmp_path):
+    names = ["yES", "nULL", "Nil", "OFFSET", "Yes_"]
+    inputs = minimal_inputs.model_copy(
+        update={"extra_env_vars": [Env(name=name, value="1") for name in names]}
+    )
+
+    manifests = render(await generate(setup_clients, inputs), tmp_path)
+
+    assert [env["name"] for env in get_container(manifests)["env"]] == names
+
+
 async def test_image_digest(setup_clients, minimal_inputs, tmp_path):
     digest = "sha256:" + "a" * 64
     inputs = minimal_inputs.model_copy(
