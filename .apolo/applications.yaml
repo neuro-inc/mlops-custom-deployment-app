@@ -297,3 +297,42 @@
   assets:
     - type: image
       url: https://storage.googleapis.com/development-421920-assets/app-logos/jupyter-banner.png
+
+- app_type: triton
+  name: triton-inference-server
+  title: Triton Inference Server
+  install_type: workflow
+  helm_path: charts/custom-deployment
+  git_url: https://github.com/neuro-inc/mlops-custom-deployment-app
+  app_package_name: apolo_apps_triton
+  inputs:
+    schema_path: .apolo/src/apolo_apps_triton/schemas/TritonAppInputs.json
+    types_name: TritonAppInputs
+    processor: TritonAppChartValueProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  outputs:
+    schema_path: .apolo/src/apolo_apps_triton/schemas/TritonAppOutputs.json
+    types_name: TritonAppOutputs
+    processor: TritonAppOutputProcessor
+    image: ghcr.io/neuro-inc/mlops-custom-deployment-app
+  short_description: Serve models from a Triton model repository over HTTP and gRPC
+  description: |
+    NVIDIA Triton Inference Server serves the models of a Triton model repository
+    in Apolo Files: ONNX, PyTorch, TensorRT, OpenVINO and Python backend models,
+    and ensembles of them, on CPU or GPU presets.
+
+    It exposes the KServe v2 HTTP/REST and gRPC APIs inside the project, and
+    optionally on public endpoints protected by platform authentication.
+  pub_date: "2026-11-16T00:00:00+00:00"
+  logo: https://storage.googleapis.com/development-421920-assets/app-logos/nvidia.svg
+  tags: ["Inference", "Triton", "NVIDIA", "ONNX", "PyTorch", "TensorRT"]
+  urls:
+    - name: Triton quickstart
+      type: documentation
+      url: https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/getting_started/quickstart.html
+    - name: Model repository layout
+      type: documentation
+      url: https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/model_repository.html
+    - name: Model management
+      type: documentation
+      url: https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/user_guide/model_management.html

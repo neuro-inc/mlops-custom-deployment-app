@@ -76,22 +76,7 @@ EMBEDDINGS_API = {
     "hf_model": {"model_hf_name": "text-embeddings-inference-model"},
 }
 TRITON_DIGEST = "sha256:" + "0" * 64
-TRITON_AUTH = {
-    "traefik.ingress.kubernetes.io/router.middlewares": (
-        "platform-platform-control-plane-ingress-auth@kubernetescrd"
-    )
-}
-TRITON_GRPC_ENTRYPOINT = {
-    "traefik.ingress.kubernetes.io/router.entrypoints": "websecure"
-}
-HF_TOKEN_SECRET = {"secretKeyRef": {"name": APP_SECRETS_NAME, "key": "hf-token"}}
-TRITON_STORAGE = [
-    {
-        "storage_uri": "storage://cluster/test-org/test-project/triton/models",
-        "mount_path": "/models",
-        "mount_mode": "r",
-    }
-]
+TRITON_HF_TOKEN = {"token_name": "hf", "token": {"key": "hf-token"}}
 
 
 def service_deployment(**fields: Any) -> dict[str, Any]:
@@ -110,91 +95,11 @@ def openwebui(auth: dict[str, Any], database: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def triton_ingress(
-    host_label: str, port_name: str, annotations: dict[str, str]
-) -> dict[str, Any]:
+def triton(**fields: Any) -> dict[str, Any]:
     return {
-        "enabled": True,
-        "className": "traefik",
-        "annotations": annotations,
-        "hosts": [
-            {
-                "host": f"{host_label}--{APP_ID}.apps.some.org.neu.ro",
-                "paths": [{"path": "/", "pathType": "Prefix", "portName": port_name}],
-            }
-        ],
-    }
-
-
-def triton_probe(path: str, period: int, failure_threshold: int) -> dict[str, Any]:
-    return {
-        "httpGet": {"path": path, "port": "http"},
-        "periodSeconds": period,
-        "failureThreshold": failure_threshold,
-        "timeoutSeconds": 2,
-    }
-
-
-def triton(
-    http: dict[str, Any] | None, grpc: dict[str, Any] | None, **fields: Any
-) -> dict[str, Any]:
-    return {
-        "fullnameOverride": f"triton-{APP_ID}",
-        "apolo_app_id": APP_ID,
-        "preset_name": "gpu-small",
-        "labels": {"application": "triton"},
-        "strategy": {"type": "Recreate"},
-        "progressDeadlineSeconds": 2100,
-        "image": {
-            "repository": "nvcr.io/nvidia/tritonserver",
-            "tag": "26.10-py3",
-            "pullPolicy": "IfNotPresent",
-        },
-        "podLabels": {
-            "platform.apolo.us/inject-storage": "true",
-            "platform.apolo.us/org": DEFAULT_ORG_NAME,
-            "platform.apolo.us/project": DEFAULT_PROJECT_NAME,
-        },
-        "podAnnotations": {
-            "platform.apolo.us/inject-storage": json.dumps(TRITON_STORAGE)
-        },
-        "container": {
-            "args": [
-                "tritonserver",
-                "--model-repository=/models",
-                "--http-port=8000",
-                "--grpc-port=8001",
-                "--metrics-port=8002",
-            ],
-            "env": [{"name": "HF_TOKEN", "value": {"valueFrom": HF_TOKEN_SECRET}}],
-        },
-        "service": {
-            "ports": [
-                {"name": "http", "containerPort": 8000},
-                {"name": "grpc", "containerPort": 8001},
-                {"name": "metrics", "containerPort": 8002},
-            ]
-        },
-        "health_checks": {
-            "startupProbe": triton_probe("/v2/health/live", 10, 180),
-            "livenessProbe": triton_probe("/v2/health/live", 30, 9),
-            "readinessProbe": triton_probe("/v2/health/ready", 10, 3),
-        },
-        "volumes": [{"name": "dshm", "emptyDir": {"medium": "Memory"}}],
-        "volumeMounts": [{"name": "dshm", "mountPath": "/dev/shm"}],
-        "ingress": http or {"enabled": False},
-        "extraServices": [
-            {
-                "name": "grpc",
-                "annotations": {
-                    "traefik.ingress.kubernetes.io/service.serversscheme": "h2c"
-                },
-                "ports": [{"name": "grpc", "containerPort": 8001}],
-                "ingress": grpc,
-            }
-        ]
-        if grpc
-        else [],
+        "preset": {"name": "gpu-small"},
+        "model_repository": {"files_path": {"path": "storage:triton/models"}},
+        "hf_token": TRITON_HF_TOKEN,
         **fields,
     }
 
@@ -505,6 +410,51 @@ CASES = [
         },
         None,
     ),
+    (
+        "triton-inference-server",
+        "both-endpoints",
+        triton(
+            image={"repository": f"nvcr.io/nvidia/tritonserver@{TRITON_DIGEST}"},
+            ingress_http={},
+            ingress_grpc={},
+        ),
+        None,
+    ),
+    (
+        "triton-inference-server",
+        "grpc-only-no-auth",
+        triton(ingress_grpc={"auth": {"type": "no_auth"}}),
+        None,
+    ),
+    (
+        "triton-inference-server",
+        "http-only-no-auth",
+        triton(ingress_http={"auth": {"type": "no_auth"}}),
+        None,
+    ),
+    ("triton-inference-server", "grpc-only", triton(ingress_grpc={}), None),
+    ("triton-inference-server", "no-endpoints", triton(), None),
+    (
+        "triton-inference-server",
+        "private-image-and-extra-settings",
+        {
+            "preset": {"name": "cpu-small"},
+            "image": {
+                "repository": "registry.example.com/team/triton",
+                "tag": "2.1.0",
+                "pull_policy": "Always",
+                "imagepullsecret": {"filecontents": DOCKER_CONFIG},
+            },
+            "model_repository": {"files_path": {"path": "storage:triton/models"}},
+            "hf_cache": {"files_path": {"path": "storage:.apps/hugging-face-cache"}},
+            "server_extra_args": ["--log-verbose=1", "--log-file=/tmp/$x.log"],
+            "extra_env_vars": [
+                {"name": "PRICE", "value": "$5"},
+                {"name": "API_TOKEN", "value": {"key": "api-token"}},
+            ],
+        },
+        None,
+    ),
 ]
 
 RAW_CASES = [
@@ -611,53 +561,15 @@ RAW_CASES = [
         },
     ),
     (
-        "triton-both-endpoints",
-        "triton",
-        triton(
-            triton_ingress("triton", "http", TRITON_AUTH),
-            triton_ingress(
-                "triton-grpc", "grpc", {**TRITON_GRPC_ENTRYPOINT, **TRITON_AUTH}
-            ),
-            image={
-                "repository": "nvcr.io/nvidia/tritonserver",
-                "tag": "26.10-py3",
-                "digest": TRITON_DIGEST,
-                "pullPolicy": "IfNotPresent",
-            },
-        ),
-    ),
-    (
-        "triton-grpc-only-no-auth-rolling-update",
-        "triton",
-        triton(
-            None,
-            triton_ingress("triton-grpc", "grpc", TRITON_GRPC_ENTRYPOINT),
-            strategy={
+        "rolling-update-and-long-progress-deadline",
+        "chart",
+        {
+            "strategy": {
                 "type": "RollingUpdate",
                 "rollingUpdate": {"maxSurge": 0, "maxUnavailable": 1},
             },
-            progressDeadlineSeconds=1000000,
-        ),
-    ),
-    (
-        "triton-http-only-no-auth",
-        "triton",
-        triton(triton_ingress("triton", "http", {}), None),
-    ),
-    (
-        "triton-grpc-only",
-        "triton",
-        triton(
-            None,
-            triton_ingress(
-                "triton-grpc", "grpc", {**TRITON_GRPC_ENTRYPOINT, **TRITON_AUTH}
-            ),
-        ),
-    ),
-    (
-        "triton-no-endpoints",
-        "triton",
-        triton(None, None),
+            "progressDeadlineSeconds": 1000000,
+        },
     ),
 ]
 
