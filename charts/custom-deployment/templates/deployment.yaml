@@ -9,7 +9,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   {{- with .Values.progressDeadlineSeconds }}
-  progressDeadlineSeconds: {{ . }}
+  progressDeadlineSeconds: {{ int64 . }}
   {{- end }}
   {{- with .Values.strategy }}
   strategy:

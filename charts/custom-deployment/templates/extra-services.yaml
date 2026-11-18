@@ -1,5 +1,17 @@
+{{- $seen := dict }}
 {{- range .Values.extraServices }}
-{{- $name := printf "%s-%s" (include "custom-deployment.fullname" $) .name | trunc 63 | trimSuffix "-" }}
+{{- $suffix := required "extraServices[].name is required" .name }}
+{{- if hasKey $seen $suffix }}
+{{- fail (printf "extraServices: duplicate name %s" $suffix) }}
+{{- end }}
+{{- $_ := set $seen $suffix true }}
+{{- if not .ports }}
+{{- fail (printf "extraServices[%s].ports is required" $suffix) }}
+{{- end }}
+{{- if and (.ingress).enabled (not .ingress.hosts) }}
+{{- fail (printf "extraServices[%s].ingress.hosts is required" $suffix) }}
+{{- end }}
+{{- $name := printf "%s-%s" (include "custom-deployment.fullname" $ | trunc (int (sub 62 (len $suffix))) | trimSuffix "-") $suffix }}
 ---
 apiVersion: v1
 kind: Service
@@ -16,7 +28,7 @@ spec:
   ports:
     {{- range .ports }}
     - port: {{ .containerPort }}
-      targetPort: {{ .name }}
+      targetPort: {{ .containerPort }}
       protocol: TCP
       name: {{ .name }}
     {{- end }}

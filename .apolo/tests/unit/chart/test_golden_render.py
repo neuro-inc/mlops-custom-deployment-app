@@ -569,7 +569,45 @@ RAW_CASES = [
                     "ports": [{"name": "metrics", "containerPort": 9090}],
                     "ingress": {"enabled": False},
                 }
-            ]
+            ],
+        },
+    ),
+    (
+        "extra-service-on-long-fullname",
+        "service-deployment",
+        {
+            "ingress": {
+                "enabled": True,
+                "hosts": [
+                    {
+                        "host": "app.example.com",
+                        "paths": [
+                            {"path": "/", "pathType": "Prefix", "portName": "http"}
+                        ],
+                    }
+                ],
+            },
+            "extraServices": [
+                {
+                    "name": "grpc",
+                    "ports": [{"name": "http", "containerPort": 80}],
+                    "ingress": {
+                        "enabled": True,
+                        "hosts": [
+                            {
+                                "host": "grpc.example.com",
+                                "paths": [
+                                    {
+                                        "path": "/",
+                                        "pathType": "Prefix",
+                                        "portName": "http",
+                                    }
+                                ],
+                            }
+                        ],
+                    },
+                }
+            ],
         },
     ),
     (
@@ -582,9 +620,23 @@ RAW_CASES = [
             ),
             image={
                 "repository": "nvcr.io/nvidia/tritonserver",
+                "tag": "26.10-py3",
                 "digest": TRITON_DIGEST,
                 "pullPolicy": "IfNotPresent",
             },
+        ),
+    ),
+    (
+        "triton-grpc-only-no-auth-rolling-update",
+        "triton",
+        triton(
+            None,
+            triton_ingress("triton-grpc", "grpc", TRITON_GRPC_ENTRYPOINT),
+            strategy={
+                "type": "RollingUpdate",
+                "rollingUpdate": {"maxSurge": 0, "maxUnavailable": 1},
+            },
+            progressDeadlineSeconds=1000000,
         ),
     ),
     (
@@ -725,3 +777,59 @@ def test_chart_render_of_raw_values_matches_golden(
     rendered = render(kube_app_name(release_app_name), values_path)
 
     assert_matches_golden(request, GOLDENS_PATH / "chart" / f"{case}.yaml", rendered)
+
+
+@pytest.mark.parametrize(
+    ("case", "release_app_name", "values"),
+    [pytest.param(*case, id=case[0]) for case in RAW_CASES],
+)
+def test_rendered_object_names_are_unique(
+    tmp_path: Path, case: str, release_app_name: str, values: dict[str, Any]
+) -> None:
+    values_path = tmp_path / "values.json"
+    values_path.write_text(json.dumps(values))
+    objects = [
+        (document["kind"], document["metadata"]["name"])
+        for document in yaml.safe_load_all(
+            render(kube_app_name(release_app_name), values_path)
+        )
+        if document
+    ]
+    assert len(objects) == len(set(objects))
+
+
+@pytest.mark.parametrize(
+    ("extra_services", "error"),
+    [
+        (
+            [{"ports": [{"name": "http", "containerPort": 80}]}],
+            "extraServices[].name is required",
+        ),
+        (
+            [
+                {"name": "grpc", "ports": [{"name": "http", "containerPort": 80}]},
+                {"name": "grpc", "ports": [{"name": "http", "containerPort": 80}]},
+            ],
+            "extraServices: duplicate name grpc",
+        ),
+        ([{"name": "grpc", "ports": []}], "extraServices[grpc].ports is required"),
+        (
+            [
+                {
+                    "name": "grpc",
+                    "ports": [{"name": "http", "containerPort": 80}],
+                    "ingress": {"enabled": True},
+                }
+            ],
+            "extraServices[grpc].ingress.hosts is required",
+        ),
+    ],
+)
+def test_invalid_extra_services_fail_to_render(
+    tmp_path: Path, extra_services: list[dict[str, Any]], error: str
+) -> None:
+    values_path = tmp_path / "values.json"
+    values_path.write_text(json.dumps({"extraServices": extra_services}))
+    with pytest.raises(subprocess.CalledProcessError) as exc_info:
+        render(kube_app_name("chart"), values_path)
+    assert error in exc_info.value.stderr

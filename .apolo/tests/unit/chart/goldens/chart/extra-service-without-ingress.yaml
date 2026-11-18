@@ -15,7 +15,7 @@ spec:
   type: NodePort
   ports:
     - port: 9090
-      targetPort: metrics
+      targetPort: 9090
       protocol: TCP
       name: metrics
   selector:
