@@ -20,7 +20,7 @@ packages = [
 
 [tool.poetry.dependencies]
 apolo-sdk = "^26.11.0"
-pydantic = "^2.14.3"
+pydantic = "^2.14.4"
 pyyaml = "^6.0.2"
 types-PyYAML = "^6.0.12.20261113"
 yarl = "^1.25.1"
