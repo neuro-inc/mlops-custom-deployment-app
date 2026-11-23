@@ -247,8 +247,9 @@ async def test_ingress_without_auth_and_with_custom_auth(setup_clients, minimal_
             f"{PROJECT_ROOT}/%D0%BC%D0%BE%D0%B4%D0%B5%D0%BB%D1%96",
             f"{PROJECT_ROOT}/моделі",
         ),
-        (f"{PROJECT_ROOT}/triton%2Fmodels", f"{PROJECT_ROOT}/triton/models"),
-        (f"{PROJECT_ROOT}/./triton//models/", f"{PROJECT_ROOT}/triton/models"),
+        (f"{PROJECT_ROOT}/./triton/models/", f"{PROJECT_ROOT}/triton/models"),
+        ("storage:triton/./models", f"{PROJECT_ROOT}/triton/models"),
+        ("storage:user@models", f"{PROJECT_ROOT}/user@models"),
     ],
 )
 async def test_model_repository_in_the_project(
@@ -269,10 +270,8 @@ async def test_model_repository_in_the_project(
         f"{PROJECT_ROOT}-other/models",
         "storage:/other-project/models",
         f"{PROJECT_ROOT}/../other-project/models",
-        f"{PROJECT_ROOT}/..%2fother-project/models",
-        f"{PROJECT_ROOT}/triton/..%2F..%2Fother-project/models",
-        "storage:..%2fother-project/models",
-        "storage:triton/..%2f..%2fother-project/models",
+        "storage:../other-project/models",
+        "storage:triton/../../other-project/models",
     ],
 )
 async def test_model_repository_outside_the_project_is_refused(
@@ -290,10 +289,10 @@ PROJECT_ROOT_PATHS = [
     f"storage:/{DEFAULT_PROJECT_NAME}/",
     PROJECT_ROOT,
     f"{PROJECT_ROOT}/",
-    f"{PROJECT_ROOT}//",
     f"{PROJECT_ROOT}/.",
-    f"{PROJECT_ROOT}/%2e",
+    f"{PROJECT_ROOT}/./",
     "storage:triton/..",
+    "storage:triton/../",
     f"{PROJECT_ROOT}/triton/..",
 ]
 
@@ -349,7 +348,7 @@ async def test_hugging_face_cache_path_is_decoded(setup_clients, minimal_inputs)
     "path",
     [
         f"storage://{DEFAULT_CLUSTER_NAME}/{DEFAULT_ORG_NAME}/other-project/hf",
-        f"{PROJECT_ROOT}/..%2fother-project/hf",
+        f"{PROJECT_ROOT}/../other-project/hf",
     ],
 )
 async def test_hugging_face_cache_outside_the_project_is_refused(
@@ -764,6 +763,39 @@ UNSAFE_STORAGE_PATHS = [
     f"{PROJECT_ROOT}/storage:models",
     "storage:triton/models%3Ax",
     f"{PROJECT_ROOT}/storage%3A/other",
+    "storage:%0a/../models",
+    "storage:%00/../models",
+    "storage:%3A/../models",
+    f"storage://{DEFAULT_CLUSTER_NAME}:/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
+    f"storage://{DEFAULT_CLUSTER_NAME}%3A/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
+    "storage:triton/models%3Fx",
+    "storage:triton/models%23x",
+    "storage:triton/models%25",
+    "storage:100%",
+    f"{PROJECT_ROOT}/%252e",
+    f"{PROJECT_ROOT}/%252e%252e/%252e%252e/other",
+    "storage:triton/report%253A2026",
+    "storage:triton%2Fmodels",
+    f"{PROJECT_ROOT}/%2e",
+    f"{PROJECT_ROOT}%2F.",
+    f"{PROJECT_ROOT}%2F%2e",
+    f"{PROJECT_ROOT}/.%2F.",
+    f"{PROJECT_ROOT}%2F.%2F.",
+    f"{PROJECT_ROOT}/..%2fother-project/models",
+    f"{PROJECT_ROOT}/triton/..%2F..%2Fother-project/models",
+    "storage:..%2fother-project/models",
+    f"storage://{DEFAULT_CLUSTER_NAME}//{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
+    f"storage:////{DEFAULT_PROJECT_NAME}/models",
+    f"storage:///{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/models",
+    f"{PROJECT_ROOT}//",
+    f"{PROJECT_ROOT}/./triton//models/",
+    "storage:triton//models",
+    "storage://",
+    "storage://[",
+    f"storage://[{DEFAULT_CLUSTER_NAME}]/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
+    f"storage://xn--/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
+    f"storage://xn--abc/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
+    f"storage://{DEFAULT_CLUSTER_NAME}%40x/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
 ]
 
 
