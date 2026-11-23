@@ -272,6 +272,7 @@ async def test_model_repository_in_the_project(
         f"{PROJECT_ROOT}/../other-project/models",
         "storage:../other-project/models",
         "storage:triton/../../other-project/models",
+        f"storage://my--cluster/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/models",
     ],
 )
 async def test_model_repository_outside_the_project_is_refused(
@@ -772,6 +773,13 @@ UNSAFE_STORAGE_PATHS = [
     "storage:triton/models%23x",
     "storage:triton/models%25",
     "storage:100%",
+    "storage:50%",
+    "storage:100%25",
+    "storage:model%2Eonnx",
+    "storage:triton/models//",
+    "storage:%FF",
+    "storage:%C0%AE%C0%AE",
+    f"{PROJECT_ROOT}/%FF",
     f"{PROJECT_ROOT}/%252e",
     f"{PROJECT_ROOT}/%252e%252e/%252e%252e/other",
     "storage:triton/report%253A2026",

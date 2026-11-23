@@ -260,22 +260,23 @@ def _refuse_storage_path(files_path: ApoloFilesPath, title: str) -> t.NoReturn:
     msg = (
         f"{title} {files_path.path!r} must be a plain storage path: "
         "no ':', '?', '#', '%' or control characters, also when "
-        "percent-encoded, no percent-encoded '/' or '.', no empty folder "
-        "names, and a cluster name without user or port"
+        "percent-encoded, no percent-encoded '/' or '.', percent-encoded "
+        "text only in UTF-8, no empty folder names, and a cluster name "
+        "without user or port"
     )
     raise ValueError(msg)
 
 
 def _is_cluster_name(name: str) -> bool:
-    return all(
-        CLUSTER_LABEL_RE.fullmatch(label) and label[2:4] != "--"
-        for label in name.split(".")
-    )
+    return all(CLUSTER_LABEL_RE.fullmatch(label) for label in name.split("."))
 
 
 def _check_storage_path(files_path: ApoloFilesPath, title: str) -> None:
     raw_rest = files_path.path.removeprefix(STORAGE_PREFIX)
-    rest = unquote(raw_rest)
+    try:
+        rest = unquote(raw_rest, errors="strict")
+    except UnicodeDecodeError:
+        _refuse_storage_path(files_path, title)
     absolute = rest.startswith("//")
     segments = (rest[2:] if absolute else rest.removeprefix("/")).split("/")
     if (
@@ -294,6 +295,7 @@ def _get_project_path(
     _check_storage_path(files_path, title)
     try:
         uri = URL(files_path.get_absolute_path_model(client).path)
+        host = uri.host
     except ValueError:
         _refuse_storage_path(files_path, title)
     config = client.config
@@ -302,13 +304,9 @@ def _get_project_path(
     if _has_control_characters(uri.path):
         _refuse_storage_path(files_path, title)
     project_root = "/".join((config.cluster_name, *project))
-    if (
-        uri.host != config.cluster_name
-        or parts[: len(project)] != project
-        or ".." in parts
-    ):
+    if host != config.cluster_name or parts[: len(project)] != project or ".." in parts:
         msg = (
-            f"{title} {files_path.path} must be in the project of the app "
+            f"{title} {files_path.path!r} must be in the project of the app "
             f"(storage://{project_root})"
         )
         raise ValueError(msg)
@@ -318,7 +316,7 @@ def _get_project_path(
             f"the app, not its root (storage://{project_root})"
         )
         raise ValueError(msg)
-    return ApoloFilesPath(path=f"storage://{uri.host}/{'/'.join(parts)}")
+    return ApoloFilesPath(path=f"storage://{host}/{'/'.join(parts)}")
 
 
 def _check_env_names(input_: TritonAppInputs) -> None:
