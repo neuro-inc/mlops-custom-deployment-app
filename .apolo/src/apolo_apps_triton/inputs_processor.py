@@ -1,6 +1,7 @@
 import re
 import typing as t
 import unicodedata
+from urllib.parse import unquote
 
 import apolo_sdk
 from yarl import URL
@@ -62,6 +63,8 @@ YAML_SCALAR_ENV_NAMES = frozenset(
 )
 DIGEST_RE = re.compile(r"sha256:[0-9a-f]{64}")
 STORAGE_PREFIX = "storage:"
+ENCODED_SEPARATOR_RE = re.compile(r"%2[EeFf]")
+CLUSTER_LABEL_RE = re.compile(r"[A-Za-z0-9]([A-Za-z0-9-]*[A-Za-z0-9])?")
 FORBIDDEN_FLAGS = frozenset(
     {
         "--http-port",
@@ -256,21 +259,32 @@ def _has_control_characters(value: str) -> bool:
 def _refuse_storage_path(files_path: ApoloFilesPath, title: str) -> t.NoReturn:
     msg = (
         f"{title} {files_path.path!r} must be a plain storage path: "
-        "no ':', '?', '#', control characters, user or port"
+        "no ':', '?', '#', '%' or control characters, also when "
+        "percent-encoded, no percent-encoded '/' or '.', percent-encoded "
+        "text only in UTF-8, no empty folder names, and a cluster name "
+        "without user or port"
     )
     raise ValueError(msg)
 
 
+def _is_cluster_name(name: str) -> bool:
+    return all(CLUSTER_LABEL_RE.fullmatch(label) for label in name.split("."))
+
+
 def _check_storage_path(files_path: ApoloFilesPath, title: str) -> None:
-    rest = files_path.path.removeprefix(STORAGE_PREFIX)
-    authority, path = "", rest
-    if rest.startswith("//"):
-        authority, _, path = rest[2:].partition("/")
+    raw_rest = files_path.path.removeprefix(STORAGE_PREFIX)
+    try:
+        rest = unquote(raw_rest, errors="strict")
+    except UnicodeDecodeError:
+        _refuse_storage_path(files_path, title)
+    absolute = rest.startswith("//")
+    segments = (rest[2:] if absolute else rest.removeprefix("/")).split("/")
     if (
-        any(char in rest for char in "?#")
-        or _has_control_characters(rest)
-        or any(char in authority for char in ":@")
-        or ":" in path
+        _has_control_characters(rest)
+        or ENCODED_SEPARATOR_RE.search(raw_rest)
+        or any(char in rest for char in ":?#%")
+        or "" in segments[:-1]
+        or (absolute and not _is_cluster_name(segments[0]))
     ):
         _refuse_storage_path(files_path, title)
 
@@ -279,24 +293,30 @@ def _get_project_path(
     client: apolo_sdk.Client, files_path: ApoloFilesPath, title: str
 ) -> ApoloFilesPath:
     _check_storage_path(files_path, title)
-    uri = URL(files_path.get_absolute_path_model(client).path)
+    try:
+        uri = URL(files_path.get_absolute_path_model(client).path)
+        host = uri.host
+    except ValueError:
+        _refuse_storage_path(files_path, title)
     config = client.config
     project = tuple(part for part in (config.org_name, config.project_name) if part)
-    parts = tuple(part for part in uri.path.split("/") if part)
+    parts = tuple(part for part in uri.path.split("/") if part not in ("", "."))
     if _has_control_characters(uri.path):
         _refuse_storage_path(files_path, title)
-    if (
-        uri.host != config.cluster_name
-        or parts[: len(project)] != project
-        or ".." in parts
-    ):
-        project_root = "/".join((config.cluster_name, *project))
+    project_root = "/".join((config.cluster_name, *project))
+    if host != config.cluster_name or parts[: len(project)] != project or ".." in parts:
         msg = (
-            f"{title} {files_path.path} must be in the project of the app "
+            f"{title} {files_path.path!r} must be in the project of the app "
             f"(storage://{project_root})"
         )
         raise ValueError(msg)
-    return ApoloFilesPath(path=f"storage://{uri.host}/{'/'.join(parts)}")
+    if len(parts) == len(project):
+        msg = (
+            f"{title} {files_path.path!r} must be a subfolder of the project of "
+            f"the app, not its root (storage://{project_root})"
+        )
+        raise ValueError(msg)
+    return ApoloFilesPath(path=f"storage://{host}/{'/'.join(parts)}")
 
 
 def _check_env_names(input_: TritonAppInputs) -> None:
