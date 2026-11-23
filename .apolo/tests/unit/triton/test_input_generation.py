@@ -238,7 +238,6 @@ async def test_ingress_without_auth_and_with_custom_auth(setup_clients, minimal_
     [
         ("storage:triton/models", f"{PROJECT_ROOT}/triton/models"),
         (f"{PROJECT_ROOT}/triton/models", f"{PROJECT_ROOT}/triton/models"),
-        (f"{PROJECT_ROOT}/", PROJECT_ROOT),
         (f"storage:/{DEFAULT_PROJECT_NAME}/models", f"{PROJECT_ROOT}/models"),
         ("storage:my models", f"{PROJECT_ROOT}/my models"),
         ("storage:моделі", f"{PROJECT_ROOT}/моделі"),
@@ -281,6 +280,50 @@ async def test_model_repository_outside_the_project_is_refused(
 ):
     with pytest.raises(ValueError, match="must be in the project of the app"):
         await generate(setup_clients, with_repository(minimal_inputs, path))
+
+
+PROJECT_ROOT_PATHS = [
+    "storage:",
+    "storage:.",
+    "storage:./",
+    f"storage:/{DEFAULT_PROJECT_NAME}",
+    f"storage:/{DEFAULT_PROJECT_NAME}/",
+    PROJECT_ROOT,
+    f"{PROJECT_ROOT}/",
+    f"{PROJECT_ROOT}//",
+    f"{PROJECT_ROOT}/.",
+    f"{PROJECT_ROOT}/%2e",
+    "storage:triton/..",
+    f"{PROJECT_ROOT}/triton/..",
+]
+
+
+@pytest.mark.parametrize("path", PROJECT_ROOT_PATHS)
+async def test_model_repository_at_the_project_root_is_refused(
+    setup_clients, minimal_inputs, path
+):
+    with pytest.raises(
+        ValueError,
+        match=(
+            "Model repository .* must be a subfolder of the project of the app, "
+            f"not its root \\({PROJECT_ROOT}\\)"
+        ),
+    ):
+        await generate(setup_clients, with_repository(minimal_inputs, path))
+
+
+@pytest.mark.parametrize("path", PROJECT_ROOT_PATHS)
+async def test_hugging_face_cache_at_the_project_root_is_refused(
+    setup_clients, minimal_inputs, path
+):
+    inputs = minimal_inputs.model_copy(
+        update={"hf_cache": HuggingFaceCache(files_path=ApoloFilesPath(path=path))}
+    )
+
+    with pytest.raises(
+        ValueError, match="Hugging Face cache .* must be a subfolder of the project"
+    ):
+        await generate(setup_clients, inputs)
 
 
 async def test_hugging_face_cache_path_is_decoded(setup_clients, minimal_inputs):
@@ -712,6 +755,15 @@ UNSAFE_STORAGE_PATHS = [
     f"{PROJECT_ROOT}/a%C2%85b",
     f"{PROJECT_ROOT}/a%C2%80b",
     "storage:triton/a\u0085b",
+    "storage:triton/models\n",
+    "storage:triton/models\x00",
+    "storage:triton/models%00",
+    "storage:STORAGE:models",
+    "storage:storage:models",
+    f"storage:storage://{DEFAULT_CLUSTER_NAME}/{DEFAULT_ORG_NAME}/{DEFAULT_PROJECT_NAME}/m",
+    f"{PROJECT_ROOT}/storage:models",
+    "storage:triton/models%3Ax",
+    f"{PROJECT_ROOT}/storage%3A/other",
 ]
 
 

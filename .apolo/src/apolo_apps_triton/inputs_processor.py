@@ -283,17 +283,23 @@ def _get_project_path(
     config = client.config
     project = tuple(part for part in (config.org_name, config.project_name) if part)
     parts = tuple(part for part in uri.path.split("/") if part)
-    if _has_control_characters(uri.path):
+    if _has_control_characters(uri.path) or ":" in uri.path:
         _refuse_storage_path(files_path, title)
+    project_root = "/".join((config.cluster_name, *project))
     if (
         uri.host != config.cluster_name
         or parts[: len(project)] != project
         or ".." in parts
     ):
-        project_root = "/".join((config.cluster_name, *project))
         msg = (
             f"{title} {files_path.path} must be in the project of the app "
             f"(storage://{project_root})"
+        )
+        raise ValueError(msg)
+    if len(parts) == len(project):
+        msg = (
+            f"{title} {files_path.path} must be a subfolder of the project of "
+            f"the app, not its root (storage://{project_root})"
         )
         raise ValueError(msg)
     return ApoloFilesPath(path=f"storage://{uri.host}/{'/'.join(parts)}")
