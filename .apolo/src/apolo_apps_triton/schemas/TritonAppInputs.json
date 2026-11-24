@@ -471,7 +471,7 @@
       "properties": {
         "files_path": {
           "$ref": "#/$defs/ApoloFilesPath",
-          "x-description": "Storage path of an existing directory, e.g. storage:triton/models. It must be in the same project as the Triton app.",
+          "x-description": "Storage path of an existing directory, e.g. storage:triton/models. It must be a subfolder of the project of the Triton app, not the project root.",
           "x-title": "Repository Path"
         }
       },
@@ -485,7 +485,8 @@
           "storage_path_validator": {
             "exists": true,
             "is_dir": true,
-            "same_project": true
+            "same_project": true,
+            "subfolder": true
           }
         }
       ],
